@@ -1,4 +1,4 @@
-# Resta Um — Projeto de Programação 2 (C++)
+# Resta Um — Projeto de Programação 2 (C++) $$
 
 ## Descrição
 
