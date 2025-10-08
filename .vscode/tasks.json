@@ -1,0 +1,49 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build_cpp_raylib",
+            "type": "shell",
+            "command": "C:/raylib/w64devkit/bin/g++.exe",
+            "args": [
+                "-IC:/raylib/raylib/src",
+                "${file}",
+                "-LC:/raylib/w64devkit/lib",
+                "-lraylib",
+                "-lopengl32",
+                "-lgdi32",
+                "-lwinmm",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Compila arquivo C++ com Raylib",
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "run_cpp_raylib",
+            "type": "shell",
+            "command": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "dependsOn": "build_cpp_raylib",
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "build_and_run_cpp_raylib",
+            "dependsOn": [
+                "build_cpp_raylib",
+                "run_cpp_raylib"
+            ],
+            "dependsOrder": "sequence"
+        }
+    ]
+}

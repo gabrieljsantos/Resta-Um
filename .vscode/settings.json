@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.lb2": "html",
+        "Test.C": "cpp",
+        "main.C": "cpp",
+        "stdio.h": "c"
+    }
+}
