@@ -76,7 +76,7 @@ Foi desenvolvida para ser **leve, multiplataforma e de fácil aprendizado**.
 
 # Resta Um — Projeto de Programação 2 (C++) 
 
-
+## 
 ## Descrição
 
 Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como projeto da disciplina de Programação 2. O objetivo é reproduzir as regras clássicas, fornecer uma interface em terminal para jogar e demonstrar organização de código, uso de estruturas de dados e testes básicos.
