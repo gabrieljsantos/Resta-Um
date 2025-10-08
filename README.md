@@ -47,7 +47,7 @@ A pasta `sandbox` serve como um ambiente de testes isolado do projeto principal.
 Você pode criar, editar e compilar pequenos exemplos nela sem interferir no código oficial.
 
 Dentro dessa pasta, crie um diretório com o nome do seu teste e faça o que quiser — ela funciona como um espaço de rascunho.
-Por enquanto, essa área é de uso de **Gabriel J Santos**, e já contém alguns arquivos e configurações específicas que só funcionam no **VS Code**.
+Por enquanto contém alguns arquivos e configurações específicas que só funcionam no **VS Code**, mas se não quiser testar nada, ignore a pasta.
 
 Por exemplo, se quiser testar uma função nova, configurar uma tela da **Raylib** ou validar algum comportamento gráfico, faça isso dentro da `sandbox`.
 Dessa forma, o projeto principal permanece limpo e estável enquanto você experimenta e desenvolve livremente.
@@ -72,7 +72,9 @@ Foi desenvolvida para ser **leve, multiplataforma e de fácil aprendizado**.
 
 ---
 
-# Resta Um — Projeto de Programação 2 (C++) $$
+
+
+# Resta Um — Projeto de Programação 2 (C++) 
 
 
 ## Descrição
@@ -96,45 +98,8 @@ Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como pr
 * Salvamento/carregamento simples do estado do jogo (arquivo de texto).
 * Modo solução automática (heurística simples / backtracking) — opcional/implementado conforme especificação do grupo.
 
-## Requisitos
 
-* Compilador C++ compatível com C++17 (g++, clang).
-* Make (opcional) para automação de build.
-* Sistema operacional: multiplataforma (Linux, macOS, Windows via MinGW).
-
-## Como compilar (exemplo)
-
-Usando g++:
-
-```
-g++ -std=c++17 src/*.cpp -Iinclude -O2 -o bin/resta_um
-```
-
-Com Makefile (se disponível):
-
-```
-make
-```
-
-## Como executar
-
-```
-./bin/resta_um
-```
-
-ou em Windows:
-
-```
-bin\resta_um.exe
-```
-
-Ao iniciar, siga as instruções no terminal para:
-
-* Selecionar configuração inicial do tabuleiro (clássica ou customizada).
-* Inserir jogadas no formato: `linha origem, coluna origem -> linha destino, coluna destino` (ex.: `3 1 3 3`) — adaptar conforme a interface implementada.
-* Salvar/Carregar partida quando solicitado.
-
-## Estrutura sugerida do repositório
+## Exemplo de futura Estrutura do repositório
 
 ```
 / (raiz)
@@ -156,32 +121,6 @@ Ao iniciar, siga as instruções no terminal para:
 ├─ Makefile
 └─ README.md
 ```
-
-## Padrões e boas práticas adotadas
-
-* Código modular (separação entre lógica do jogo e I/O).
-* Comentários sucintos e function-level documentation.
-* Tratamento de erros e validações de entrada.
-* Testes unitários básicos para funções críticas (validação de movimentos, contagem de peças).
-
-## Possíveis melhorias (próximos passos)
-
-* Interface gráfica simples (SDL2/raylib) para melhor visualização.
-* Algoritmo de solução eficiente (A*, DFS com poda).
-* Modo de níveis e variantes de tabuleiro.
-* Estatísticas de partidas e replay.
-* Testes automatizados completos (unitários e integração).
-
-## Como contribuir
-
-1. Fazer fork do repositório.
-2. Criar branch para sua feature: `feature/nome-da-feature`.
-3. Implementar e testar localmente.
-4. Enviar Pull Request descrevendo mudanças e testes realizados.
-
-## Licença
-
-Projeto sob a licença MIT — consulte o arquivo `LICENSE` para detalhes.
 
 ## Autoria / Participantes
 
