@@ -74,7 +74,7 @@ Foi desenvolvida para ser **leve, multiplataforma e de fácil aprendizado**.
 
 
 
-# Resta Um — Projeto de Programação 2 (C++) 
+# Resta Um — Projeto de Programação 2  (C++) 
 
 ## 
 ## Descrição
@@ -104,6 +104,7 @@ Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como pr
 ```
 / (raiz)
 ├─ src/
+eee
 │  ├─ main.cpp
 │  ├─ board.cpp
 │  ├─ board.h
