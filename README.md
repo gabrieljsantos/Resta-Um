@@ -1,45 +1,5 @@
 
-# Como instalar e configurar as dependências e fazer o projeto “rodar”
 
-Primeiro ponto: infelizmente, é necessário que todos os envolvidos no projeto estejam com as máquinas e seus ambientes de desenvolvimento **totalmente alinhados** — todo mundo usando a **mesma versão de tudo**.
-E um conselho meu (Gabriel J. S.): que **todos baixem dos mesmos links**.
-Sabemos que computadores, quando resolvem não funcionar, usam “magia” para fazer isso da pior forma possível.
-
-Dito isso, vamos começar pela IDE.
-
----
-
-## Code::Blocks
-
-Você deve instalar o **Code::Blocks** na versão **20.03**.
-Sabemos que existem versões mais recentes, mas, por enquanto, essa é a que funciona corretamente com a **Raylib** — e o que precisamos é que **rode sem erro**, mesmo sendo uma versão mais antiga.
-
----
-
-### Onde encontrar o Code::Blocks versão 20.03?
-
-Nesta [página do SourceForge](https://sourceforge.net/projects/codeblocks/files/Binaries/20.03/Windows) é possível baixar a versão **20.03** do Code::Blocks.
-
-> Atenção: escolha o instalador `codeblocks-20.03mingw-setup.exe`.
-
-Durante a instalação, você pode trocar o diretório padrão de
-`C:\Program Files\CodeBlocks`
-para algo como
-`C:\Program Files\CodeBlocks20.03`.
-
-Motivo: isso evita conflito caso você queira manter uma versão mais recente do Code::Blocks instalada.
-Claro que você também pode desinstalar a versão anterior ou simplesmente sobrescrever.
-(Detalhe: eu **não sobrescrevi** e funcionou aqui — mas não garanto que sempre funcione.)
-
-Em resumo: considere os riscos e confusões de ter duas versões diferentes do mesmo software na mesma máquina.
-
----
-
-## Como abrir o projeto no Code::Blocks
-
-Procure pelo arquivo chamado `projeto.cbp` que está na raiz do repositório e abra-o com o **Code::Blocks 20.03**.
-
----
 
 ## Pasta `sandbox`
 
@@ -74,7 +34,7 @@ Foi desenvolvida para ser **leve, multiplataforma e de fácil aprendizado**.
 
 
 
-# Resta Um — Projeto de Programação 2  (C++) 
+# Resta Um — Projeto de Programação 2 (C++) 
 
 ## 
 ## Descrição
@@ -104,7 +64,6 @@ Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como pr
 ```
 / (raiz)
 ├─ src/
-eee
 │  ├─ main.cpp
 │  ├─ board.cpp
 │  ├─ board.h
