@@ -17,10 +17,8 @@
 	<stdarg.h>
 	<stdbool.h>
 
-1759972592 source:d:\projects\resta-um\main.cpp
+1760235170 source:d:\projects\resta-um\main.cpp
 	"raylib.h"
-	<vector>
-	<cmath>
 
 1759933515 d:\projects\resta-um\raylib\src\raylib.h
 	<stdarg.h>
