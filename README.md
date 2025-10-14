@@ -90,6 +90,7 @@ Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como pr
 * Gabriel de Jesus Santos
 * Anderson Santos Santana
 * Alysson Santos
+* Gabriel da Silva Bispo
 
 ## Referências
 
