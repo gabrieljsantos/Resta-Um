@@ -134,6 +134,7 @@ struct MoveOptions {
 };
 
 MoveOptions possibility_of_moving(
+    // função mal organizada
     int index,
     struct Part parts[],
     int size_of_parts ,
