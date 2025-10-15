@@ -25,3 +25,15 @@
 	<stdarg.h>
 	<stdbool.h>
 
+1760490321 source:d:\projects\resta-um\main.cpp
+	"raylib.h"
+	<stdio.h>
+	<stdlib.h>
+	<vector>
+	<stdbool.h>
+	<math.h>
+
+1759933515 d:\projects\resta-um\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
