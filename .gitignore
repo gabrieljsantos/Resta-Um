@@ -1,1 +1,6 @@
 *.json
+Debug/* linguist-vendored
+empty_project_template/* linguist-vendored
+obj/* linguist-vendored
+Raylib/* linguist-vendored
+sandbox/* linguist-vendored
