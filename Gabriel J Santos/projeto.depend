@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1737679007 source:c:\users\pedro\code\projeto\main.cpp
+	<raylib.h>
+	<cmath>
+	<cstring>
+	<cstdio>
+	<cstdlib>
+
+1737676964 c:\users\pedro\code\projeto\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1759933794 source:d:\downloads\projeto_arthur\projeto\main.cpp
+	"raylib.h"
+
+1759933515 d:\downloads\projeto_arthur\projeto\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1760046911 source:c:\users\svgab\onedrive\documentos\github\resta-um\main.cpp
+	"raylib.h"
+	<stdio.h>
+
+1759966568 c:\users\svgab\onedrive\documentos\github\resta-um\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1760572581 source:d:\projects\resta-um\main.cpp
+	"raylib.h"
+	<stdio.h>
+	<stdlib.h>
+	<vector>
+	<stdbool.h>
+	<math.h>
+
+1759933515 d:\projects\resta-um\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
