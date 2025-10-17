@@ -13,6 +13,7 @@
 
 
 struct Part { // Criando uma estrutura para criar um vetor
+    int index;
     int posX;
     int posY;
     bool state;
@@ -50,7 +51,7 @@ void parts_generator(struct Part parts[], int size, bool state, bool empty_place
                     }
                     parts[index].posX = i;
                     parts[index].posY = j;
-                    parts[index].state = true;                           
+                    parts[index].state = state;                           
                     index++;
                 }
             }
@@ -126,6 +127,47 @@ selection get_selected(Vector2 mouse, int R, int spacing, Vector2 screen, struct
 
 };
 
+struct Orthogonal_Neighborhood {
+    struct Part *top;
+    struct Part *bottom;
+    struct Part *left;
+    struct Part *right;
+};
+
+Orthogonal_Neighborhood get_neighbors(int index, struct Part *parts[]){
+        // Existem duas peças ou espaços vizinhos nessa direção?
+    for(int j = 0; j < size_of_empty_place; j++){
+        if ((x_seleted == empty_place[j].posX - 1) && (y_seleted == empty_place[j].posY)){
+            is_right_1 = true;
+        }
+        if ((x_seleted == empty_place[j].posX - 2) && (y_seleted == empty_place[j].posY)){
+            is_right_2 = true;
+            index_right = j;
+        }
+        if ((x_seleted == empty_place[j].posX + 1) && (y_seleted == empty_place[j].posY)){
+            is_left_1 = true;
+        }
+        if ((x_seleted == empty_place[j].posX + 2) && (y_seleted == empty_place[j].posY)){
+            is_left_2 = true;
+            index_left = j;
+        }
+        if ((x_seleted == empty_place[j].posX) && (y_seleted == empty_place[j].posY + 1)){
+            is_up_1 = true;
+        }
+        if ((x_seleted == empty_place[j].posX ) && (y_seleted == empty_place[j].posY + 2)){
+            is_up_2 = true;
+            index_up = j;
+        }
+        if ((x_seleted == empty_place[j].posX) && (y_seleted == empty_place[j].posY - 1)){
+            is_down_1 = true;
+        }
+        if ((x_seleted == empty_place[j].posX) && (y_seleted == empty_place[j].posY - 2 )){
+            is_down_2 = true;
+            index_down = j;
+        }
+    }
+}
+
 struct MoveOptions {
     bool right;
     bool left;
@@ -139,7 +181,8 @@ MoveOptions possibility_of_moving(
     struct Part parts[],
     int size_of_parts ,
     struct Part empty_place[],
-    int size_of_empty_place){
+    int size_of_empty_place)
+    {
         MoveOptions possibility = {false, false, false, false};
         
         int x_seleted = parts[index].posX;
@@ -280,7 +323,6 @@ int main(void)
                 int x = scaled_to_screen(empty_place[i].posX,screenSize.x,spacing);
                 int y = scaled_to_screen(empty_place[i].posY,screenSize.y,spacing);
                 DrawCircle(x, y, R, LIGHTGRAY);
-                
 
             }
             
