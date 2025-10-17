@@ -101,6 +101,7 @@ struct selection {
     int X;
     int Y;
     bool state;
+    
 };
 selection get_selected(Vector2 mouse, int R, int spacing, Vector2 screen, struct Part parts[], int size){
     selection selected;
@@ -128,15 +129,15 @@ selection get_selected(Vector2 mouse, int R, int spacing, Vector2 screen, struct
 };
 
 struct Orthogonal_Neighborhood {
-    struct Part *top;
-    struct Part *bottom;
+    struct Part *up;
+    struct Part *down;
     struct Part *left;
     struct Part *right;
 };
 
-Orthogonal_Neighborhood get_neighbors(int index, struct Part *parts[]){
+Orthogonal_Neighborhood get_neighbors(int index, struct Part *parts[], int size_of_parts){
         // Existem duas peças ou espaços vizinhos nessa direção?
-    for(int j = 0; j < size_of_empty_place; j++){
+    for(int j = 0; j < size_of_parts; j++){
         if ((x_seleted == empty_place[j].posX - 1) && (y_seleted == empty_place[j].posY)){
             is_right_1 = true;
         }
