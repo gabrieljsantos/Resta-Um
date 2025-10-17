@@ -1,8 +1,20 @@
-# Auto detect text files and perform LF normalization
+﻿# Normaliza finais de linha (bom para todos os tipos de projeto)
 * text=auto
-Debug/* linguist-vendored
-empty_project_template/* linguist-vendored
-obj/* linguist-vendored
-Raylib/* linguist-vendored
-sandbox/* linguist-vendored
-# test
+
+# Ignorar pastas de build e dependências para o GitHub Linguist (marcadas como vendored)
+**/bin/* linguist-vendored
+**/obj/* linguist-vendored
+**/Raylib/* linguist-vendored
+
+# Ignorar template e arquivos gerados
+Template/empty_project_template/* linguist-vendored
+Template/Raylib-Template_to_vscode/* linguist-vendored
+
+# Ignorar pasta de configuração do VSCode
+.vscode/* linguist-vendored
+
+# Ignorar metadados internos do Git
+.git/* linguist-vendored
+
+# (Opcional) tutoriais, se forem apenas exemplos binários
+# Tutoriais/* linguist-vendored
