@@ -126,39 +126,6 @@ selection get_selected(Vector2 mouse, int R, int spacing, Vector2 screen, struct
 
 
 
-// Define os tipos possíveis de vizinho
-typedef enum {
-    NEIGHBOR_NONE,      // inexistente
-    NEIGHBOR_EMPTY,     // posição vazia
-    NEIGHBOR_EDIBLE,    // peça "comível"
-    NEIGHBOR_OCCUPIED   // posição ocupada
-} NeighborType;
-
-typedef enum {
-    DIR_UP,
-    DIR_DOWN,
-    DIR_LEFT,
-    DIR_RIGHT
-} Direction;
-
-// Estrutura do vizinho
-struct Neighbor {
-    NeighborType type;  // tipo do vizinho
-    Direction direction;
-    int index;          // índice da peça ou posição
-};
-
-struct Orthogonal_Neighborhood {
-    struct Neighbor top[2];    // [0] = vizinho direto, [1] = vizinho do vizinho
-    struct Neighbor bottom[2];
-    struct Neighbor left[2];
-    struct Neighbor right[2];
-};
-
-Orthogonal_Neighborhood get_Orthogonal_Neighborhood(int index_selection){
-    scanf("Wow");
-}
-
 struct MoveOptions {
     bool right;
     bool left;

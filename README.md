@@ -1,45 +1,69 @@
-
-
-
-## Pasta `sandbox`
-
-A pasta `sandbox` serve como um ambiente de testes isolado do projeto principal.
-Você pode criar, editar e compilar pequenos exemplos nela sem interferir no código oficial.
-
-Dentro dessa pasta, crie um diretório com o nome do seu teste e faça o que quiser — ela funciona como um espaço de rascunho.
-Por enquanto contém alguns arquivos e configurações específicas que só funcionam no **VS Code**, mas se não quiser testar nada, ignore a pasta.
-
-Por exemplo, se quiser testar uma função nova, configurar uma tela da **Raylib** ou validar algum comportamento gráfico, faça isso dentro da `sandbox`.
-Dessa forma, o projeto principal permanece limpo e estável enquanto você experimenta e desenvolve livremente.
-
-E detalhe: a ideia de manter esses testes na pasta `sandbox` é **exclusivamente didática**, voltada para **compartilhar curiosidades e aprendizados**, sem impacto no código oficial do projeto.
-
+Perfeito. Seguindo sua orientação, aqui está o README atualizado com a análise das versões A e B, considerando apenas o que já está implementado e funcional:
 
 ---
 
-## Pasta `empty_project_template`
+# Resta Um — Projeto de Programação 2 (C++)
 
-É o **template base** usado como estrutura do nosso projeto.
-Nele já estão todas as **dependências necessárias para a Raylib funcionar**, inclusive os **créditos do desenvolvedor original** do template.
-
----
-
-## Raylib
-
-Segundo o ChatGPT, A **Raylib** é uma biblioteca em **C/C++** voltada para **criação de jogos e aplicações gráficas**.
-Ela oferece uma interface simples para trabalhar com **gráficos 2D/3D, sons, entrada de teclado, mouse e janelas**, sendo ideal para projetos acadêmicos e protótipos rápidos.
-Foi desenvolvida para ser **leve, multiplataforma e de fácil aprendizado**.
-
----
-
-
-
-# Resta Um — Projeto de Programação 2 (C++) 
-
-## 
 ## Descrição
 
-Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como projeto da disciplina de Programação 2. O objetivo é reproduzir as regras clássicas, fornecer uma interface em terminal para jogar e demonstrar organização de código, uso de estruturas de dados e testes básicos.
+Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como projeto da disciplina de Programação 2. O objetivo é reproduzir as regras clássicas, fornecer uma interface em terminal ou gráfica para jogar e demonstrar organização de código, uso de estruturas de dados e testes básicos.
+
+---
+
+## Estrutura atual de pastas
+
+```
+/ (raiz)
+├─ Gabriel Bispo/           # Versão A do projeto
+├─ Gabriel J Santos/        # Versão B do projeto
+├─ Eduardo J. S/            # Ainda sem implementações
+├─ Template/                # Templates prontos para iniciar projetos
+├─ Tutoriais/               # Tutoriais criados com a Raylib
+```
+
+---
+
+## Pastas detalhadas
+
+### Pasta `Gabriel Bispo` — Versão A
+
+* Tabuleiro representado como matriz 7x7 (`tabuleiro[TAM][TAM]`).
+* Cada célula possui posição em pixels e estado (inválido, vazio ou ocupado).
+* Movimentos válidos verificados com regra simples: pulo de duas casas horizontal ou vertical.
+* Interface gráfica usando **Raylib**: desenha tabuleiro, peças, seleção do mouse, highlight, botão de reset.
+* Registro de recordes em arquivo de texto, exibidos na tela.
+* Simples, direta e fácil de manter.
+
+**Observação:** Essa versão é **mais estável** e adequada para iniciar o projeto ou manter como base oficial.
+
+---
+
+### Pasta `Gabriel J Santos` — Versão B
+
+* Tabuleiro representado como **vetores lineares** (`parts[32]` e `empty_place[33]`) com coordenadas cartesianas.
+* Transformação de coordenadas para a tela via funções `scaled_to_screen` e `translate_cartesian_to_screen`.
+* Seleção da peça pelo mouse com verificação de distância e estado.
+* Verificação de possibilidade de movimentos com análise ortogonal de vizinhos (`possibility_of_moving`).
+* Desenho do tabuleiro e peças com destaque da seleção.
+* Mais genérica e flexível, permite facilmente alterar posições e tamanho do tabuleiro.
+
+**Observação:** Apesar de mais flexível, essa versão é **mais complexa** e verbosa. Funciona corretamente para seleção e indicação de movimentos possíveis, mas algumas funcionalidades avançadas ainda não estão integradas (como reset ou recordes).
+
+---
+
+## Comparação das versões
+
+| Aspecto                | Versão A                            | Versão B                                          |
+| ---------------------- | ----------------------------------- | ------------------------------------------------- |
+| Estrutura do tabuleiro | Matriz 2D                           | Vetores lineares                                  |
+| Flexibilidade          | Menor, tamanho fixo                 | Maior, coordenadas cartesianas                    |
+| Movimentos             | Simples, direto                     | Usa vizinhança ortogonal                          |
+| Seleção                | Mouse simples, distância até centro | Mouse com cálculo de distância em pixels          |
+| Reset/Recordes         | Implementados                       | Não implementados                                 |
+| Complexidade           | Baixa, fácil manutenção             | Alta, mais verbosa                                |
+| Recomendação           | Base estável para uso               | Experimental/flexível, bom para teste ou expansão |
+
+---
 
 ## Regras do jogo
 
@@ -48,51 +72,42 @@ Implementação do jogo de tabuleiro **Resta Um** (peg solitaire) em C++ como pr
 * Objetivo: restar apenas 1 peça no tabuleiro (idealmente no centro).
 * Jogo termina quando não há movimentos válidos ou quando resta 1 peça.
 
+---
+
 ## Funcionalidades implementadas
 
-* Representação do tabuleiro (matriz).
+* Representação do tabuleiro.
 * Movimentação válida (checar salto e remoção).
-* Interface em terminal para entrada de jogadas (coordenadas).
+* Interface gráfica (Raylib) para seleção e visualização de peças.
 * Validação de movimentos e detecção de fim de jogo.
-* Contador de peças restantes.
-* Salvamento/carregamento simples do estado do jogo (arquivo de texto).
-* Modo solução automática (heurística simples / backtracking) — opcional/implementado conforme especificação do grupo.
+* Destaque visual da peça selecionada.
+* Contador de peças restantes (Versão A).
+* Salvamento/carregamento de recordes (Versão A).
 
+---
 
-## Exemplo de futura Estrutura do repositório
+## Raylib
 
-```
-/ (raiz)
-├─ src/
-│  ├─ main.cpp
-│  ├─ board.cpp
-│  ├─ board.h
-│  ├─ game.cpp
-│  ├─ game.h
-│  └─ io.cpp
-├─ include/
-│  └─ (headers públicos, se necessário)
-├─ tests/
-│  └─ test_board.cpp
-├─ data/
-│  └─ saved_game.txt
-├─ bin/
-│  └─ resta_um (executável)
-├─ Makefile
-└─ README.md
-```
+A **Raylib** é uma biblioteca em **C/C++** voltada para **criação de jogos e aplicações gráficas**.
+Oferece recursos para gráficos 2D/3D, sons, entrada de teclado, mouse e janelas, sendo ideal para protótipos rápidos.
+Foi desenvolvida para ser leve, multiplataforma e de fácil aprendizado.
+
+---
 
 ## Autoria / Participantes
 
 * Cauã Cruz dos Santos
 * Gabriel Carvalho Tenório
-* Eduardo de jesus santos
+* Eduardo de Jesus Santos
 * Gabriel de Jesus Santos
 * Anderson Santos Santana
 * Alysson Santos
 * Gabriel da Silva Bispo
 
+---
+
 ## Referências
 
-* Descrição clássica do jogo Resta Um / Peg Solitaire.
-* Materiais de apoio da disciplina de Programação 2.
+* Descrição clássica do jogo **Resta Um / Peg Solitaire**.
+* Materiais de apoio da disciplina de **Programação 2**.
+* Tutoriais e exemplos da biblioteca **Raylib**.
