@@ -1,5 +1,3 @@
-
-
 /*******************************************************************************************
 
 ********************************************************************************************/
@@ -13,7 +11,6 @@
 
 
 struct Part { // Criando uma estrutura para criar um vetor
-    int index;
     int posX;
     int posY;
     bool state;
@@ -41,7 +38,7 @@ void parts_generator(struct Part parts[], int size, bool state, bool empty_place
                         parts[index].state = true;
                     } else {
                         parts[index].state = false;
-                    }
+                    }                        
                     index++;
                 }
             } else {
@@ -51,7 +48,7 @@ void parts_generator(struct Part parts[], int size, bool state, bool empty_place
                     }
                     parts[index].posX = i;
                     parts[index].posY = j;
-                    parts[index].state = state;
+                    parts[index].state = state;                           
                     index++;
                 }
             }
@@ -78,7 +75,7 @@ int translate_screen_to_cartesian(int value, int screen_size){
 }
 
 
-// tá 0, 1, 2 ou 3, 0 100, 200,  300, -2
+// tá 0, 1, 2 ou 3, 0 100, 200,  300, -2 
 int scaled_to_screen(int value, int screen_size, int spacing){
     return translate_cartesian_to_screen((value * spacing), screen_size);
 }
@@ -101,7 +98,6 @@ struct selection {
     int X;
     int Y;
     bool state;
-
 };
 selection get_selected(Vector2 mouse, int R, int spacing, Vector2 screen, struct Part parts[], int size){
     selection selected;
@@ -127,48 +123,42 @@ selection get_selected(Vector2 mouse, int R, int spacing, Vector2 screen, struct
     } return selected;
 
 };
-/*
-struct Orthogonal_Neighborhood {
-    struct Part *up;
-    struct Part *down;
-    struct Part *left;
-    struct Part *right;
+
+
+
+// Define os tipos possíveis de vizinho
+typedef enum {
+    NEIGHBOR_NONE,      // inexistente
+    NEIGHBOR_EMPTY,     // posição vazia
+    NEIGHBOR_EDIBLE,    // peça "comível"
+    NEIGHBOR_OCCUPIED   // posição ocupada
+} NeighborType;
+
+typedef enum {
+    DIR_UP,
+    DIR_DOWN,
+    DIR_LEFT,
+    DIR_RIGHT
+} Direction;
+
+// Estrutura do vizinho
+struct Neighbor {
+    NeighborType type;  // tipo do vizinho
+    Direction direction;
+    int index;          // índice da peça ou posição
 };
 
-Orthogonal_Neighborhood get_neighbors(int index, struct Part *parts[], int size_of_parts){
-        // Existem duas peças ou espaços vizinhos nessa direção?
-    for(int j = 0; j < size_of_parts; j++){
-        if ((x_seleted == empty_place[j].posX - 1) && (y_seleted == empty_place[j].posY)){
-            is_right_1 = true;
-        }
-        if ((x_seleted == empty_place[j].posX - 2) && (y_seleted == empty_place[j].posY)){
-            is_right_2 = true;
-            index_right = j;
-        }
-        if ((x_seleted == empty_place[j].posX + 1) && (y_seleted == empty_place[j].posY)){
-            is_left_1 = true;
-        }
-        if ((x_seleted == empty_place[j].posX + 2) && (y_seleted == empty_place[j].posY)){
-            is_left_2 = true;
-            index_left = j;
-        }
-        if ((x_seleted == empty_place[j].posX) && (y_seleted == empty_place[j].posY + 1)){
-            is_up_1 = true;
-        }
-        if ((x_seleted == empty_place[j].posX ) && (y_seleted == empty_place[j].posY + 2)){
-            is_up_2 = true;
-            index_up = j;
-        }
-        if ((x_seleted == empty_place[j].posX) && (y_seleted == empty_place[j].posY - 1)){
-            is_down_1 = true;
-        }
-        if ((x_seleted == empty_place[j].posX) && (y_seleted == empty_place[j].posY - 2 )){
-            is_down_2 = true;
-            index_down = j;
-        }
-    }
+struct Orthogonal_Neighborhood {
+    struct Neighbor top[2];    // [0] = vizinho direto, [1] = vizinho do vizinho
+    struct Neighbor bottom[2];
+    struct Neighbor left[2];
+    struct Neighbor right[2];
+};
+
+Orthogonal_Neighborhood get_Orthogonal_Neighborhood(int index_selection){
+    scanf("Wow");
 }
-*/
+
 struct MoveOptions {
     bool right;
     bool left;
@@ -185,7 +175,7 @@ MoveOptions possibility_of_moving(
     int size_of_empty_place)
     {
         MoveOptions possibility = {false, false, false, false};
-
+        
         int x_seleted = parts[index].posX;
         int y_seleted = parts[index].posY;
 
@@ -242,7 +232,7 @@ MoveOptions possibility_of_moving(
             if(empty_place[index_right].state){
                 possibility.right = true;
             }
-
+            
         }
         if (is_left_1 && is_left_2){
             if(empty_place[index_left].state){
@@ -290,15 +280,15 @@ int main(void)
         // Update
 
         Vector2 MousePos;
-        MousePos.x = GetMouseX();
-        MousePos.y = GetMouseY();
+        MousePos.x = GetMouseX();   
+        MousePos.y = GetMouseY(); 
         selection Selection;
         Selection = get_selected(MousePos,R,spacing,screenSize, parts, 32);
         MoveOptions Options = possibility_of_moving(Selection.index,parts,32,empty_place,33);
         if (Selection.state == true) {
             printf (" %d , %d , up: %d, down: %d, left: %d, right: %d \n" ,
                 Selection.Xcartesian ,
-                Selection.Ycartesian ,
+                Selection.Ycartesian , 
                 Options.up,Options.down,Options.left,Options.right);
         }
         // Draw
@@ -326,7 +316,7 @@ int main(void)
                 DrawCircle(x, y, R, LIGHTGRAY);
 
             }
-
+            
             for(int i = 0; i < 32;i++){
                 int x = scaled_to_screen(parts[i].posX,screenSize.x,spacing);
                 int y = scaled_to_screen(parts[i].posY,screenSize.y,spacing);
