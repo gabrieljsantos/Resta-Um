@@ -38,6 +38,7 @@ typedef struct {
 // Enumeradores
 enum Clique { CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO };
 enum Movimento { MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM };
+enum Resta { NAO_RESTA_JOGADA, RESTA_JOGADA};
 
 // Variáveis globais
 extern Part tabuleiro[TAM][TAM];
@@ -47,10 +48,12 @@ extern botao menu[dois];
 
 
 
-// Protótipos de funções
+// Protótipos de funções 
+bool Resta_Um(Part (&tabuleiro)[TAM][TAM], int *R);
 bool localiza_BOTAO(botao (&menu)[dois], int* li);
-bool valida_Part(Part (&tabuleiro)[TAM][TAM]);
+bool valida_Part(Part (&tabuleiro)[TAM][TAM], int It, int Jt, int* S);
 bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1);
+void TIME(void);
 void Titulo(void);
 void Emblema(void);
 void Atualiza_Imformação(void);

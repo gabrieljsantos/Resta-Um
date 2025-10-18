@@ -1,14 +1,17 @@
 #include "raylib.h"
 #include "projeto.h"
 
-
+//----------------------
 // Variáveis globais
+//----------------------
+
 int pode=0;
 Part tabuleiro[TAM][TAM];
 int Ic = 0, Jc= 0;
 int clique_atual = CLIQUE_PRIMEIRO;
 
-int inicioX = screenWidth/3.5, inicioY = screenHeight/4;
+int inicioX = screenWidth/3.5, inicioY = screenHeight/4; // TENTA PEGAR A MELHOR POSIÇÃO DA TELA PARA O TABULEIRO 
+                                                         // PARA CENTRALIZAR O TABULEIRO
 Vector2 posição = {(float)inicioX,(float)inicioY};
 botao menu[dois] = {
     { true, {740.0f, 530.0f} },
@@ -58,7 +61,7 @@ void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bo
                 DrawCircleLinesV(tabuleiro[i][j].pos, raio + o, BLACK);
             if (i == i_atual && j == j_atual) {
                 for (int k = 0; k < 4; k++)
-                    DrawCircleLinesV(tabuleiro[i][j].pos, raio + k, (valida_Part(tabuleiro))? GREEN: RED);
+                    DrawCircleLinesV(tabuleiro[i][j].pos, raio + k, (valida_Part(tabuleiro,i,j, &k))? GREEN: RED);
             }
         }
     }
@@ -123,24 +126,27 @@ bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state) {
 //----------------------------------------------------------------------------
 // Função Valida_Part ---> Para Validar possiveis jogadas
 //----------------------------------------------------------------------------
-bool valida_Part(Part(&tabuleiro)[TAM][TAM]){
+bool valida_Part(Part(&tabuleiro)[TAM][TAM], int It, int Jt, int* S){
 
     int Io, Jo, Id, Jd, Im,Jm; /*-- Io,Jo origem, Id,Jd Destinho, Im,Jm Meio --*/
+        if(tabuleiro[It][Jt].state ==0){
+            return false;
+        }
 
-    if(localize_Part(tabuleiro,&Io,&Jo,-1)){
-        if((tabuleiro[Io][Jo].state !=1 && tabuleiro[Io][Jo].state !=0)){//diferente de peça vazia = (1,0)
+        if((tabuleiro[It][Jt].state !=1 )){//diferente de peça vazia = (1,0)
             
             for (int i = 0; i < 4; i++) {
                 int Di = Movimentos[i][0]; //|DELTA ESTA RECEBENDO MOVIMENTOS DO TIPO I-2, I+2, J-2, J+2
                 int Dj = Movimentos[i][1]; //| QUE SAO MOVIMENTOS(ESQUERDA, DIREITA, CIMA, BAIXO)
 
-                Id = Io + Di; // i destinho = pos. atual + Delta i
-                Jd = Jo + Dj; // j destinho = pos. atual + Delta j
+                Id = It + Di; // i destinho = pos. atual + Delta i
+                Jd = Jt + Dj; // j destinho = pos. atual + Delta j
 
-                Im = Io + Di/2; // i meio = i origem + Delta /2 
-                Jm = Jo + Dj/2; // j meio = i origem + Delta /2 
+                Im = It + Di/2; // i meio = i origem + Delta /2 
+                Jm = Jt + Dj/2; // j meio = i origem + Delta /2 
 
                 if ((tabuleiro[Id][Jd].state == 1 )&&(tabuleiro[Im][Jm].state != 1)){
+                    *S;
                     return true; //Existe alguma jogada valida
                 }
 
@@ -148,7 +154,7 @@ bool valida_Part(Part(&tabuleiro)[TAM][TAM]){
 
         }
         
-    }
+    
 
     return false;
 }
@@ -182,27 +188,75 @@ void Jogada(void){
                 }
                 if (movimento != MOVIMENTO_NENHUM) {Ic = 0; Ifim = 0; Jc= 0; jfim = 0;
                 }
+            
             }
         }
     }
 }
+
+// FALTA TERMINAR
+bool Resta_Um(Part(&tabuleiro)[TAM][TAM], int *R) {
+    int Nvalido = 0, Valido = 0, S = 0,aux;
+
+    for (int i = 0; i < TAM; i++) {
+        for (int j = 0; j < TAM; j++) {
+            if (valida_Part(tabuleiro, i, j, &S)) {
+                Valido++;
+                if (S == 1) {
+                    Nvalido++;
+                }
+            }
+        }
+    }
+
+    aux = Nvalido;
+    std::cout << aux<< "\n";
+
+
+    if (Valido > 0) {
+        std::cout << "RESTA JOGO\n";
+        return RESTA_JOGADA; // ainda há jogadas possíveis
+    } else {
+        std::cout << "NAO RESTA\n";
+        return NAO_RESTA_JOGADA; // jogo terminou
+    }
+}
+
 //----------------------------------------------------------------------------
 // Função Titulo ---> Para Mostrar Titulo
 //----------------------------------------------------------------------------
 void Emblema(void){
     
-    DrawText( "Resta Um",inicioX , inicioY, 100, BLACK);
+    DrawText( "Resta Um",inicioX-80 , inicioY, 100, BLACK);
 }
 //----------------------------------------------------------------------------
 // Função Titulo ---> Para Mostrar Titulo
 //----------------------------------------------------------------------------
 void Titulo(void){
-   
+    int R;
     DrawText("----- RESTA UM -----", 252, 50, 30,BLACK);//
     DrawText("----- RESTA UM -----", 252, 50, 30,BLACK);///------| Em cima
-    DrawText("----- RESTA UM -----", 256, 53, 30,BLACK);//------| do tabuleiro
-    DrawText("----- RESTA UM -----", 256, 53, 30,BLACK);//
+   // DrawText("----- RESTA UM -----", 256, 53, 30,BLACK);//------| do tabuleiro
+    //DrawText("----- RESTA UM -----", 256, 53, 30,BLACK);//
+    if(Resta_Um(tabuleiro, &R))
+        std :: cout << R;
+    else
+    DrawText("GAME OVER",900/4,100,50,RED);
+
+    int ii;
 }
+
+// void TIME(void){
+//       // Exibe o timer no canto superior direito
+//         int minutos = (int)tempoFinal / 60;
+//         int segundos = (int)tempoFinal % 60;
+//         char textoTimer[50];
+//         sprintf(textoTimer, "Tempo: %02d:%02d", minutos, segundos);
+//         DrawText(textoTimer, 750, 20, 20, YELLOW);
+// }
+
+
+
 //----------------------------------------------------------------------------
 // Função Capitura_Informacao ---> Para Verificar OS Cliques no MOUSE
 //----------------------------------------------------------------------------
@@ -223,10 +277,10 @@ void Atualiza_Imformação(){
 // Função Valida_Part ---> Para Validar possiveis jogadas
 //----------------------------------------------------------------------------
 void renderiza_Jogo(){
+    
     //--------------------------------
     // --> Play GAME
     Jogada();
-
     int ii;
     
     if(localiza_BOTAO(menu,&ii)) {

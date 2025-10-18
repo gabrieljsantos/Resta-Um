@@ -12,7 +12,7 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "TELA 60FPS");
 
-    SetTargetFPS(100);             // Set our game to run at 60 frames-per-second
+    SetTargetFPS(60);             // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
