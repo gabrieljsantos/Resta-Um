@@ -22,15 +22,13 @@ typedef enum {
 
 struct Neighbor {
     NeighborType type;
-    Direction direction;
     int index;  // índice da peça ou posição
 };
 
 struct Orthogonal_Neighborhood {
-    struct Neighbor up[DEPTH_COUNT];
-    struct Neighbor down[DEPTH_COUNT];
-    struct Neighbor left[DEPTH_COUNT];
-    struct Neighbor right[DEPTH_COUNT];
+    for (for i = 0; i < DIR_COUNT; i++){
+        struct Neighbor DIR[i][DEPTH_COUNT];
+    }
 };
 
 #endif // ORTHOGONAL_NEIGHBORHOOD_H
