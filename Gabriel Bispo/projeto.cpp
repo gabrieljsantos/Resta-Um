@@ -12,10 +12,14 @@ int clique_atual = CLIQUE_PRIMEIRO;
 
 int inicioX = screenWidth/3.5, inicioY = screenHeight/4; // TENTA PEGAR A MELHOR POSIÇÃO DA TELA PARA O TABULEIRO 
                                                          // PARA CENTRALIZAR O TABULEIRO
-Rectangle restart;
+Rectangle restart = {
+    700.0f,500.0f,
+    100.0f,45.0f
+
+};
 
 Rectangle start_P = { // coordenadas do botao
-      screenWidth/2-75, 350,   // X e Y inicio
+      350, 350,   // X e Y inicio
       150.0f, 70.0f    // X e Y UM EMCREMENTO PARA CRIAR O RETANGULO
   };
 //----------------------------------------------------------------------------
@@ -40,10 +44,11 @@ void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]) {
 // PROCEDIMENTO desenha_tabuleiro ---> Para Mostar Graficamente as Peças
 //----------------------------------------------------------------------------
 void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bool red){
-  //  DrawRectangle(inicioX-40,inicioY-40,440,440,BROWN);
+    //DrawRectangle(inicioX-40,inicioY-40,440,440,BROWN);
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             if (tabuleiro[i][j].state == 0) continue;
+            
 
             Color cor = (tabuleiro[i][j].state == 1) ? LIGHTGRAY : PURPLE; // COR DAS PEÇAS 
             DrawCircleV(tabuleiro[i][j].pos, raio, cor);
@@ -53,12 +58,12 @@ void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bo
                 DrawCircleLinesV(tabuleiro[i][j].pos, raio + o, BLACK);
             if (i == i_atual && j == j_atual) {
                 
-       /*s aux*/ int aux = 0;//PARA FUNÇAO (VALIDA PART)
+       /*aux*/ int aux = 0;//PARA FUNÇAO (VALIDA PART)
    /*MOVIMENTO*/ bool Mov = valida_Part(tabuleiro, i,j, aux);
                 Color Cor = (Mov)? GREEN:RED;
 
                 for (int k = 0; k < 4; k++)
-                    DrawCircleLinesV(tabuleiro[i][j].pos, raio + k, Cor);
+                    DrawCircleLinesV(tabuleiro[i][j].pos, (float)raio + k, Cor);
             }
         }
     }
@@ -82,8 +87,17 @@ int calcule_movimento(int Ic, int Jc
 bool locale_Button(){
     Vector2 mouse = GetMousePosition(); 
     
-    if((mouse.x >= screenWidth/2-75 && mouse.x <= screenWidth/2-75 + 150)&&
-        (mouse.y >= 350 && mouse.y <= 350+ 70)) return true;
+    if((mouse.x >= 350 && mouse.x <= 350 + 150)&&
+        (mouse.y >= 350 && mouse.y <= 350 + 70)) return true;//aarea de clique botão start
+
+    return false;
+}
+
+bool locale_Reset(){
+    Vector2 mouse = GetMousePosition(); 
+    
+    if((mouse.x >= 700 && mouse.x <= 700 + 100)&&
+        (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
 
     return false;
 }
@@ -250,7 +264,7 @@ void Emblema(void){
     if(locale_Button()){
         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) inicializa_tabuleiro(tabuleiro);
         for(int i = 0; i<4;i++){ 
-             DrawRectangleLines(screenWidth/2-75-i, 350-i,150+i,70+i,GREEN);
+             DrawRectangleLines(screenWidth/2-75-i, 350-i,152+i,72+i,GREEN);
 
         }
 
@@ -264,6 +278,9 @@ void Titulo(void){
     int R;
     DrawText("----- RESTA UM -----", 252, 50, 30,PURPLE);//
     DrawText("----- RESTA UM -----", 252, 50, 30,PURPLE);///------| Em cima
+
+    DrawRectangle(restart.x,restart.y,restart.width,restart.height,BLUE);
+    DrawText("RESET",715,515,20,BLACK);
 
     if(!jogada_Valida(tabuleiro, R)){ // se nao ouver jogada valida game over ou vitoria
 
