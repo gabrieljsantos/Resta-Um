@@ -47,23 +47,21 @@ void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bo
     //DrawRectangle(inicioX-40,inicioY-40,440,440,BROWN);
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
-            if (tabuleiro[i][j].state == 0) continue;
             
+            
+            if (tabuleiro[i][j].state == 0) continue;
+           
 
             Color cor = (tabuleiro[i][j].state == 1) ? LIGHTGRAY : PURPLE; // COR DAS PEÇAS 
             DrawCircleV(tabuleiro[i][j].pos, raio, cor);
-            
-
-            for(int o = 0; o < 3; o++)
-                DrawCircleLinesV(tabuleiro[i][j].pos, raio + o, BLACK);
             if (i == i_atual && j == j_atual) {
                 
-       /*aux*/ int aux = 0;//PARA FUNÇAO (VALIDA PART)
-   /*MOVIMENTO*/ bool Mov = valida_Part(tabuleiro, i,j, aux);
+       /*aux*/  int aux = 0;//PARA FUNÇAO (VALIDA PART)
+   /*MOVIMENTO*/bool Mov = valida_Part(tabuleiro, i,j, aux);
                 Color Cor = (Mov)? GREEN:RED;
-
                 for (int k = 0; k < 4; k++)
                     DrawCircleLinesV(tabuleiro[i][j].pos, (float)raio + k, Cor);
+                    
             }
         }
     }
@@ -87,16 +85,21 @@ int calcule_movimento(int Ic, int Jc
 bool locale_Button(){
     Vector2 mouse = GetMousePosition(); 
     
-    if( ((mouse.x >= 350 && mouse.x <= 350 + 150) &&//|BOTAO START
-        (mouse.y >= 350 && mouse.y <= 350 + 70)) ||//|
-
-        ((mouse.x >= 700 && mouse.x <= 700 + 100) &&//| BOTAO RESET
-        (mouse.y >= 500 && mouse.y <= 500 + 45)) )   //|
-         return true;//aarea de clique botão start
+    if ((mouse.x >= 350 && mouse.x <= 350 + 150) &&//|BOTAO START
+        (mouse.y >= 350 && mouse.y <= 350 + 70))    //|
+        return true;//aarea de clique botão start
 
     return false;
 }
 
+bool locale_Reset(){
+    Vector2 mouse = GetMousePosition(); 
+    
+    if((mouse.x >= 700 && mouse.x <= 700 + 100)&&
+        (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
+
+    return false;
+}
 //----------------------------------------------------------------------------
 // Função localize_Part ---> Para Localizar Peças Existentes
 // DENTRO DO RAIO DA PEÇA
@@ -308,6 +311,7 @@ void Atualiza_Imformação(){
 //----------------------------------------------------------------------------
 // PROCEDIMENTO renderiza Jogo ---> Para Renderizar e Fucionar o JOGO
 //----------------------------------------------------------------------------
+//SEM USAR NO MOMENTO, POR MOTIVOD DE TESTES
 void renderiza_Jogo(){
     Emblema();
 
