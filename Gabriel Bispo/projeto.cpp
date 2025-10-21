@@ -87,20 +87,16 @@ int calcule_movimento(int Ic, int Jc
 bool locale_Button(){
     Vector2 mouse = GetMousePosition(); 
     
-    if((mouse.x >= 350 && mouse.x <= 350 + 150)&&
-        (mouse.y >= 350 && mouse.y <= 350 + 70)) return true;//aarea de clique botão start
+    if( ((mouse.x >= 350 && mouse.x <= 350 + 150) &&//|BOTAO START
+        (mouse.y >= 350 && mouse.y <= 350 + 70)) ||//|
+
+        ((mouse.x >= 700 && mouse.x <= 700 + 100) &&//| BOTAO RESET
+        (mouse.y >= 500 && mouse.y <= 500 + 45)) )   //|
+         return true;//aarea de clique botão start
 
     return false;
 }
 
-bool locale_Reset(){
-    Vector2 mouse = GetMousePosition(); 
-    
-    if((mouse.x >= 700 && mouse.x <= 700 + 100)&&
-        (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
-
-    return false;
-}
 //----------------------------------------------------------------------------
 // Função localize_Part ---> Para Localizar Peças Existentes
 // DENTRO DO RAIO DA PEÇA
