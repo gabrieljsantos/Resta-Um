@@ -2,117 +2,140 @@
 #include "projeto.h"
 
 //----------------------
-// Variáveis globais
+// VARIÁVEIS GLOBAIS
 //----------------------
-
-int pode=0;
+float startTime = 0.0f;  // TIMER SIMPLES
+int i_inicial = 0, j_inicial = 0;
+int pode = 0;
 Part tabuleiro[TAM][TAM];
-int Ic = 0, Jc= 0;
+int Ic = 0, Jc = 0;
 int clique_atual = CLIQUE_PRIMEIRO;
 
-int inicioX = screenWidth/3.5, inicioY = screenHeight/4; // TENTA PEGAR A MELHOR POSIÇÃO DA TELA PARA O TABULEIRO 
-                                                         // PARA CENTRALIZAR O TABULEIRO
-Vector2 posição = {(float)inicioX,(float)inicioY};
-botao menu[dois] = {
-    { true, {740.0f, 530.0f} },
-    { true, {830.0f, 530.0f} }
-};
+bool temaAtual = true;  // Começa com Tema 1
+Color corFundo = BLACK;   // Tema 1: Preto
+Color corPeca = PURPLE;   // Tema 1: Roxo
+
+int inicioX = screenWidth/3.5, inicioY = screenHeight/4;
+Rectangle restart = {700.0f, 500.0f, 100.0f, 45.0f};
+Rectangle start_P = {350, 350, 150.0f, 70.0f};
+Rectangle Muda = {30.0f, 500.0f, 100.0f, 45.0f};
+
+
 //----------------------------------------------------------------------------
-// IMPLEMENTAÇÕES DE FUNÇÕES NO GERAL
-//----------------------------------------------------------------------------
-// Função Botoes ---> Para Criar Botões
-//----------------------------------------------------------------------------
-void Botoes(botao(&menu)[dois]){
-    for(int i = 0; i < 2; i++){
-        if(menu[i].state){
-            DrawCircle(menu[i].local.x, menu[i].local.y, (float)raio, (i==0)? BLUE : BLACK);
-            DrawText("RESET",711, 554, 20, BLACK);
-            DrawText("RESET",711, 556, 20, BLACK);   
-        }
-    }
-}
-//----------------------------------------------------------------------------
-// Função inicializar_tabuleiro ---> Para Gerar Tudo Do Jogo
+// PROCEDIMENTO inicializar_tabuleiro
 //----------------------------------------------------------------------------
 void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]) {
-    //int inicioX = screenWidth/3.5, inicioY = screenHeight/4; 
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
-            tabuleiro[i][j].pos ={ (float)inicioX + i * (diametro + espaco),
-                                   (float)inicioY + j * (diametro + espaco) };
+            tabuleiro[i][j].pos = {(float)inicioX + i * (diametro + espaco),
+                                   (float)inicioY + j * (diametro + espaco)};
             if ((i < 2 || i > 4) && (j < 2 || j > 4))
-                tabuleiro[i][j].state = 0; // NAO EXISTE
+                tabuleiro[i][j].state = N_EXIST;
             else
-                tabuleiro[i][j].state = 2; // PEÇA VIVA
+                tabuleiro[i][j].state = EXIST;
         }
     }
-    tabuleiro[3][3].state = 1; // AREA LIVRE
+    tabuleiro[3][3].state = VAZIO;
 }
+
+bool trocarTema(void) {
+    temaAtual = !temaAtual;  // ALTERNAR TRUE/FALSE
+    
+    if (temaAtual) {
+        // tama 1: escuro 
+        corFundo = BLACK;
+        corPeca = PURPLE;
+        std::cout << "Tema 1: Preto + Roxo" << std::endl;
+    } else {
+        // tema 2: branco
+        corFundo = WHITE;
+        corPeca = BROWN;
+        std::cout << "Tema 2: Branco + Marrom" << std::endl;
+    }
+    
+    return temaAtual;  // Retorna o novo estado
+}
+
+
 //----------------------------------------------------------------------------
-// Função desenha_tabuleiro ---> Para Mostar Graficamente as Peças
+// PROCEDIMENTO desenha_tabuleiro
 //----------------------------------------------------------------------------
-void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bool red) {
+void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bool red){
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
-            if (tabuleiro[i][j].state == 0) continue;
-            Color cor = (tabuleiro[i][j].state == 1) ? LIGHTGRAY : BEIGE; // COR DAS PEÇASE VAZIO
+            if (tabuleiro[i][j].state == N_EXIST) continue;
+            
+            Color cor = (tabuleiro[i][j].state == VAZIO) ? LIGHTGRAY : corPeca;
             DrawCircleV(tabuleiro[i][j].pos, raio, cor);
+            
             for(int o = 0; o < 3; o++)
                 DrawCircleLinesV(tabuleiro[i][j].pos, raio + o, BLACK);
+                
             if (i == i_atual && j == j_atual) {
+                int aux = 0;
+                bool Mov = valida_Part(tabuleiro, i, j, aux);
+                Color Cor = Mov ? GREEN : RED;
                 for (int k = 0; k < 4; k++)
-                    DrawCircleLinesV(tabuleiro[i][j].pos, raio + k, (valida_Part(tabuleiro,i,j, &k))? GREEN: RED);
+                    DrawCircleLinesV(tabuleiro[i][j].pos, (float)raio + k, Cor);
             }
         }
     }
 }
-//----------------------------------------------------------------------------
-// Função calcule_movimento ---> Para Calcular Movimento valido
-//----------------------------------------------------------------------------
-int calcule_movimento(int Ic, int Jc
-    , int Ifim
-    , int jfim) {
-    if (Ic == Ifim && Jc== jfim) return MOVIMENTO_NENHUM;
 
-    else if (Ic != Ifim&& Jc!= jfim) return MOVIMENTO_INVALIDO;
-
-    else if (abs(Ifim- Ic) == 2 || abs(jfim - Jc) == 2) return MOVIMENTO_VALIDO;
+//----------------------------------------------------------------------------
+// Função calcule_movimento
+//----------------------------------------------------------------------------
+int calcule_movimento(int Ic, int Jc, int Ifim, int jfim) {
+    if (Ic == Ifim && Jc == jfim) return MOVIMENTO_NENHUM;
+    else if (Ic != Ifim && Jc != jfim) return MOVIMENTO_INVALIDO;
+    else if (abs(Ifim - Ic) == 2 || abs(jfim - Jc) == 2) return MOVIMENTO_VALIDO;
     return MOVIMENTO_INVALIDO;
 }
+
 //----------------------------------------------------------------------------
-// Função localiza_BOTAO ---> Para Localizar possiveis Botões
+// Função locale_Button
 //----------------------------------------------------------------------------
-bool localiza_BOTAO(botao (&menu)[dois], int* li){
-    Vector2 mouse = GetMousePosition(); // POSIÇÃO DO MOUSE
-    double menor = diametro;
-    for(int i = 0; i < dois; i++){
-        double a = menu[i].local.x - mouse.x;
-        double b = menu[i].local.y - mouse.y;
-        double c = sqrt( pow(a,2) + pow(b,2));
-        if (c < menor){
-            *li = i; 
-            menor =c;
-        }
-    }
-    return menor <= (double)raio;
+bool locale_Button(){
+    Vector2 mouse = GetMousePosition(); 
+    
+    if ((mouse.x >= 350 && mouse.x <= 350 + 150) &&//|BOTAO START
+        (mouse.y >= 350 && mouse.y <= 350 + 70))    //|
+        return true;//aarea de clique botão start
+
+    return false;
 }
+
+bool locale_Reset(){
+    Vector2 mouse = GetMousePosition(); 
+    
+    if((mouse.x >= 700 && mouse.x <= 700 + 100)&&
+        (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
+
+    return false;
+}
+
+bool locale_Muda(){
+    Vector2 mouse = GetMousePosition(); 
+    
+    if((mouse.x >= 30 && mouse.x <= 30 + 100)&&
+        (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
+
+    return false;
+}
+
+
 //----------------------------------------------------------------------------
-// Função localize_Part ---> Para Localizar Peças Existentes
+// Função localize_Part
 //----------------------------------------------------------------------------
 bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state) {
-    int e;
-    if(localiza_BOTAO(menu,&e)){
-        for(int i =0;i<4;i++)
-            DrawCircleLinesV(menu[e].local,(float)raio +i , (e==0)? GREEN:RED);          
-    }
-    Vector2 Mouse = GetMousePosition();// POSIÇÃO DO MOUSE
+    Vector2 Mouse = GetMousePosition();
     double menor = raio;
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             if (tabuleiro[i][j].state == state || state == -1) {
-                double a = tabuleiro[i][j].pos.x -  Mouse.x; // a É DELTA X
-                double b = tabuleiro[i][j].pos.y -  Mouse.y; // b É DELTA Y
-                double c = sqrt(pow(a, 2) + pow(b, 2)); //RAIZ QUADRADA DE DELTA a + DELTA b 
+                double a = tabuleiro[i][j].pos.x - Mouse.x;
+                double b = tabuleiro[i][j].pos.y - Mouse.y;
+                double c = sqrt(pow(a, 2) + pow(b, 2));
                 if (c < menor) {
                     *ii = i;
                     *jj = j; 
@@ -123,132 +146,136 @@ bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state) {
     }
     return menor <= (double)raio;
 }
+
 //----------------------------------------------------------------------------
-// Função Valida_Part ---> Para Validar possiveis jogadas
+// Função valida_Part
 //----------------------------------------------------------------------------
-bool valida_Part(Part(&tabuleiro)[TAM][TAM], int It, int Jt, int* S){
+bool valida_Part(Part(&tabuleiro)[TAM][TAM], int Io, int Jo, int (&S)){
+    S = 0;
+    if(tabuleiro[Io][Jo].state == N_EXIST || tabuleiro[Io][Jo].state != EXIST)
+        return false;
 
-    int Io, Jo, Id, Jd, Im,Jm; /*-- Io,Jo origem, Id,Jd Destinho, Im,Jm Meio --*/
-        if(tabuleiro[It][Jt].state ==0){
-            return false;
-        }
-
-        if((tabuleiro[It][Jt].state !=1 )){//diferente de peça vazia = (1,0)
-            
-            for (int i = 0; i < 4; i++) {
-                int Di = Movimentos[i][0]; //|DELTA ESTA RECEBENDO MOVIMENTOS DO TIPO I-2, I+2, J-2, J+2
-                int Dj = Movimentos[i][1]; //| QUE SAO MOVIMENTOS(ESQUERDA, DIREITA, CIMA, BAIXO)
-
-                Id = It + Di; // i destinho = pos. atual + Delta i
-                Jd = Jt + Dj; // j destinho = pos. atual + Delta j
-
-                Im = It + Di/2; // i meio = i origem + Delta /2 
-                Jm = Jt + Dj/2; // j meio = i origem + Delta /2 
-
-                if ((tabuleiro[Id][Jd].state == 1 )&&(tabuleiro[Im][Jm].state != 1)){
-                    *S;
-                    return true; //Existe alguma jogada valida
-                }
-
-            }
-
-        }
+    for (int i = 0; i < 4; i++) {
+        int Di = Movimentos[i][0];
+        int Dj = Movimentos[i][1];
+        int Id = Io + Di;
+        int Jd = Jo + Dj;
+        int Im = Io + Di/2;
+        int Jm = Jo + Dj/2;
         
-    
+        if (Id < 0 || Id >= TAM || Jd < 0 || Jd >= TAM) continue;
+        if (Im < 0 || Im >= TAM || Jm < 0 || Jm >= TAM) continue;
 
+        if (tabuleiro[Id][Jd].state == VAZIO && tabuleiro[Im][Jm].state != VAZIO){
+            S = 1;
+            return true;
+        }
+    }
     return false;
 }
+
 //----------------------------------------------------------------------------
-// Função Jogada ---> Para Fazer o Movimento no Jogo
+// PROCEDIMENTO Jogada
 //----------------------------------------------------------------------------
 void Jogada(void){
-
     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-    
         if (clique_atual == CLIQUE_PRIMEIRO) {
-            if (localize_Part(tabuleiro, &Ic, &Jc, 2)) {
+            if (localize_Part(tabuleiro, &Ic, &Jc, EXIST)) {
                 std::cout << "Primeiro clique na posição X: " << tabuleiro[Ic][Jc].pos.x << ", Y: " << tabuleiro[Ic][Jc].pos.y << std::endl;
+                clique_atual = CLIQUE_SEGUNDO;
             }
         } else {
             int Ifim = 0, jfim = 0;
-            if (localize_Part(tabuleiro, &Ifim, &jfim, 1)) {
-                std::cout << "Segundo clique na posição X: " << tabuleiro[Ifim][jfim].pos.x << ", Y: " << tabuleiro[Ifim][jfim].pos.y << std::endl;
+            if (localize_Part(tabuleiro, &Ifim, &jfim, VAZIO)) {
+                std::cout << "Segundo clique na posição X: " << tabuleiro[Ifim][jfim].pos.x << ", Y: " << tabuleiro[Ifim][jfim].pos.y << std::endl;                
                 int movimento = calcule_movimento(Ic, Jc, Ifim, jfim);
-                if (movimento == MOVIMENTO_INVALIDO) {
-                    std::cout << "Movimento inválido " << "I: " << Ic << " J: " << Jc
-                     << " para I2: " << Ifim
-                      << " J2: " << jfim << std::endl;
-                } else {
-                    int i_alvo = (Ic + Ifim) / 2; //i meio = i origem + Delta i /2
-                    int j_alvo = (Jc + jfim) / 2;//i meio = i origem + Delta j /2
-                    if (tabuleiro[i_alvo][j_alvo].state == 2) {
+
+                if (movimento == MOVIMENTO_VALIDO) {
+                    int i_alvo = (Ic + Ifim) / 2;
+                    int j_alvo = (Jc + jfim) / 2;
+
+                    if (tabuleiro[i_alvo][j_alvo].state == EXIST) {
                         std::cout << "Deletando em i = " << i_alvo << "; j = " << j_alvo << std::endl;
-                        tabuleiro[i_alvo][j_alvo].state = 1;tabuleiro[Ifim][jfim].state = 2;tabuleiro[Ic][Jc].state = 1;
-                    } 
+                        tabuleiro[i_alvo][j_alvo].state = VAZIO;
+                        tabuleiro[Ifim][jfim].state = EXIST;
+                        tabuleiro[Ic][Jc].state = VAZIO;
+                    }
                 }
-                if (movimento != MOVIMENTO_NENHUM) {Ic = 0; Ifim = 0; Jc= 0; jfim = 0;
-                }
-            
+                // Reset para próximo movimento
+                Ic = 0; Jc = 0;
+                clique_atual = CLIQUE_PRIMEIRO;
             }
         }
     }
 }
 
-// FALTA TERMINAR
-bool Resta_Um(Part(&tabuleiro)[TAM][TAM], int *R) {
-    int Nvalido = 0, Valido = 0, S = 0,aux;
-
+//----------------------------------------------------------------------------
+// Função jogada_Valida
+//----------------------------------------------------------------------------
+bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
+    int Nvalido = 0, Valido = 0;
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
-            if (valida_Part(tabuleiro, i, j, &S)) {
+            if (tabuleiro[i][j].state == N_EXIST) continue;
+            int S = 0;
+            valida_Part(tabuleiro, i, j, S);
+                
+            if (S == 1) {
                 Valido++;
-                if (S == 1) {
-                    Nvalido++;
-                }
+            } else if(tabuleiro[i][j].state == EXIST) {
+                Nvalido++;
             }
         }
     }
+    Resta = Nvalido;
 
-    aux = Nvalido;
-    std::cout << aux<< "\n";
+    return Valido > 0 ? RESTA_JOGADA : NAO_RESTA_JOGADA;
+}
 
-
-    if (Valido > 0) {
-        std::cout << "RESTA JOGO\n";
-        return RESTA_JOGADA; // ainda há jogadas possíveis
-    } else {
-        std::cout << "NAO RESTA\n";
-        return NAO_RESTA_JOGADA; // jogo terminou
+//----------------------------------------------------------------------------
+// PROCEDIMENTO Emblema
+//----------------------------------------------------------------------------
+void Emblema(void){
+    DrawText("Resta Um", inicioX-80, inicioY, 100, corPeca);
+    DrawRectangleRec(start_P, corPeca);
+    DrawText("START", screenWidth/2-43, screenHeight/2+70, 25, BLACK);
+    
+    if(locale_Button()){
+        for(int i = 0; i < 4; i++){ 
+            DrawRectangleLines(350-i, 350-i, 152+i, 72+i, GREEN);
+        }
     }
 }
 
 //----------------------------------------------------------------------------
-// Função Titulo ---> Para Mostrar Titulo
-//----------------------------------------------------------------------------
-void Emblema(void){
-    
-    DrawText( "Resta Um",inicioX-80 , inicioY, 100, BLACK);
-}
-//----------------------------------------------------------------------------
-// Função Titulo ---> Para Mostrar Titulo
+// PROCEDIMENTO Titulo
 //----------------------------------------------------------------------------
 void Titulo(void){
     int R;
-    DrawText("----- RESTA UM -----", 252, 50, 30,BLACK);//
-    DrawText("----- RESTA UM -----", 252, 50, 30,BLACK);///------| Em cima
-   // DrawText("----- RESTA UM -----", 256, 53, 30,BLACK);//------| do tabuleiro
-    //DrawText("----- RESTA UM -----", 256, 53, 30,BLACK);//
-    if(Resta_Um(tabuleiro, &R))
-        std :: cout << R;
-    else
-    DrawText("GAME OVER",900/4,100,50,RED);
+    DrawText("----- RESTA UM -----", 252, 50, 30, corPeca);
+    DrawRectangle(restart.x, restart.y, restart.width, restart.height, BLUE);
+    DrawRectangle(Muda.x, Muda.y, Muda.width, Muda.height, BLUE);
+    DrawText("RESET", 715, 515, 20, BLACK);
+    DrawText("Tema", 45, 515, 20, BLACK);
 
-    int ii;
+    // TIMER SIMPLES - SEM PARÂMETRO
+    DisplayTimer();
+
+    if(!jogada_Valida(tabuleiro, R)){
+        if (R == 1) {
+            DrawText("Vitória", 100, 50, 30, BLUE);
+        } else {
+            DrawText("GAME OVER", 900/2 -100, 600/2, 30, RED);
+            DrawText(TextFormat("Restaram: %d", R), 100, 150, 30, corPeca);
+        }
+    }    
 }
+
 //----------------------------------------------------------------------------
-// Função DisplayTimer ---> Para Exibir o Tempo Decorrido
+// Função DisplayTimer - SIMPLES
 //----------------------------------------------------------------------------
-void DisplayTimer(float timeElapsed){
+void DisplayTimer(void) {
+    float timeElapsed = GetTime() - startTime;
     int minutos = (int)timeElapsed / 60;
     int segundos = (int)timeElapsed % 60;
     char textoTimer[50];
@@ -256,45 +283,17 @@ void DisplayTimer(float timeElapsed){
     DrawText(textoTimer, 650, 20, 20, YELLOW);
 }
 
-
 //----------------------------------------------------------------------------
-// Função Capitura_Informacao ---> Para Verificar OS Cliques no MOUSE
+// PROCEDIMENTO Atualiza_Imformação
 //----------------------------------------------------------------------------
 void Atualiza_Imformação(){
-    
-    clique_atual = (Ic == 0 && Jc== 0) ? CLIQUE_PRIMEIRO : CLIQUE_SEGUNDO;
+    clique_atual = (Ic == 0 && Jc == 0) ? CLIQUE_PRIMEIRO : CLIQUE_SEGUNDO;
     int i_atual = 0, j_atual = 0;
     localize_Part(tabuleiro, &i_atual, &j_atual);
     if (clique_atual == CLIQUE_PRIMEIRO) {
-        desenha_tabuleiro(tabuleiro, i_atual, j_atual, tabuleiro[i_atual][j_atual].state != 2);
+        desenha_tabuleiro(tabuleiro, i_atual, j_atual, tabuleiro[i_atual][j_atual].state != EXIST);
     } else {
-        int movimento = calcule_movimento(Ic, Jc
-            , i_atual, j_atual);
+        int movimento = calcule_movimento(Ic, Jc, i_atual, j_atual);
         desenha_tabuleiro(tabuleiro, i_atual, j_atual, movimento != MOVIMENTO_VALIDO);
     }
-}
-//----------------------------------------------------------------------------
-// Função Valida_Part ---> Para Validar possiveis jogadas
-//----------------------------------------------------------------------------
-void renderiza_Jogo(){
-    static float startTime = 0.0f;
-    if (pode == 0) startTime = GetTime(); // Inicia o timer na primeira renderização
-    float timeElapsed = GetTime() - startTime; // Calcula o tempo decorrido
-    Jogada();
-    int ii;
-    if(localiza_BOTAO(menu,&ii)) {
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&&ii==0) {
-            inicializa_tabuleiro(tabuleiro);
-            pode++;
-            startTime = GetTime(); // Reseta o timer ao reiniciar o jogo
-        }
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&&ii==1) std::cout << "CLICK "<< ii << "\n";
-    } 
-    Botoes(menu);
-    (pode==0)? Emblema() : Titulo();
-    if(localiza_BOTAO(menu,&ii)){
-        for(int i =0;i<4;i++)
-            DrawCircleLinesV(menu[ii].local,(float)raio +i , (ii==0)? GREEN:RED);
-    }
-    DisplayTimer(timeElapsed); // Exibe o timer
 }
