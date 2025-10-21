@@ -49,10 +49,16 @@ int main(void)
             }
             break;
         case PLAY:
+            //DrawRectangle(inicioX-40,inicioY-40,440,440,BROWN);
             Atualiza_Imformação();
             desenha_tabuleiro(tabuleiro,i_inicial,j_inicial,-1);
             Jogada();
             Titulo();
+            if(locale_Reset()){
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    jogo = RESET;
+                }
+            }
             break;
         // case ESCOLHE:
         //     /* code */
@@ -62,9 +68,10 @@ int main(void)
         //     /* code */
         //     break;
         
-        // case RESET:
-        //     /* code */
-        //     break;
+        case RESET:
+            inicializa_tabuleiro(tabuleiro);
+            jogo=PLAY;
+            break;
         
         // case TEMA:
         //     /* code */
