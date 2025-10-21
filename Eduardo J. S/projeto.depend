@@ -17,3 +17,24 @@
 	<stdarg.h>
 	<stdbool.h>
 
+1761089047 source:d:\projects\resta-um\eduardo j. s\main.cpp
+	"raylib.h"
+	<locale.h>
+	"projeto.h"
+
+1759933515 d:\projects\resta-um\eduardo j. s\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1761089046 d:\projects\resta-um\eduardo j. s\projeto.h
+	"raylib.h"
+	<stdio.h>
+	<iostream>
+	<stdbool.h>
+	<math.h>
+	<stdlib.h>
+
+1761089017 source:d:\projects\resta-um\eduardo j. s\projeto.cpp
+	"raylib.h"
+	"projeto.h"
+

@@ -1,3 +1,5 @@
+// iNCLUSÃO DE BIBLIOTECAS
+
 #include "raylib.h"
 #include <locale.h>
 #include "projeto.h"
