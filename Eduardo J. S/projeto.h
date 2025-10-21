@@ -65,5 +65,6 @@ void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]);
 void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bool red);
 int calcule_movimento(int i_inicial, int j_inicial, int i_final, int j_final);
 void renderiza_Jogo(void);
+void DisplayTimer(float timeElapsed);
 
 #endif // PROJETO_H_INCLUDED
