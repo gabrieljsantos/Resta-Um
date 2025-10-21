@@ -42,7 +42,7 @@ enum Clique { CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO };
 enum Movimento { MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM };
 enum Resta { NAO_RESTA_JOGADA, RESTA_JOGADA};
 enum PART_STATE {N_EXIST, VAZIO, EXIST};
-enum stateJogo {INICIO,PLAY,ESCOLHE,MOVI,RESET,TEMA,FIMDEJOGO };//CONDIÇOES DO JOGO
+enum stateJogo {INICIO,PLAY,RESET,TEMA,FIMDEJOGO };//CONDIÇOES DO JOGO
 // Variáveis globais
 extern Part tabuleiro[TAM][TAM];
 //extern int i_inicial, j_inicial;
@@ -55,7 +55,6 @@ extern botao menu[dois];
 
 // Protótipos de funções 
 bool locale_Button();
-bool locale_Reset();
 bool jogada_Valida(Part (&tabuleiro)[TAM][TAM], int (&Resta));
 bool valida_Part(Part (&tabuleiro)[TAM][TAM], int It, int Jt, int (&S));
 bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1);
