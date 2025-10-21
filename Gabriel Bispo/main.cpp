@@ -1,13 +1,8 @@
 #include "raylib.h"
-#include <locale.h>
 #include "projeto.h"
 
 int main(void)
 {
-    setlocale(LC_ALL, "Portuguese"); // configura a linguagem para português
-    
-    
-    
     // Initialization
     //--------------------------------------------------------------------------------------   
 
@@ -54,20 +49,12 @@ int main(void)
             desenha_tabuleiro(tabuleiro,i_inicial,j_inicial,-1);
             Jogada();
             Titulo();
-            if(locale_Reset()){
+            if(locale_Button()){
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                     jogo = RESET;
                 }
             }
             break;
-        // case ESCOLHE:
-        //     /* code */
-        //     break;
-        
-        // case MOVI:
-        //     /* code */
-        //     break;
-        
         case RESET:
             inicializa_tabuleiro(tabuleiro);
             jogo=PLAY;
