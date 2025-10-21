@@ -5,14 +5,14 @@
 int main(void)
 {
     setlocale(LC_ALL, "Portuguese");
-    
+
     // Initialization
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
     SetTargetFPS(60);
-    
+
     stateJogo jogo = INICIO;
     int i_inicial = 0, j_inicial = 0;
-        
+
     // Main game loop
     while (!WindowShouldClose())
     {
@@ -32,12 +32,12 @@ int main(void)
                 break;
 
             case PLAY:
-            Atualiza_Imformação();
+            Atualiza_Imformacao();
             localize_Part(tabuleiro, &i_inicial, &j_inicial);
             desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, false);
             Jogada();
             Titulo();
-            
+
             if(locale_Reset()) {
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                     startTime = GetTime();
@@ -56,7 +56,7 @@ int main(void)
                 }
             }
             break;
-                
+
             case RESET:
                 inicializa_tabuleiro(tabuleiro);
                 jogo = PLAY;

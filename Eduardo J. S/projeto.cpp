@@ -40,9 +40,9 @@ void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]) {
 
 bool trocarTema(void) {
     temaAtual = !temaAtual;  // ALTERNAR TRUE/FALSE
-    
+
     if (temaAtual) {
-        // tama 1: escuro 
+        // tama 1: escuro
         corFundo = BLACK;
         corPeca = PURPLE;
         std::cout << "Tema 1: Preto + Roxo" << std::endl;
@@ -52,7 +52,7 @@ bool trocarTema(void) {
         corPeca = BROWN;
         std::cout << "Tema 2: Branco + Marrom" << std::endl;
     }
-    
+
     return temaAtual;  // Retorna o novo estado
 }
 
@@ -64,13 +64,13 @@ void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bo
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             if (tabuleiro[i][j].state == N_EXIST) continue;
-            
+
             Color cor = (tabuleiro[i][j].state == VAZIO) ? LIGHTGRAY : corPeca;
             DrawCircleV(tabuleiro[i][j].pos, raio, cor);
-            
+
             for(int o = 0; o < 3; o++)
                 DrawCircleLinesV(tabuleiro[i][j].pos, raio + o, BLACK);
-                
+
             if (i == i_atual && j == j_atual) {
                 int aux = 0;
                 bool Mov = valida_Part(tabuleiro, i, j, aux);
@@ -96,8 +96,8 @@ int calcule_movimento(int Ic, int Jc, int Ifim, int jfim) {
 // Função locale_Button
 //----------------------------------------------------------------------------
 bool locale_Button(){
-    Vector2 mouse = GetMousePosition(); 
-    
+    Vector2 mouse = GetMousePosition();
+
     if ((mouse.x >= 350 && mouse.x <= 350 + 150) &&//|BOTAO START
         (mouse.y >= 350 && mouse.y <= 350 + 70))    //|
         return true;//aarea de clique botão start
@@ -106,8 +106,8 @@ bool locale_Button(){
 }
 
 bool locale_Reset(){
-    Vector2 mouse = GetMousePosition(); 
-    
+    Vector2 mouse = GetMousePosition();
+
     if((mouse.x >= 700 && mouse.x <= 700 + 100)&&
         (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
 
@@ -115,8 +115,8 @@ bool locale_Reset(){
 }
 
 bool locale_Muda(){
-    Vector2 mouse = GetMousePosition(); 
-    
+    Vector2 mouse = GetMousePosition();
+
     if((mouse.x >= 30 && mouse.x <= 30 + 100)&&
         (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
 
@@ -138,7 +138,7 @@ bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state) {
                 double c = sqrt(pow(a, 2) + pow(b, 2));
                 if (c < menor) {
                     *ii = i;
-                    *jj = j; 
+                    *jj = j;
                     menor = c;
                 }
             }
@@ -162,7 +162,7 @@ bool valida_Part(Part(&tabuleiro)[TAM][TAM], int Io, int Jo, int (&S)){
         int Jd = Jo + Dj;
         int Im = Io + Di/2;
         int Jm = Jo + Dj/2;
-        
+
         if (Id < 0 || Id >= TAM || Jd < 0 || Jd >= TAM) continue;
         if (Im < 0 || Im >= TAM || Jm < 0 || Jm >= TAM) continue;
 
@@ -187,7 +187,7 @@ void Jogada(void){
         } else {
             int Ifim = 0, jfim = 0;
             if (localize_Part(tabuleiro, &Ifim, &jfim, VAZIO)) {
-                std::cout << "Segundo clique na posição X: " << tabuleiro[Ifim][jfim].pos.x << ", Y: " << tabuleiro[Ifim][jfim].pos.y << std::endl;                
+                std::cout << "Segundo clique na posição X: " << tabuleiro[Ifim][jfim].pos.x << ", Y: " << tabuleiro[Ifim][jfim].pos.y << std::endl;
                 int movimento = calcule_movimento(Ic, Jc, Ifim, jfim);
 
                 if (movimento == MOVIMENTO_VALIDO) {
@@ -219,7 +219,7 @@ bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
             if (tabuleiro[i][j].state == N_EXIST) continue;
             int S = 0;
             valida_Part(tabuleiro, i, j, S);
-                
+
             if (S == 1) {
                 Valido++;
             } else if(tabuleiro[i][j].state == EXIST) {
@@ -239,9 +239,9 @@ void Emblema(void){
     DrawText("Resta Um", inicioX-80, inicioY, 100, corPeca);
     DrawRectangleRec(start_P, corPeca);
     DrawText("START", screenWidth/2-43, screenHeight/2+70, 25, BLACK);
-    
+
     if(locale_Button()){
-        for(int i = 0; i < 4; i++){ 
+        for(int i = 0; i < 4; i++){
             DrawRectangleLines(350-i, 350-i, 152+i, 72+i, GREEN);
         }
     }
@@ -268,7 +268,7 @@ void Titulo(void){
             DrawText("GAME OVER", 900/2 -100, 600/2, 30, RED);
             DrawText(TextFormat("Restaram: %d", R), 100, 150, 30, corPeca);
         }
-    }    
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -286,7 +286,7 @@ void DisplayTimer(void) {
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Atualiza_Imformação
 //----------------------------------------------------------------------------
-void Atualiza_Imformação(){
+void Atualiza_Imformacao(){
     clique_atual = (Ic == 0 && Jc == 0) ? CLIQUE_PRIMEIRO : CLIQUE_SEGUNDO;
     int i_atual = 0, j_atual = 0;
     localize_Part(tabuleiro, &i_atual, &j_atual);

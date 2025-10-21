@@ -52,7 +52,7 @@ extern float startTime;  // TIMER SIMPLES
 extern int clique_atual;
 extern botao menu[dois];
 
-// Protótipos de funções 
+// Protótipos de funções
 bool locale_Button();
 bool locale_Reset();
 bool locale_Muda();
@@ -63,7 +63,7 @@ bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1
 int calcule_movimento(int i_inicial, int j_inicial, int i_final, int j_final);
 void Titulo(void);
 void Emblema(void);
-void Atualiza_Imformação(void);
+void Atualiza_Imformacao(void);
 void Jogada(void);
 void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]);
 void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bool red);
