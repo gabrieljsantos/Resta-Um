@@ -7,14 +7,18 @@ int main(void)
     setlocale(LC_ALL, "Portuguese"); // configura a linguagem para português
     
     
+    
     // Initialization
     //--------------------------------------------------------------------------------------   
 
     InitWindow(screenWidth, screenHeight, "TELA 60FPS");
+    int i_inicial=0, j_inicial=0;
 
+   
     SetTargetFPS(60);             // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
-
+    stateJogo jogo = INICIO;
+        
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
@@ -22,20 +26,66 @@ int main(void)
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
 
-            /*VAREAVEIS PARA CLICKS*/   Atualiza_Imformação();
+            
 
         //----------------------------------------------------------------------------------
 
-        // Draw
+        // Draw 
         
                 
         //----------------------------------------------------------------------------------
+        
         BeginDrawing();
 
-        ///
-        /*/PLAY GAME/*/renderiza_Jogo();
+        switch (jogo){
+
+        case INICIO:
+            Emblema();
+            if(locale_Button()){
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    inicializa_tabuleiro(tabuleiro);
+                    jogo=PLAY;
+                }
+            }
+            break;
+        case PLAY:
+            Atualiza_Imformação();
+            desenha_tabuleiro(tabuleiro,i_inicial,j_inicial,-1);
+            Jogada();
+            Titulo();
+            break;
+        // case ESCOLHE:
+        //     /* code */
+        //     break;
+        
+        // case MOVI:
+        //     /* code */
+        //     break;
+        
+        // case RESET:
+        //     /* code */
+        //     break;
+        
+        // case TEMA:
+        //     /* code */
+        //     break;
+        
+        // case FIMDEJOGO:
+        //     /* code */
+        //     break;
+        
+        default:
+
+            break;
+        }
+
+
+
+        ///------------------
+        /*/ PLAY GAME ---> *///renderiza_Jogo();
+        ///-------------------
     
-        ClearBackground(BROWN);// COR DE FUNDO
+        ClearBackground(BLACK);// COR DE FUNDO
 
         EndDrawing();
         //----------------------------------------------------------------------------------
