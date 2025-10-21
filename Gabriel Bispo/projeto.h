@@ -25,6 +25,7 @@ const int Movimentos[4][2] = {//fundamental para função valida_Part()
     {0, +2}  // Direita
 };
 
+
 // Estruturas
 typedef struct {
     int state;   // 0 = invalido, 1 = vazio, 2 = peça
@@ -54,6 +55,7 @@ extern botao menu[dois];
 
 // Protótipos de funções 
 bool locale_Button();
+bool locale_Reset();
 bool jogada_Valida(Part (&tabuleiro)[TAM][TAM], int (&Resta));
 bool valida_Part(Part (&tabuleiro)[TAM][TAM], int It, int Jt, int (&S));
 bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1);
