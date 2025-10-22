@@ -12,7 +12,6 @@
 const int screenWidth = 850;
 const int screenHeight = 600;
 const int TAM = 7;
-const int dois = 2;
 const int raio = 25;
 const int diametro = raio * 2;
 const int espaco = 10;
@@ -50,7 +49,6 @@ enum stateJogo {INICIO, PLAY, RESET, FIMDEJOGO};
 extern Part tabuleiro[TAM][TAM];
 extern float startTime;  // TIMER SIMPLES
 extern int clique_atual;
-extern botao menu[dois];
 
 // Protótipos de funções
 bool locale_Button();
