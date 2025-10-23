@@ -39,3 +39,42 @@
 	"raylib.h"
 	"projeto.h"
 
+1761249188 source:d:\projects\resta-um\gabriel bispo v2\mouse_interface.cpp
+	"mouse_interface.h"
+
+1761249521 d:\projects\resta-um\gabriel bispo v2\mouse_interface.h
+	"raylib.h"
+	"structs.h"
+
+1759933515 d:\projects\resta-um\gabriel bispo v2\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1761244917 d:\projects\resta-um\gabriel bispo v2\structs.h
+
+1761251163 source:d:\projects\resta-um\gabriel bispo v2\main.cpp
+	"setup.h"
+	"raylib.h"
+	"enumclass.h"
+	"themesclass.h"
+	"geometry.h"
+	"structs.h"
+	<locale.h>
+	<iostream>
+
+1761249262 d:\projects\resta-um\gabriel bispo v2\setup.h
+	"structs.h"
+	"raylib.h"
+
+1761243688 d:\projects\resta-um\gabriel bispo v2\enumclass.h
+
+1761250600 d:\projects\resta-um\gabriel bispo v2\themesclass.h
+	"raylib.h"
+
+1761250262 source:d:\projects\resta-um\gabriel bispo v2\geometry.cpp
+	"geometry.h"
+
+1761250269 d:\projects\resta-um\gabriel bispo v2\geometry.h
+	"raylib.h"
+	"structs.h"
+

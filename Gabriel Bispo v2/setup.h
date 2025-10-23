@@ -21,6 +21,7 @@ const int Movimentos[4][2] = {
     {0, +2}  // Direita
 };
 
+const int button_border_size = 4;
 Rectangle restart_button_pos = {700, 500, 100, 45}; // posiçoes dos botaos
 Rectangle start_button_pos = {350, 350, 150, 70}; 
 Rectangle Muda_button_pos = {30, 500, 100, 45};
