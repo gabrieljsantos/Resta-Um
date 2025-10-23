@@ -8,8 +8,20 @@
 #include <math.h>
 #include <stdlib.h>
 
-
-
+// Constantes
+const int screenWidth = 850;
+const int screenHeight = 600;
+const int TAM = 7;
+const int raio = 25;
+const int diametro = raio * 2;
+const int espaco = 10;
+const int Movimentos[4][2] = {
+    {-2, 0}, // Cima
+    {+2, 0}, // Baixo
+    {0, -2}, // Esquerda
+    {0, +2}  // Direita
+};
+extern Color corFundo;      // Fundo (Preto/Branco)
 extern Color corPeca;       // Peças (Roxo/Marrom)
 extern bool temaAtual;      // TRUE = Tema 1, FALSE = Tema 2
 
@@ -21,13 +33,24 @@ typedef struct {
     bool valida;
 } Part;
 
-
+// Enumeradores
+enum Clique { CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO };
+enum Movimento { MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM };
+enum Resta { NAO_RESTA_JOGADA, RESTA_JOGADA};
+enum PART_STATE {N_EXIST, VAZIO, EXIST};
+enum stateJogo {MAIN_MENU, PLAY, RESET, FIMDEJOGO};
+extern Theme colors_theme = white_beige;
 // Variáveis globais
 extern Part tabuleiro[TAM][TAM];
 extern float startTime;  // TIMER SIMPLES
 extern int clique_atual;
 
 // Protótipos de funções
+
+// Função para verificar se um ponto está dentro de uma área
+bool checks_if_the_mouse_is_in_an_area(Vector2 cp, Rectangle sri);
+// Expande um retângulo adicionando borda
+Rectangle ExpandRectangle(Rectangle original, int border_size);
 bool locale_Button();
 bool locale_Reset();
 bool locale_Muda();

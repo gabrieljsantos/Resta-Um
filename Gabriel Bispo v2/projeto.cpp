@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "projeto.h"
+#include "themesclass.h"
 
 //----------------------
 // VARIÁVEIS GLOBAIS
@@ -9,6 +10,8 @@ float timeElapsed;
 int minutos;
 int segundos;
 char textoTimer[50];
+
+
 
 
 Part tabuleiro[TAM][TAM];
@@ -25,9 +28,11 @@ Color corTime = BLACK;     // Time  1: Preto
    // Tema 1: Roxo
 
 int inicioX = screenWidth/3.5, inicioY = screenHeight/4;
-Rectangle restart = {700.0f, 500.0f, 100.0f, 45.0f}; // posiçoes dos botaos
-Rectangle start_P = {350, 350, 150.0f, 70.0f}; 
-Rectangle Muda = {30.0f, 500.0f, 100.0f, 45.0f};
+Rectangle restart = {700, 500, 100, 45}; // posiçoes dos botaos
+Rectangle start_Button = {350, 350, 150, 70}; 
+Rectangle Muda = {30, 500, 100, 45};
+
+const int button_border_size = 5;
 
 //----------------------------------------------------------------------------
 //            ----> IMPLEMENTAÇÃO DE FUNÇÕES E PROCEDIMENTOS <----
@@ -325,7 +330,19 @@ bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Emblema ---> Para Mostrat botoe e Emblema
 //----------------------------------------------------------------------------
+void Emblema(void){
 
+    Vector2 mouse = GetMousePosition();
+    if(checks_if_the_mouse_is_in_an_area(mouse,start_Button)){
+        DrawRectangleRec(
+            ExpandRectangle(start_Button,button_border_size),
+                colors_theme.ButtonBoardColor);
+                }
+    
+    DrawText("Resta Um", inicioX-60, inicioY, 100, corPeca);
+    DrawRectangleRec(start_Button, corBotao);
+    DrawText("START", screenWidth/2-43, screenHeight/2+70, 25, BLACK);
+}
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Titulo --> Para Mostrar GAMEOVER/VITORIA, BOTOES, e TITULO
 //----------------------------------------------------------------------------
@@ -384,3 +401,22 @@ void DisplayTimer(void) {
     }
 }
     
+bool checks_if_the_mouse_is_in_an_area(Vector2 cp, Rectangle sri) {
+    // cp = comparison_position
+    // sri = square_region_interval
+    if ((cp.x >= sri.x && cp.x <= sri.x + sri.width) &&
+        (cp.y >= sri.y && cp.y <= sri.y + sri.height)) {
+        return true; // dentro da área
+    }
+    return false;
+}
+
+
+Rectangle ExpandRectangle(Rectangle original, int border_size) {
+    Rectangle expanded;
+    expanded.x = original.x - border_size;
+    expanded.y = original.y - border_size;
+    expanded.width  = original.width + border_size * 2;
+    expanded.height = original.height + border_size * 2;
+    return expanded;
+}
