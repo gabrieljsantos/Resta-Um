@@ -33,11 +33,6 @@ typedef struct {
     bool valida;
 } Part;
 
-typedef struct {
-    bool state;
-    Vector2 local;
-} botao;
-
 // Enumeradores
 enum Clique { CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO };
 enum Movimento { MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM };
@@ -61,7 +56,6 @@ bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1
 int calcule_movimento(int i_inicial, int j_inicial, int i_final, int j_final);
 void Titulo(void);
 void Emblema(void);
-void Atualiza_Imformacao(void);
 void Jogada(void);
 void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]);
 void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, int clique_atual);
