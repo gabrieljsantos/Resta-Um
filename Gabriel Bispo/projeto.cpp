@@ -9,8 +9,7 @@ float timeElapsed;
 int minutos;
 int segundos;
 char textoTimer[50];
-int i_inicial = 0, j_inicial = 0;
-int MI=0,MJ=0;
+
 
 Part tabuleiro[TAM][TAM];
 int Ic = 0, Jc = 0;
@@ -43,12 +42,12 @@ void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]) {
             tabuleiro[i][j].pos = {(float)inicioX + i * (diametro + espaco),
                                    (float)inicioY + j * (diametro + espaco)};
             if ((i < 2 || i > 4) && (j < 2 || j > 4))
-                tabuleiro[i][j].state = N_EXIST;
+                tabuleiro[i][j].state = N_EXIST; // Parte transparente, sem nada
             else
-                tabuleiro[i][j].state = EXIST;
+                tabuleiro[i][j].state = EXIST;  // peças do jogo
         }
     }
-    tabuleiro[3][3].state = VAZIO;
+    tabuleiro[3][3].state = VAZIO; // posição do meio vazia
 }
 //----------------------------------------------------------------------------
 // FUNÇÃO TROCA TEMA -- > PARA MUDAR OS TEMAS 
@@ -65,7 +64,6 @@ bool trocarTema(void) {
         corTabu = BROWN;
         corTabuF = DARKBROWN;
         corTime = BLACK;
-        std::cout << "Tema 1: Beige + Marrom" << std::endl;
         }
         else{
         // tama 2: escuro
@@ -75,7 +73,6 @@ bool trocarTema(void) {
         corTabu = BLACK;
         corTabuF = BLACK;
         corTime = GOLD;
-        std::cout << "Tema 2: Preto + Roxo" << std::endl;
         }
 
     return temaAtual;  // Retorna o novo tema
@@ -85,8 +82,8 @@ bool trocarTema(void) {
 // PROCEDIMENTO desenha_tabuleiro --->  PARA DESENHAR O TABULEIRO
 //----------------------------------------------------------------------------
 void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, int clique_atual){
-    DrawRectangle(inicioX-50, inicioY-50, 460, 460, corTabuF);//| QUADRADO FUNDO
-    DrawRectangle(inicioX-40, inicioY-40, 440, 440, corTabu);//| QUADRADO TABULEIRO
+    DrawRectangle(inicioX-50, inicioY-50, 460, 460, corTabuF);  //| QUADRADO FUNDO
+    DrawRectangle(inicioX-40, inicioY-40, 440, 440, corTabu);   //| QUADRADO TABULEIRO
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
 
@@ -99,7 +96,7 @@ void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, in
                 DrawCircleLinesV(tabuleiro[i][j].pos, raio + o, BLACK);//contorno
 
             int r;
-            if(jogada_Valida(tabuleiro,r)){    
+            if(jogada_Valida(tabuleiro,r)){
 
                 int movimento = calcule_movimento(Ic, Jc, i_atual, j_atual); // Mostra onde a peça pode se mover
                 if(movimento == MOVIMENTO_VALIDO && tabuleiro[i_atual][j_atual].state == VAZIO) {
@@ -118,7 +115,7 @@ void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, in
                     Cor = RED;
                     for (int k = 0; k < 4; k++)
                         DrawCircleLinesV(tabuleiro[i][j].pos, (float)raio + k, Cor);              
-                }
+                }            
             }
         }
     }
@@ -260,13 +257,12 @@ void Jogada(void){
             if (localize_Part(tabuleiro, &Ic, &Jc, EXIST)) {
                 TX = Ic;
                 TY = Jc;
-                std::cout << "Primeiro clique na posição X: " << tabuleiro[Ic][Jc].pos.x << ", Y: " << tabuleiro[Ic][Jc].pos.y << std::endl;
             }
          } else {
             int Ifim = 0, jfim = 0;
             if (localize_Part(tabuleiro, &Ifim, &jfim, VAZIO)) {
                 
-               std::cout << "Segundo clique na posição X: " << tabuleiro[Ifim][jfim].pos.x << ", Y: " << tabuleiro[Ifim][jfim].pos.y << std::endl;                
+            
                int movimento = calcule_movimento(Ic, Jc, Ifim, jfim);
 
                 if (movimento == MOVIMENTO_INVALIDO) {
@@ -276,7 +272,6 @@ void Jogada(void){
                     int j_alvo = (Jc + jfim) / 2;//i meio = i origem + Delta j /2
 
                     if (tabuleiro[i_alvo][j_alvo].state == 2) {
-                         std::cout << "Deletando em i = " << i_alvo << "; j = " << j_alvo << std::endl;
                         //-----------------------------------//
                         tabuleiro[i_alvo][j_alvo].state = VAZIO; //
                         tabuleiro[Ifim][jfim].state = EXIST;     //  atualiza o estado das peças movidas
@@ -302,10 +297,8 @@ bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             int S = 0;
-
             if ((tabuleiro)[i][j].state == 0) continue;
             //NAO PODE TESTAR PARTE EM BRAMCO DA ERRO!!!!
-
             valida_Part(tabuleiro, i, j, S);
                 
             if (S == 1) {
@@ -315,8 +308,7 @@ bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
             // PEÇAS SEM MOVIMENTO VALIDO
                 if(tabuleiro[i][j].state==2)
                     Nvalido++;
-            }
-            
+            }           
         }
     }
     Resta = Nvalido;
@@ -344,7 +336,6 @@ void Emblema(void){
         }
     }
 }
-
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Titulo --> Para Mostrar GAMEOVER/VITORIA, BOTOES, e TITULO
 //----------------------------------------------------------------------------
@@ -367,8 +358,6 @@ if(locale_Muda()){
             //Cor em volta do botao TEMA
             DrawRectangleLines(30-i, 500-i, 102+i, 45+i, GREEN);
     }
-
-
 
     // TIMER SIMPLES - SEM PARÂMETRO
     DisplayTimer();
@@ -403,6 +392,5 @@ void DisplayTimer(void) {
         sprintf(textoTimer, "Tempo: %02d:%02d", minutos, segundos);
         DrawText(textoTimer, 640, 20, 25, corTime);
     }
-    
 }
     
