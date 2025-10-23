@@ -4,6 +4,7 @@
 #include "raylib.h"
 // Biblioteca usada para renderizar todo o front-end.
 #include "enumclass.h"
+#include "themesclass.h"
 
 #include <locale.h>
 //#include "projeto.h"
@@ -25,7 +26,7 @@ int main(void)
     int i_inicial = 0; //?
     int j_inicial = 0; //?
     int r; // quem é r?
-    int Current_Theme = 0;
+    Theme colors_theme = white_beige;
 
     // Main game loop
     while (!WindowShouldClose())
@@ -33,11 +34,19 @@ int main(void)
 
 
         BeginDrawing();
-        ClearBackground(corFundo);
-        /*
+        ClearBackground(colors_theme.BackgroundColor);
+        
         switch (jogo) {
-            case INICIO:
-                    Emblema();
+            case MAIN_MENU:
+                DrawText("Resta Um", screen.x/2, screen.y + 50, 100, colors_theme.PartColor);
+                DrawRectangleRec(start_button_pos, colors_theme.ButtonColor);
+                DrawText("START", screen.x/2-43, screen.y/2+70, 25, BLACK);
+
+                if(locale_Button()){
+                    for(int i = 0; i < 4; i++){
+                        DrawRectangleLines(350-i, 350-i, 152+i, 72+i, GREEN);
+                    }
+                }
                     if(locale_Button()) {
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                             inicializa_tabuleiro(tabuleiro);
@@ -47,6 +56,7 @@ int main(void)
                     }
                 break;
 
+            /*
             case PLAY:
                     localize_Part(tabuleiro, &i_inicial, &j_inicial);
                     desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
@@ -94,8 +104,10 @@ int main(void)
 
                     }
                 break;
+
+                */
         }
-        */
+        
         EndDrawing();
     }
 

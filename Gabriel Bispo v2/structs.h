@@ -6,14 +6,5 @@ struct VectorXY {
     int y;
 };
 
-// Definição da estrutura de cores do tema
-struct Theme {
-    int BackgroundColor;
-    int PieceColor;
-    int ButtonColor;
-    int BoardColor;
-    int BoardBorderColor;
-    int TimeColor;
-};
 
 #endif

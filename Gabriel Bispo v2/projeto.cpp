@@ -325,17 +325,7 @@ bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Emblema ---> Para Mostrat botoe e Emblema
 //----------------------------------------------------------------------------
-void Emblema(void){
-    DrawText("Resta Um", inicioX-60, inicioY, 100, corPeca);
-    DrawRectangleRec(start_P, corBotao);
-    DrawText("START", screenWidth/2-43, screenHeight/2+70, 25, BLACK);
 
-    if(locale_Button()){
-        for(int i = 0; i < 4; i++){
-            DrawRectangleLines(350-i, 350-i, 152+i, 72+i, GREEN);
-        }
-    }
-}
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Titulo --> Para Mostrar GAMEOVER/VITORIA, BOTOES, e TITULO
 //----------------------------------------------------------------------------
