@@ -2,89 +2,147 @@
 #include "projeto.h"
 
 //----------------------
-// Variáveis globais
+// VARIÁVEIS GLOBAIS
 //----------------------
-int i_inicial=0, j_inicial=0;
-int pode=0;
+float startTime = 0.0f;  // TIMER SIMPLES
+float timeElapsed;
+int minutos;
+int segundos;
+char textoTimer[50];
+int i_inicial = 0, j_inicial = 0;
+int MI=0,MJ=0;
+
 Part tabuleiro[TAM][TAM];
-int Ic = 0, Jc= 0;
+int Ic = 0, Jc = 0;
 int clique_atual = CLIQUE_PRIMEIRO;
 
-int inicioX = screenWidth/3.5, inicioY = screenHeight/4; // TENTA PEGAR A MELHOR POSIÇÃO DA TELA PARA O TABULEIRO 
-                                                         // PARA CENTRALIZAR O TABULEIRO
-Rectangle restart = {
-    700.0f,500.0f,
-    100.0f,45.0f
+bool temaAtual = true;// Começa com Tema 1
+Color corBotao = BROWN;    // Botao 1: Marrom Claro
+Color corFundo = BEIGE;    // Fundo 1: Beige
+Color corPeca = DARKBROWN; // Peça  1: Marrom Escuro
+Color corTabu = BROWN;     // tabu  1: Marrom claro
+Color corTabuF = DARKBROWN;   // tabu  1: Marrom claro
+Color corTime = BLACK;     // Time  1: Preto
+   // Tema 1: Roxo
 
-};
+int inicioX = screenWidth/3.5, inicioY = screenHeight/4;
+Rectangle restart = {700.0f, 500.0f, 100.0f, 45.0f}; // posiçoes dos botaos
+Rectangle start_P = {350, 350, 150.0f, 70.0f}; 
+Rectangle Muda = {30.0f, 500.0f, 100.0f, 45.0f};
 
-Rectangle start_P = { // coordenadas do botao
-      350, 350,   // X e Y inicio
-      150.0f, 70.0f    // X e Y UM EMCREMENTO PARA CRIAR O RETANGULO
-  };
 //----------------------------------------------------------------------------
-// IMPLEMENTAÇÕES DE FUNÇÕES E PROCEDIMENTOS NO GERAL
+//            ----> IMPLEMENTAÇÃO DE FUNÇÕES E PROCEDIMENTOS <----
 //----------------------------------------------------------------------------
-// PROCEDIMENTO inicializar_tabuleiro ---> Para Gerar Tudo Do Jogo
+
+//----------------------------------------------------------------------------
+// PROCEDIMENTO inicializar_tabuleiro
 //----------------------------------------------------------------------------
 void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]) {
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
-            tabuleiro[i][j].pos ={ (float)inicioX + i * (diametro + espaco),
-                                   (float)inicioY + j * (diametro + espaco) };
+            tabuleiro[i][j].pos = {(float)inicioX + i * (diametro + espaco),
+                                   (float)inicioY + j * (diametro + espaco)};
             if ((i < 2 || i > 4) && (j < 2 || j > 4))
-                tabuleiro[i][j].state = N_EXIST; // NAO EXISTE
+                tabuleiro[i][j].state = N_EXIST;
             else
-                tabuleiro[i][j].state = EXIST; // PEÇA VIVA
+                tabuleiro[i][j].state = EXIST;
         }
     }
-    tabuleiro[3][3].state = VAZIO; // AREA LIVRE
+    tabuleiro[3][3].state = VAZIO;
 }
 //----------------------------------------------------------------------------
-// PROCEDIMENTO desenha_tabuleiro ---> Para Mostar Graficamente as Peças
+// FUNÇÃO TROCA TEMA -- > PARA MUDAR OS TEMAS 
+//---------------------------------------------------------------------------
+bool trocarTema(void) {
+    temaAtual = !temaAtual;  // ALTERNAR TRUE/FALSE
+
+    
+      if(temaAtual){
+        // tema 1: claro
+        corFundo = BEIGE;
+        corPeca = DARKBROWN;
+        corBotao = BROWN;
+        corTabu = BROWN;
+        corTabuF = DARKBROWN;
+        corTime = BLACK;
+        std::cout << "Tema 1: Beige + Marrom" << std::endl;
+        }
+        else{
+        // tama 2: escuro
+        corFundo = BLACK;
+        corPeca = PURPLE;
+        corBotao = DARKPURPLE;
+        corTabu = BLACK;
+        corTabuF = BLACK;
+        corTime = GOLD;
+        std::cout << "Tema 2: Preto + Roxo" << std::endl;
+        }
+
+    return temaAtual;  // Retorna o novo tema
+}
+
 //----------------------------------------------------------------------------
-void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, bool red){
-    //DrawRectangle(inicioX-40,inicioY-40,440,440,BROWN);
+// PROCEDIMENTO desenha_tabuleiro --->  PARA DESENHAR O TABULEIRO
+//----------------------------------------------------------------------------
+void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, int clique_atual){
+    DrawRectangle(inicioX-50, inicioY-50, 460, 460, corTabuF);//| QUADRADO FUNDO
+    DrawRectangle(inicioX-40, inicioY-40, 440, 440, corTabu);//| QUADRADO TABULEIRO
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
-            
-            
-            if (tabuleiro[i][j].state == 0) continue;
-           
 
-            Color cor = (tabuleiro[i][j].state == 1) ? LIGHTGRAY : PURPLE; // COR DAS PEÇAS 
+            if (tabuleiro[i][j].state == N_EXIST) continue;
+
+            Color cor = (tabuleiro[i][j].state == VAZIO) ? LIGHTGRAY : corPeca; 
             DrawCircleV(tabuleiro[i][j].pos, raio, cor);
-            if (i == i_atual && j == j_atual) {
-                
-       /*aux*/  int aux = 0;//PARA FUNÇAO (VALIDA PART)
-   /*MOVIMENTO*/bool Mov = valida_Part(tabuleiro, i,j, aux);
-                Color Cor = (Mov)? GREEN:RED;
-                for (int k = 0; k < 4; k++)
-                    DrawCircleLinesV(tabuleiro[i][j].pos, (float)raio + k, Cor);
-                    
+
+            for(int o = 0; o < 3; o++)
+                DrawCircleLinesV(tabuleiro[i][j].pos, raio + o, BLACK);//contorno
+
+            int r;
+            if(jogada_Valida(tabuleiro,r)){    
+
+                int movimento = calcule_movimento(Ic, Jc, i_atual, j_atual); // Mostra onde a peça pode se mover
+                if(movimento == MOVIMENTO_VALIDO && tabuleiro[i_atual][j_atual].state == VAZIO) {
+                    for(int i = 0;i<4;i++)
+                        DrawCircleLinesV(tabuleiro[i_atual][j_atual].pos,raio+i,GREEN);
+                }  
+
+                if (i == i_atual && j == j_atual) {
+                    int aux = 0;
+                    bool Mov = valida_Part(tabuleiro, i, j, aux);
+
+                    Color Cor = Mov ? GREEN : RED;
+
+                    // Se o clique for o segundo, ele foi validado por calcule_movimento, então pinta de vermelho
+                    if (clique_atual == CLIQUE_SEGUNDO)
+                    Cor = RED;
+                    for (int k = 0; k < 4; k++)
+                        DrawCircleLinesV(tabuleiro[i][j].pos, (float)raio + k, Cor);              
+                }
             }
         }
     }
 }
-//----------------------------------------------------------------------------
-// Função calcule_movimento ---> Para Calcular Movimento valido
-//----------------------------------------------------------------------------
-int calcule_movimento(int Ic, int Jc
-    , int Ifim
-    , int jfim) {
-    if (Ic == Ifim && Jc== jfim) return MOVIMENTO_NENHUM;
 
-    else if (Ic != Ifim&& Jc!= jfim)return MOVIMENTO_INVALIDO;
+//----------------------------------------------------------------------------
+// Função calcule_movimento
+//----------------------------------------------------------------------------
+int calcule_movimento(int Ic, int Jc, int Ifim, int jfim) {
+    if (Ic == Ifim && Jc == jfim) return MOVIMENTO_NENHUM; // se clicar na mesma peça
 
-    else if (abs(Ifim- Ic) == 2 || abs(jfim - Jc) == 2) return MOVIMENTO_VALIDO;
-    return MOVIMENTO_INVALIDO;
+    else if (Ic != Ifim && Jc != jfim) return MOVIMENTO_INVALIDO; //se nao clicar em uma peça valdida, para o movimento
+
+    else if (abs(Ifim - Ic) == 2 || abs(jfim - Jc) == 2) return MOVIMENTO_VALIDO; //se seguir a regra do jogo
+
+    return MOVIMENTO_INVALIDO; // se tentar jogar em diagonal
 }
-//----------------------------------------------------------------------------
-// Função localiza_BOTAO ---> Para Localizar possiveis Botões
+
+//--------------------------------------------------------------------------
+// Função locale_Button ---> PARA LOCALIZAR OS BOTOES 
 //----------------------------------------------------------------------------
 bool locale_Button(){
-    Vector2 mouse = GetMousePosition(); 
-    
+    Vector2 mouse = GetMousePosition();
+
     if ((mouse.x >= 350 && mouse.x <= 350 + 150) &&//|BOTAO START
         (mouse.y >= 350 && mouse.y <= 350 + 70))    //|
         return true;//aarea de clique botão start
@@ -93,17 +151,28 @@ bool locale_Button(){
 }
 
 bool locale_Reset(){
-    Vector2 mouse = GetMousePosition(); 
-    
+    Vector2 mouse = GetMousePosition();
+
     if((mouse.x >= 700 && mouse.x <= 700 + 100)&&
         (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
 
     return false;
 }
+
+bool locale_Muda(){
+    Vector2 mouse = GetMousePosition();
+
+    if((mouse.x >= 30 && mouse.x <= 30 + 100)&&
+        (mouse.y >= 500 && mouse.y <= 500 + 45)) return true; // area de clique do botão reset
+
+    return false;
+}//----------------------------------------------------------------------------
+
 //----------------------------------------------------------------------------
 // Função localize_Part ---> Para Localizar Peças Existentes
 // DENTRO DO RAIO DA PEÇA
 //----------------------------------------------------------------------------
+
 bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state) {
     int e;
     Vector2 Mouse = GetMousePosition();// POSIÇÃO DO MOUSE
@@ -122,12 +191,14 @@ bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state) {
             }
         }
     }
-    return menor <= (double)raio;
+    return menor <= (double)raio; // retorne TRUE se MENOR for <= RAIO, caso contarrio FALSE
 }
+
 //----------------------------------------------------------------------------
 // FUNÇÃO SUPER IMPORTANTE
 // Função Valida_Part ---> Para Validar possiveis jogadas
 //----------------------------------------------------------------------------
+
 bool valida_Part(Part(&tabuleiro)[TAM][TAM], int Io, int Jo, int (&S)){
 
     int Id, Jd, Im,Jm; /*-- Io,Jo origem, Id,Jd Destinho, Im,Jm Meio --*/
@@ -159,39 +230,47 @@ bool valida_Part(Part(&tabuleiro)[TAM][TAM], int Io, int Jo, int (&S)){
             //verifica se a jogada da peça pode sair do tabuleiro
             //---------------------------------------------------------------
 
-            if ((tabuleiro[Id][Jd].state == 1 )&&(tabuleiro[Im][Jm].state != VAZIO)){
+            if ((tabuleiro[Id][Jd].state == VAZIO )&& (tabuleiro[Im][Jm].state != VAZIO)){
                 S = 1; // um movimento valido
                 return true; //Existe alguma jogada valida
             }
         }
-        // se chegou ate aqui
+        // Se nao tem movimento
         S = 0; 
 
     return false;
 }
+
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Jogada ---> Para Fazer o Movimento no Jogo
 //CAPITURA OS CLIQUES E VERIFICA SE PODE JOGAR
 //----------------------------------------------------------------------------
-
+int TX,TY;
 void Jogada(void){
+     clique_atual = (Ic == 0 && Jc == 0) ? CLIQUE_PRIMEIRO : CLIQUE_SEGUNDO;
+
+    if(clique_atual == CLIQUE_SEGUNDO)
+        for(int i = 0; i < 4;i++)
+            DrawCircleLinesV(tabuleiro[TX][TY].pos,raio+i,BLUE); 
+
 
     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
     
         if (clique_atual == CLIQUE_PRIMEIRO) {
-            if (localize_Part(tabuleiro, &Ic, &Jc, 2)) {
+            if (localize_Part(tabuleiro, &Ic, &Jc, EXIST)) {
+                TX = Ic;
+                TY = Jc;
                 std::cout << "Primeiro clique na posição X: " << tabuleiro[Ic][Jc].pos.x << ", Y: " << tabuleiro[Ic][Jc].pos.y << std::endl;
             }
          } else {
             int Ifim = 0, jfim = 0;
-            if (localize_Part(tabuleiro, &Ifim, &jfim, 1)) {
+            if (localize_Part(tabuleiro, &Ifim, &jfim, VAZIO)) {
+                
                std::cout << "Segundo clique na posição X: " << tabuleiro[Ifim][jfim].pos.x << ", Y: " << tabuleiro[Ifim][jfim].pos.y << std::endl;                
                int movimento = calcule_movimento(Ic, Jc, Ifim, jfim);
 
                 if (movimento == MOVIMENTO_INVALIDO) {
-                    //DrawText("MOVIMENTO INVALIDO",250,90,30,RED);
-                    
-                  //  Sleep(1000);
+                    DrawText("MOVIMENTO INVALIDO",250,90,30,RED);
                 } else {
                     int i_alvo = (Ic + Ifim) / 2; //i meio = i origem + Delta i /2
                     int j_alvo = (Jc + jfim) / 2;//i meio = i origem + Delta j /2
@@ -214,7 +293,7 @@ void Jogada(void){
 }
 
 //----------------------------------------------------------------------------
-// Função RESTA UM ---> Para verificar quantidade de peças sem movimento valido
+// Função Jogada Valida---> Para verificar quantidade de peças sem movimento valido
 //----------------------------------------------------------------------------
 
 bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
@@ -249,85 +328,81 @@ bool jogada_Valida(Part(&tabuleiro)[TAM][TAM], int (&Resta)) {
         //std::cout << "NAO RESTA\n";
         return NAO_RESTA_JOGADA; // jogo terminou
     }
-}//---------------------------------------------------------------------------
+}
 
 //----------------------------------------------------------------------------
-// PROCEDIMENTO Titulo ---> Para Mostrar EMBLEMA DO JOGO
+// PROCEDIMENTO Emblema ---> Para Mostrat botoe e Emblema
 //----------------------------------------------------------------------------
 void Emblema(void){
-    
-    DrawText( "Resta Um",inicioX-80 , inicioY, 100, PURPLE);
+    DrawText("Resta Um", inicioX-60, inicioY, 100, corPeca);
+    DrawRectangleRec(start_P, corBotao);
+    DrawText("START", screenWidth/2-43, screenHeight/2+70, 25, BLACK);
 
-    DrawRectangleRec(start_P,PURPLE);
-    DrawText( "START",screenWidth/2-43 , screenHeight/2+70, 25, BLACK);
     if(locale_Button()){
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) inicializa_tabuleiro(tabuleiro);
-        for(int i = 0; i<4;i++){ 
-             DrawRectangleLines(screenWidth/2-75-i, 350-i,152+i,72+i,GREEN);
-
+        for(int i = 0; i < 4; i++){
+            DrawRectangleLines(350-i, 350-i, 152+i, 72+i, GREEN);
         }
-
     }
-   
 }
+
 //----------------------------------------------------------------------------
-// PROCEDIMENTO Titulo ---> Para Mostrar Titulo
+// PROCEDIMENTO Titulo --> Para Mostrar GAMEOVER/VITORIA, BOTOES, e TITULO
 //----------------------------------------------------------------------------
 void Titulo(void){
     int R;
-    DrawText("----- RESTA UM -----", 252, 50, 30,PURPLE);//
-    DrawText("----- RESTA UM -----", 252, 50, 30,PURPLE);///------| Em cima
+    DrawText("----- RESTA UM -----", 252, 50, 30, corPeca);
+    DrawRectangle(restart.x, restart.y, restart.width, restart.height, corBotao);
+    DrawRectangle(Muda.x, Muda.y, Muda.width, Muda.height, corBotao);
+    DrawText("RESET", 715, 515, 20, BLACK);
+    DrawText("Tema", 45, 515, 20, BLACK);
 
-    DrawRectangle(restart.x,restart.y,restart.width,restart.height,BLUE);
-    DrawText("RESET",715,515,20,BLACK);
+    if(locale_Reset()){
+        for(int i = 0; i < 4; i++) 
+            //Cor em volta do botao RESET
+            DrawRectangleLines(700-i, 500-i, 102+i, 45+i, GREEN);
+    }
 
-    if(!jogada_Valida(tabuleiro, R)){ // se nao ouver jogada valida game over ou vitoria
+if(locale_Muda()){
+        for(int i = 0; i < 4; i++) 
+            //Cor em volta do botao TEMA
+            DrawRectangleLines(30-i, 500-i, 102+i, 45+i, GREEN);
+    }
 
-        if (R == 1) DrawText("Vitória", 100, 50, 30, BLUE);
-        else{
-        DrawText("GAME OVER",900/2 -100,600/2,30,RED);
-        DrawText(TextFormat("Restaram: %d", R), 100, 150, 30, PURPLE);
+
+
+    // TIMER SIMPLES - SEM PARÂMETRO
+    DisplayTimer();
+
+    if(!jogada_Valida(tabuleiro, R)){
+        if (R == 1) {
+            DrawText("Vitória", 100, 50, 30, BLUE);
+        } else {
+            DrawText("GAME OVER", screenWidth/2 -120, screenHeight/2, 40, RED);
+            DrawText(TextFormat("Restaram: %d", R), 25, 70, 30, corPeca);
         }
-    }    
-    
-}
-
-//----------------------------------------------------------------------------
-// PROCEDIMENTO Atualiza_Informacao ---> Para Verificar OS Cliques no MOUSE
-//----------------------------------------------------------------------------
-void Atualiza_Imformação(){
-    
-    clique_atual = (Ic == 0 && Jc== 0) ? CLIQUE_PRIMEIRO : CLIQUE_SEGUNDO;
-    int i_atual = 0, j_atual = 0;
-    localize_Part(tabuleiro, &i_atual, &j_atual);
-    if (clique_atual == CLIQUE_PRIMEIRO) {
-        desenha_tabuleiro(tabuleiro, i_atual, j_atual, tabuleiro[i_atual][j_atual].state != 2);
-    } else {
-        int movimento = calcule_movimento(Ic, Jc
-            , i_atual, j_atual);
-        desenha_tabuleiro(tabuleiro, i_atual, j_atual, movimento != MOVIMENTO_VALIDO);
     }
 }
+    
 //----------------------------------------------------------------------------
-// PROCEDIMENTO renderiza Jogo ---> Para Renderizar e Fucionar o JOGO
+// Função DisplayTimer ---> PARA mostar Tempo SIMPLES
 //----------------------------------------------------------------------------
-//SEM USAR NO MOMENTO, POR MOTIVOD DE TESTES
-void renderiza_Jogo(){
-    Emblema();
+void DisplayTimer(void) {
+    int R;
+    if(jogada_Valida(tabuleiro,R)){
+         timeElapsed = GetTime() - startTime;
+         minutos = (int)timeElapsed / 60;
+         segundos = (int)timeElapsed % 60;
 
-    //--------------------------------
-    // --> Informações sobre os cliques
-     Atualiza_Imformação();
-    //------------------------------------
+        //Mostra o tempo em atualização
+        sprintf(textoTimer, "Tempo: %02d:%02d", minutos, segundos);
+        DrawText(textoTimer, 640, 20, 25, corTime);
+    }
+    if (!jogada_Valida(tabuleiro,R)){
     
-    //--------------------------------
-    // --> Play GAME
-     Jogada();
-    //------------------------------------
-    int ii;
-    
-    //---------------------------------
-    // --> DESENHOS
-    //(pode==0)? Emblema() : Titulo();
+        //Mostra o tempo parado
+        sprintf(textoTimer, "Tempo: %02d:%02d", minutos, segundos);
+        DrawText(textoTimer, 640, 20, 25, corTime);
+    }
     
 }
+    
