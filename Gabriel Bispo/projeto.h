@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
-
+const int fps = 144;
 // Constantes
 const int screenWidth = 850;
 const int screenHeight = 600;
@@ -32,34 +32,36 @@ typedef struct {
     Vector2 pos; // posição X e Y
     bool valida;
 } Part;
+extern Rectangle startButton; // Botao de Start 
+extern Rectangle themeButton; // Botao de Troca de Tema
+extern Rectangle restartButton; // Botao de restart
 
 // Enumeradores
 enum Clique { CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO };
 enum Movimento { MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM };
 enum Resta { NAO_RESTA_JOGADA, RESTA_JOGADA};
 enum PART_STATE {N_EXIST, VAZIO, EXIST};
-enum stateJogo {INICIO, PLAY, RESET, FIMDEJOGO};
+enum stateJogo {main_Menu, STARTGAME, RESTARTGAME, ENDGAME};
 
 // Variáveis globais
 extern Part tabuleiro[TAM][TAM];
-extern float startTime;  // TIMER SIMPLES
+extern float startTime;  
 extern int clique_atual;
 
-// Protótipos de funções
-bool locale_Button();
-bool locale_Reset();
-bool locale_Muda();
+// Protótipos de funções;
+bool locateButton(Rectangle sri);
+Rectangle expandRectangle(Rectangle original, int border_size);
 bool trocarTema(void);
 bool jogada_Valida(Part (&tabuleiro)[TAM][TAM], int (&Resta));
 bool valida_Part(Part (&tabuleiro)[TAM][TAM], int It, int Jt, int (&S));
 bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1);
-int calcule_movimento(int i_inicial, int j_inicial, int i_final, int j_final);
+int  calcule_movimento(int i_inicial, int j_inicial, int i_final, int j_final);
 void Titulo(void);
 void Emblema(void);
 void Jogada(void);
 void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]);
 void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, int clique_atual);
 void renderiza_Jogo(void);
-void DisplayTimer(void);  // SEM PARÂMETRO
+void DisplayTimer(void);  
 
 #endif // PROJETO_H_INCLUDED

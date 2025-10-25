@@ -1,5 +1,4 @@
 // iNCLUSÃO DE BIBLIOTECAS
-
 #include "raylib.h"
 #include <locale.h>
 #include "projeto.h"
@@ -11,12 +10,12 @@ int main(void)
     setlocale(LC_ALL, "Portuguese");
     cout << "\033[32m"<<std::endl; // Muda a cor do terminal para verde
 
-    // Initialization
+    // INICIALIZAÇÃO
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
-    SetTargetFPS(144);
+    SetTargetFPS(fps);
 
-    stateJogo jogo = INICIO;
-    int i_inicial = 0, j_inicial = 0,r;
+    stateJogo jogo = main_Menu;
+    int i_inicial = 0, j_inicial = 0, aux;
 
     // Main game loop
     while (!WindowShouldClose())
@@ -25,58 +24,54 @@ int main(void)
         ClearBackground(corFundo);
 
         switch (jogo) {
-            case INICIO:
+            case main_Menu:
                     Emblema();
-                    if(locale_Button()) {
+                    if(locateButton(startButton)) {
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                            inicializa_tabuleiro(tabuleiro);
+                            inicializa_tabuleiro(tabuleiro); // inicia o tabuleiro um vez somente!
                             startTime = GetTime(); 
-                            jogo = PLAY;
+                            jogo = STARTGAME;
                         }
                     }
                 break;
 
-            case PLAY:
+            case STARTGAME:
                     localize_Part(tabuleiro, &i_inicial, &j_inicial);
                     desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
                     Jogada();
                     Titulo();
-                    if(!jogada_Valida(tabuleiro,r)) jogo = FIMDEJOGO;
-
-                    if(locale_Reset()) 
+                     
+                    if(locateButton(restartButton)) // Botão restart
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                        jogo = RESET;
+                        jogo = RESTARTGAME;
                         }
-                    
-
-                    if(locale_Muda()){
+                    if(locateButton(themeButton)){ // Botão tema
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                             trocarTema();
                         }
-                
+                    if(!jogada_Valida(tabuleiro,aux)) jogo = ENDGAME;// se NÃO TIVER JOGADA VALIDA
                     }
             
                 break;
 
-                case RESET:
-                    desenha_tabuleiro(tabuleiro,i_inicial,j_inicial,clique_atual);
+                case RESTARTGAME:
+                    desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
                     Titulo();
                     startTime = GetTime();
                     inicializa_tabuleiro(tabuleiro);
-                        jogo = PLAY;
+                        jogo = STARTGAME;
 
                 break;
 
-                case FIMDEJOGO:
-                    desenha_tabuleiro(tabuleiro,i_inicial,j_inicial,clique_atual);
+                case ENDGAME:
+                    desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
                     Titulo();
-                    if(locale_Reset()) 
+                    if(locateButton(restartButton)) 
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                        jogo = RESET;
+                        jogo = RESTARTGAME;
                         }
                     
-
-                    if(locale_Muda()){
+                    if(locateButton(themeButton)){
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                             trocarTema();
                         }
@@ -91,4 +86,3 @@ int main(void)
     CloseWindow();
     return 0;
 }
-
