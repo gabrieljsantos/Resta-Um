@@ -22,7 +22,7 @@ int main(void)
     while (!WindowShouldClose())
     {
         BeginDrawing();
-        ClearBackground(colors_theme.);
+        ClearBackground(BLACK);
 
         switch (jogo) {
             case MAIN_MENU:

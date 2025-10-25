@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "projeto.h"
-#include "themesclass.h"
 
 //----------------------
 // VARIÁVEIS GLOBAIS
@@ -336,7 +335,7 @@ void Emblema(void){
     if(checks_if_the_mouse_is_in_an_area(mouse,start_Button)){
         DrawRectangleRec(
             ExpandRectangle(start_Button,button_border_size),
-                colors_theme.ButtonBoardColor);
+                BLACK);
                 }
     
     DrawText("Resta Um", inicioX-60, inicioY, 100, corPeca);
