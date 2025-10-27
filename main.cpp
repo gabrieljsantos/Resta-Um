@@ -1,51 +1,87 @@
-#include "raylib.h"
+// INCLUSÃO DE BIBLIOTECAS
 #include <locale.h>
 #include "projeto.h"
 
+using namespace std;
+
 int main(void)
 {
-    setlocale(LC_ALL, "Portuguese"); // configura a linguagem para português
-    
-    
-    // Initialization
-    //--------------------------------------------------------------------------------------   
+    setlocale(LC_ALL, "Portuguese");
+    cout << "\033[32m"<<std::endl; // Muda a cor do terminal para verde
 
-    InitWindow(screenWidth, screenHeight, "TELA 60FPS");
+    // INICIALIZAÇÃO
+    InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
+    SetTargetFPS(fps);
 
-    SetTargetFPS(60);             // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    stateJogo jogo = main_Menu;
+    int i_inicial = 0, j_inicial = 0, aux;
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-
-            
-
-        //----------------------------------------------------------------------------------
-
-        // Draw
-        
-                
-        //----------------------------------------------------------------------------------
+    while (!WindowShouldClose())
+    { 
         BeginDrawing();
+        ClearBackground(corFundo);
 
-        ///------------------
-        /*/ PLAY GAME ---> */renderiza_Jogo();
-        ///-------------------
-    
-        ClearBackground(BLACK);// COR DE FUNDO
+        switch (jogo) {
+            case main_Menu:
+                    Emblema();
+                    if(locateButton(startButton)) {
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                            inicializaTabuleiro(tabuleiro); // inicia  o tabuleiro um vez somente!
+                            startTime = GetTime(); 
+                            jogo = STARTGAME;
+                        }
+                    }
+                break;
+
+            case STARTGAME:
+                    localizePart(tabuleiro, &i_inicial, &j_inicial);
+                    desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+                    Jogada();
+                    Titulo();
+                     
+                    if(locateButton(restartButton)) // Botão restart
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                        jogo = RESTARTGAME;
+                        }
+                    if(locateButton(themeButton)){ // Botão tema
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                            trocarTema();
+                        }
+                    if(!jogadaValida(tabuleiro,aux)) jogo = ENDGAME;// se NÃO TIVER JOGADA VALIDA
+                    }
+            
+                break;
+
+                case RESTARTGAME:
+                    desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+                    Titulo();
+                    startTime = GetTime();
+                    inicializaTabuleiro(tabuleiro);
+                        jogo = STARTGAME;
+
+                break;
+
+                case ENDGAME:
+                    desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+                    Titulo();
+                    if(locateButton(restartButton)) 
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                        jogo = RESTARTGAME;
+                        }
+                    
+                    if(locateButton(themeButton)){
+                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                            trocarTema();
+                        }
+                
+                    }
+                break;
+        }
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
-
+    CloseWindow();
     return 0;
 }
