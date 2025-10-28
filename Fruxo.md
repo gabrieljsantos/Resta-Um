@@ -2,9 +2,41 @@
 flowchart TD
     includes[#Includes] --> main
     subgraph main
-init[Inicialização] --> mainwhile[Loop do Game] --> return[Saida]
+        init[Inicialização] --> mainwhile[Loop do Game] --> return[Saida]
+    end
+        mainwhile --> mainwhile_code
+        
+        
+        main_switch -->|STARTGAME| D[Executa caso 2]
+
+
+    subgraph mainwhile_code[Loop do Game]
+
+        main_switch{switch do jogo}
+        main_switch -->|main_Menu| menu_principa[Menu Principal]
+        main_switch -->|RESTARTGAME| RESTARTGAME[Procedimento de Reset]
+        main_switch -->|ENDGAME| ENDGAME[Fim de Partida]
     end
 
+    
+    menu_principa --> menu_principa_code
+    subgraph menu_principa_code[Menu Principal]
+    if_startButton{Verificação de clique}
+    if_startButton --> |True| play_Game[jogo = STARTGAME]
+    end    
+    
+    RESTARTGAME --> RESTARTGAME_code
+    subgraph RESTARTGAME_code[Procedimento de Reset]
+    reset_tabuleiro_RESTARTGAME[inicializaTabuleiro] --> STARTGAME[jogo = STARTGAME]
+    end
+
+    ENDGAME --> ENDGAME_code
+    subgraph ENDGAME_code[ENDGAME]
+        STARTGAME_ENDGAME[jogo = RESTARTGAME]
+    end
+
+
+    
 
   %% Separação Por Niveis:
   
@@ -12,6 +44,7 @@ init[Inicialização] --> mainwhile[Loop do Game] --> return[Saida]
   ADMI0001:::N1
   SINF0002:::N1
   SINF0014:::N1
+
 
 
 
