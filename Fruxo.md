@@ -1,3 +1,4 @@
+
 ```mermaid
 flowchart TD
     includes[#Includes] --> main
@@ -7,13 +8,13 @@ flowchart TD
         mainwhile --> mainwhile_code
         
         
-        main_switch -->|STARTGAME| D[Executa caso 2]
 
 
     subgraph mainwhile_code[Loop do Game]
 
         main_switch{switch do jogo}
         main_switch -->|main_Menu| menu_principa[Menu Principal]
+        main_switch -->|STARTGAME| STARTGAME[Partida Iniciada]
         main_switch -->|RESTARTGAME| RESTARTGAME[Procedimento de Reset]
         main_switch -->|ENDGAME| ENDGAME[Fim de Partida]
     end
@@ -23,15 +24,19 @@ flowchart TD
     subgraph menu_principa_code[Menu Principal]
     if_startButton{Verificação de clique}
     if_startButton --> |True| play_Game[jogo = STARTGAME]
+    end      
+
+    STARTGAME --> STARTGAME_code
+    subgraph STARTGAME_code
     end    
     
     RESTARTGAME --> RESTARTGAME_code
     subgraph RESTARTGAME_code[Procedimento de Reset]
-    reset_tabuleiro_RESTARTGAME[inicializaTabuleiro] --> STARTGAME[jogo = STARTGAME]
+    reset_tabuleiro_RESTARTGAME[inicializaTabuleiro] --> STARTGAME_RESTARTGAME[jogo = STARTGAME]
     end
 
     ENDGAME --> ENDGAME_code
-    subgraph ENDGAME_code[ENDGAME]
+    subgraph ENDGAME_code[Procedimento de Reset]
         STARTGAME_ENDGAME[jogo = RESTARTGAME]
     end
 
