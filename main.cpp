@@ -42,7 +42,7 @@ int main(void)
                      
                     if(locateButton(restartButton)) // Botão restart
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                        jogo = RESTARTGAME;
+                        jogo = RESETGAME;
                         }
                     if(locateButton(themeButton)){ // Botão tema
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -53,7 +53,7 @@ int main(void)
             
                 break;
 
-                case RESTARTGAME:
+                case RESETGAME:
                     desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
                     Titulo();
                     startTime = GetTime();
@@ -67,7 +67,7 @@ int main(void)
                     Titulo();
                     if(locateButton(restartButton)) 
                         if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                        jogo = RESTARTGAME;
+                        jogo = RESETGAME;
                         }
                     
                     if(locateButton(themeButton)){
