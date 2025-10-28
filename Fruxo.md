@@ -15,29 +15,37 @@ flowchart TD
         main_switch{switch do jogo}
         main_switch -->|main_Menu| menu_principa[Menu Principal]
         main_switch -->|STARTGAME| STARTGAME[Partida Iniciada]
-        main_switch -->|RESTARTGAME| RESTARTGAME[Procedimento de Reset]
+        main_switch -->|RESETGAME| RESETGAME[Procedimento de Reset]
         main_switch -->|ENDGAME| ENDGAME[Fim de Partida]
     end
 
     
     menu_principa --> menu_principa_code
     subgraph menu_principa_code[Menu Principal]
-    if_startButton{Verificação de clique}
+    if_startButton{Se clique: START}
     if_startButton --> |True| play_Game[jogo = STARTGAME]
     end      
 
     STARTGAME --> STARTGAME_code
-    subgraph STARTGAME_code
+    subgraph STARTGAME_code[Lógica do jogo]
+    Desenha_STARTGAME[Desenha Tabuleiro]
+    --> Jogada_STARTGAME[Lógica]
+    --> if_ENDGAME{Se fim de partida} -->fim[jogo = ENDGAME]
+    Desenha_STARTGAME[Desenha Tabuleiro]
+    -->if_RESETBUTTON{Se clique: RESET}
+    --> reset[jogo = RESETGAME]
     end    
     
-    RESTARTGAME --> RESTARTGAME_code
+    RESETGAME --> RESTARTGAME_code
     subgraph RESTARTGAME_code[Procedimento de Reset]
-    reset_tabuleiro_RESTARTGAME[inicializaTabuleiro] --> STARTGAME_RESTARTGAME[jogo = STARTGAME]
+    reset_tabuleiro_RESTARTGAME[inicializa Tabuleiro] --> STARTGAME_RESTARTGAME[jogo = STARTGAME]
     end
 
     ENDGAME --> ENDGAME_code
     subgraph ENDGAME_code[Procedimento de Reset]
-        STARTGAME_ENDGAME[jogo = RESTARTGAME]
+    if_resetButton{Se clique: RESET}
+    if_resetButton --> |True| STARTGAME_ENDGAME[jogo = RESETGAME]
+        
     end
 
 
@@ -46,18 +54,24 @@ flowchart TD
   %% Separação Por Niveis:
   
 
-  main_switch:::N4
-  MATI0017:::N1
-  ADMI0001:::N1
-  SINF0002:::N1
-  SINF0014:::N1
-
-
-
-
-
-  %% ==== N1 ====
-  MATI0017[MATI0017 - CÁLCULO I]:::done
+  RESETGAME:::N5
+  STARTGAME_ENDGAME:::N5
+  reset:::N5
+  main_switch:::N6
+  mainwhile:::N8
+  if_startButton:::N2
+  if_resetButton:::N2
+  if_RESETBUTTON:::N2
+  if_ENDGAME:::N2                  
+  Jogada_STARTGAME:::N7                  
+  Desenha_STARTGAME:::N9                  
+  fim:::N1                  
+  ENDGAME:::N1                  
+  play_Game:::N8 
+  STARTGAME_RESTARTGAME:::N8                 
+  STARTGAME:::N8                 
+  menu_principa:::N4                 
+  reset_tabuleiro_RESTARTGAME:::N4                 
 
 
 
