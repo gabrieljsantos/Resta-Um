@@ -44,7 +44,7 @@ enum Clique { CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO }; // Enumerado para logica dos cl
 enum Movimento { MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM }; // logica dos movimentos
 enum Resta { NAO_RESTA_JOGADA, RESTA_JOGADA}; // logica Para usar se resta jogada ou não
 enum PART_STATE {N_EXIST, VAZIO, PART}; // logica das peças do tabuleiro
-enum stateJogo {main_Menu, STARTGAME, RESTARTGAME, ENDGAME}; // logica do loop do jogo
+enum stateJogo {main_Menu, STARTGAME, RESETGAME, ENDGAME}; // logica do loop do jogo
 //---
 
 // Variáveis globais:
