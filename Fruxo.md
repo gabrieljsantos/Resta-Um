@@ -29,7 +29,7 @@ flowchart TD
     STARTGAME --> STARTGAME_code
     subgraph STARTGAME_code[Lógica do jogo]
     Desenha_STARTGAME[Desenha Tabuleiro]
-    --> Jogada_STARTGAME[Lógica]
+    --> Jogada_STARTGAME[Jogada]
     --> if_ENDGAME{Se fim de partida} -->fim[jogo = ENDGAME]
     Desenha_STARTGAME[Desenha Tabuleiro]
     -->if_RESETBUTTON{Se clique: RESET}
