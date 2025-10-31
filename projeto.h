@@ -36,7 +36,7 @@ typedef struct {
 
 extern Rectangle startButton;   // Botao Start 
 extern Rectangle themeButton;   // Botao Troca de Tema
-extern Rectangle restartButton; // Botao restart
+extern Rectangle resetButton; // Botao restart
 extern Rectangle borda; // Borda dos botoes
 
 // Enumeradores:
@@ -150,7 +150,7 @@ bool localizePart(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1)
  */
 
 
-int  calculeMovimento(int i_inicial, int j_inicial, int i_final, int j_final);
+int  calculeMovimento(int i_inicial, int j_inicial, int i_fim, int j_fim);
 
 void Titulo(void); // procedimento: Mostra BOTOES e Nome do JOGO
 
