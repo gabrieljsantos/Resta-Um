@@ -26,13 +26,14 @@ Color corPeca = DARKBROWN; // Peça  1: Marrom Escuro
 Color corTabu = BROWN;     // tabu  1: Marrom claro
 Color corTabuF = DARKBROWN;   // tabu  1: Marrom claro
 Color corTime = BLACK;     // Time  1: Preto
+Color corERRO = WHITE;
    // Tema 1: Beige/Marrom
 
 int inicioX = screenWidth/3.5; //POSIÇÃO "ABICISSA" (x), ONDE INICIA A IMPREÇÃO DO TABULEIRO
 int inicioY = screenHeight/4;  //POSIÇÃO "ORDENADA" (y), ONDE INICIA A IMPREÇÃO DO TABULEIRO 
  
 //                                                            BOTÕES E SUAS COORDENADAS{
-Rectangle restartButton = {700.0f, 500.0f, 100.0f, 45.0f}; // RESTART --> RENICIAR JOGO
+Rectangle resetButton = {700.0f, 500.0f, 100.0f, 45.0f}; // RESTART --> RENICIAR JOGO
 Rectangle startButton = {350, 350, 150.0f, 70.0f};         // START --> INICIAR JOGO
 Rectangle themeButton = {30.0f, 500.0f, 100.0f, 45.0f};    // THEME --> TEMA            }
 
@@ -74,6 +75,7 @@ bool trocarTema(void) {
         corTabu = BROWN;
         corTabuF = DARKBROWN;
         corTime = BLACK;
+        corERRO = WHITE; 
         }
         else{
         // tama 2: escuro
@@ -83,6 +85,7 @@ bool trocarTema(void) {
         corTabu = BLACK;
         corTabuF = BLACK;
         corTime = GOLD;
+        corERRO = RED;
         }
 
     return temaAtual;  // Retorna o novo tema
@@ -110,9 +113,11 @@ void desenhaTabuleiro(Part (&tabuleiro)[TAM][TAM], int i_aux, int j_aux, int cli
             if(jogadaValida(tabuleiro,r_aux)){
 
                 int movimento = calculeMovimento(i_atual, j_atual, i_aux, j_aux); // Mostra onde a peça pode mover
+                
                 if(movimento == MOVIMENTO_VALIDO && tabuleiro[i_aux][j_aux].state == VAZIO) {
+                    std:: cout << i_atual<< " "<< j_atual<< " != " << i_aux<< " "<< j_aux<<std::endl;
                     for(int i = 0;i<4;i++)
-                        DrawCircleLinesV(tabuleiro[i_aux][j_aux].pos,raio+i,GREEN);
+                        DrawCircleLinesV(tabuleiro[i_aux][j_aux].pos,raio+i,GOLD);
                 }  
 
                 if (i == i_aux && j == j_aux) {
@@ -135,13 +140,17 @@ void desenhaTabuleiro(Part (&tabuleiro)[TAM][TAM], int i_aux, int j_aux, int cli
 //----------------------------------------------------------------------------
 // Função calcule_movimento
 //----------------------------------------------------------------------------
-int calculeMovimento(int Ic, int Jc, int Ifim, int jfim) {
-    if (Ic == Ifim && Jc == jfim) return MOVIMENTO_NENHUM; // se clicar na mesma peça
+int calculeMovimento(int Ic, int Jc, int i_fim, int j_fim) {
+    int i_alvo = (Ic + i_fim) / 2; //i meio = i origem + Delta i /2
+    int j_alvo = (Jc + j_fim) / 2;
+    if (Ic == i_fim && Jc == j_fim) return MOVIMENTO_NENHUM; // se clicar na mesma peça
 
-    else if (Ic != Ifim && Jc != jfim) return MOVIMENTO_INVALIDO; //se nao clicar em uma peça valdida, para o movimento
+    else if (Ic != i_fim && Jc != j_fim) return MOVIMENTO_INVALIDO; //se nao clicar em uma peça valdida, para o movimento
 
-    else if (abs(Ifim - Ic) == 2 || abs(jfim - Jc) == 2) return MOVIMENTO_VALIDO; //se seguir a regra do jogo
+    else if ((abs(i_fim - Ic) == 2 || abs(j_fim - Jc) == 2) && (tabuleiro[i_alvo][j_alvo].state==PART)) 
+        return MOVIMENTO_VALIDO; //se seguir a regra do jogo
         // abs retorna o modulo do valor 
+        
     return MOVIMENTO_INVALIDO; // se tentar jogar em diagonal
 }
 
@@ -208,7 +217,7 @@ bool validaPart(Part(&tabuleiro)[TAM][TAM], int iTest, int jTest){
         if(tabuleiro[iTest][jTest].state == N_EXIST) //parte que esta fora do tabuleiro (em branco)
             return false;
 
-        if(tabuleiro[iTest][jTest].state != PART) // nao é uma peça valida
+        if(tabuleiro[iTest][jTest].state == VAZIO) // nao é uma peça valida
             return false;
 
         //---------------------------------------------------------------------
@@ -235,7 +244,7 @@ bool validaPart(Part(&tabuleiro)[TAM][TAM], int iTest, int jTest){
             //---------------------------------------------------------------
 
             if ((tabuleiro[i_destino][j_destino].state == VAZIO )&& (tabuleiro[i_meio][j_meio].state != VAZIO)){
-
+                  //  printf("destino: , %d, %d\n meeio: %d, %d \n ", i_destino,j_destino,i_meio,j_meio);
                 return true; //Existe alguma jogada valida
             }
         }
@@ -272,7 +281,8 @@ void Jogada(void){
                int movimento = calculeMovimento(i_atual, j_atual, i_fim, j_fim);
 
                 if (movimento == MOVIMENTO_INVALIDO) {
-                    DrawText("MOVIMENTO INVALIDO",250,90,30,RED);
+                    SetTargetFPS(2);
+                    DrawText("MOVIMENTO INVALIDO",250,90,30,corERRO);
                 } else {
                     int i_alvo = (i_atual + i_fim) / 2; //i meio = i origem + Delta i /2
                     int j_alvo = (j_atual + j_fim) / 2;//i meio = i origem + Delta j /2
@@ -351,8 +361,8 @@ void Titulo(void){
     DrawText("----- RESTA UM -----", 252, 50, 30, corPeca); // ----> Titulo
 
 //---{Para Criar uma Borda no Botão a ser selecionado 
-    if(locateButton(restartButton)){
-        borda = expandRectangle(restartButton,4);
+    if(locateButton(resetButton)){
+        borda = expandRectangle(resetButton,4);
         DrawRectangleRec(borda,GREEN);
     }
      
@@ -369,12 +379,12 @@ void Titulo(void){
         if (resta == 1) {
             DrawText("Vitória", 100, 50, 30, BLUE);
         } else {
-            DrawText("FIM DE JOGO", screenWidth/2 -120, screenHeight/2, 40, RED);
+            DrawText("FIM DE JOGO", screenWidth/2 -120, 2, 40, RED);
             DrawText(TextFormat("Restaram: %d", resta), 25, 70, 30, corPeca);
         }
     }
     //Botões que serao desenhados THEME e RESTART
-    DrawRectangle(restartButton.x, restartButton.y, restartButton.width, restartButton.height, corBotao);
+    DrawRectangle(resetButton.x, resetButton.y, resetButton.width, resetButton.height, corBotao);
     DrawRectangle(themeButton.x, themeButton.y, themeButton.width, themeButton.height, corBotao);
      //--------------------------------------{ nome dos botões
     DrawText("RESET", 715, 515, 20, BLACK); //NOME
@@ -403,3 +413,4 @@ void DisplayTimer(void) {
         DrawText(textoTimer, 640, 20, 25, corTime);
     }
 }
+
