@@ -26,6 +26,7 @@ const int Movimentos[4][2] = { // MOVIMENTOS PARA TESTE SE A PEÇA PODE SE MOVER
 extern Color corFundo;      // Fundo (Preto/Beige)
 extern Color corPeca;       // Peças (Roxo/Marrom)
 extern bool temaAtual;      // TRUE = Tema 1, FALSE = Tema 2
+extern bool modoAtual;      // TRUE = jogador, FALSE = iaJoga
 
 
 // Estruturas:
@@ -35,6 +36,7 @@ typedef struct {
 } Part; // estrutura da Peça
 
 extern Rectangle startButton;   // Botao Start 
+extern Rectangle modoButton;   // Botao Modo de Jogo 
 extern Rectangle themeButton;   // Botao Troca de Tema
 extern Rectangle resetButton; // Botao restart
 extern Rectangle borda; // Borda dos botoes
@@ -59,6 +61,7 @@ bool locateButton(Rectangle sri); // recebe o Botão como parametro
 Rectangle expandRectangle(Rectangle original, float border_size); // recebe o botão como parametro e o tamanho da borda
 
 bool trocarTema(void); // procedimento
+bool modoJogo(void);
 
 bool jogadaValida(Part (&tabuleiro)[TAM][TAM], int (&Resta));
 /**
@@ -150,13 +153,14 @@ bool localizePart(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1)
  */
 
 
-int  calculeMovimento(int i_inicial, int j_inicial, int i_fim, int j_fim);
+int  calculeMovimento(int i_Inicio, int j_Inicio, int i_fim, int j_fim);
 
 void Titulo(void); // procedimento: Mostra BOTOES e Nome do JOGO
 
 void Emblema(void);// procedimento: Mostra BOTÃO e nome do jogo
 
 void Jogada(void); // procedimento: atualiza os cliques e faz a logica do jogo(Mediante as regras)
+void iaJoga(void);
 
 void inicializaTabuleiro(Part (&tabuleiro)[TAM][TAM]);
 
