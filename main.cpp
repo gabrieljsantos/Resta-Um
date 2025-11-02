@@ -33,29 +33,13 @@ int main(void)
                     jogo = STARTGAME;
                 }
             }
-
-            if(locateButton(modoButton)){
-                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-                {
-                    modoJogo(); // toca o modo atual
-                }
-
-            }
-
             break;
 
         case STARTGAME:
             localizePart(tabuleiro, &i_inicial, &j_inicial);
             desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
             Titulo();
-
-            if(modoAtual){ // modo de jogo, ia ou jogador
-                Jogada();
-            }
-            else{
-                iaJoga();
-            }
-
+            Jogada();
             if (locateButton(resetButton)) // Botão restart
                 if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
                 {
