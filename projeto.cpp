@@ -1,6 +1,5 @@
 //----------------------- CHAMDA DA
 #include "projeto.h"
-#include <random>
 ///////////////////////////////
 //----------------------
 // VARIÁVEIS GLOBAIS
@@ -20,8 +19,6 @@ int i_atual = 0, j_atual = 0; // variaveis para guardar o I(Linha) e J(Coluna) d
 
 int clique_atual = CLIQUE_PRIMEIRO; // esperando primeiro clique
 
-bool modoAtual = true;
-
 bool temaAtual = true;      // Começa com Tema 1
 Color corBotao = BROWN;     // Botao 1: Marrom Claro
 Color corFundo = BEIGE;     // Fundo 1: Beige
@@ -39,7 +36,6 @@ int inicioY = screenHeight / 4;  // POSIÇÃO "ORDENADA" (y), ONDE INICIA A IMPR
 Rectangle resetButton = {700.0f, 500.0f, 100.0f, 45.0f}; // RESTART --> RENICIAR JOGO
 Rectangle startButton = {350, 350, 150.0f, 70.0f};       // START --> INICIAR JOGO
 Rectangle themeButton = {30.0f, 500.0f, 100.0f, 45.0f};  // THEME --> TEMA            }
-Rectangle modoButton = {350.0f, 430.0f, 150.0f, 70.0f};  // modo --> modo de jogo            }
 
 Rectangle borda; // Vareavel Borda, do TIPO Retangle para mostrar identificar botao com cor VERDE
 //(No momento, vazia) criada 1 vez somente
@@ -66,20 +62,6 @@ void inicializaTabuleiro(Part (&tabuleiro)[TAM][TAM])
         }
     }
     tabuleiro[3][3].state = VAZIO; // posição do tabuleiro (meio) vazia
-}
-bool modoJogo(void)
-{
-    modoAtual = !modoAtual; // altera o modo, TRUE/FALSE
-
-    if (modoAtual) // true
-    {
-         return modoAtual; // novo modo
-    }
-    else
-    {
-        return modoAtual; // novo modo
-    }
-
 }
 //----------------------------------------------------------------------------
 // FUNÇÃO TROCA TEMA -- > PARA MUDAR OS TEMAS
@@ -170,17 +152,17 @@ void desenhaTabuleiro(Part (&tabuleiro)[TAM][TAM], int i_aux, int j_aux, int cli
 //----------------------------------------------------------------------------
 // Função calcule_movimento
 //----------------------------------------------------------------------------
-int calculeMovimento(int i_Inicio, int j_Inicio, int i_fim, int j_fim)
+int calculeMovimento(int Ic, int Jc, int i_fim, int j_fim)
 {
-    int i_alvo = (i_Inicio + i_fim) / 2; // meio entre inicio e fim
-    int j_alvo = (j_Inicio + j_fim) / 2; //
-    if (i_Inicio == i_fim && j_Inicio == j_fim)
+    int i_alvo = (Ic + i_fim) / 2; // i meio = i origem + Delta i /2
+    int j_alvo = (Jc + j_fim) / 2;
+    if (Ic == i_fim && Jc == j_fim)
         return MOVIMENTO_NENHUM; // se clicar na mesma peça
 
-    else if (i_Inicio != i_fim && j_Inicio != j_fim)
+    else if (Ic != i_fim && Jc != j_fim)
         return MOVIMENTO_INVALIDO; // se nao clicar em uma peça valdida, para o movimento
 
-    else if ((abs(i_fim - i_Inicio) == 2 || abs(j_fim - j_Inicio) == 2) && (tabuleiro[i_alvo][j_alvo].state == PART))
+    else if ((abs(i_fim - Ic) == 2 || abs(j_fim - Jc) == 2) && (tabuleiro[i_alvo][j_alvo].state == PART))
         return MOVIMENTO_VALIDO; // se seguir a regra do jogo
     // abs retorna o modulo do valor
 
@@ -290,58 +272,13 @@ bool validaPart(Part (&tabuleiro)[TAM][TAM], int iTest, int jTest)
 
         if ((tabuleiro[i_destino][j_destino].state == VAZIO) && (tabuleiro[i_meio][j_meio].state != VAZIO))
         {
+            //  printf("destino: , %d, %d\n meeio: %d, %d \n ", i_destino,j_destino,i_meio,j_meio);
             return true; // Existe alguma jogada valida
         }
     }
     // Se nao tem movimento
 
     return false;
-}
-//----------------------------------------------------------------------------
-// PROCEDIMENTO iaJoga ---> Jogadas aleatorias
-// TUDO SOZINHO
-//----------------------------------------------------------------------------
-void iaJoga()
-{
-    SetTargetFPS(2);//deixa as jogadas mais lentas
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(0, 7);
-
-    for (int i = 0; i < TAM; i++)
-    {
-        for (int j = 0; j < TAM; j++)
-        {
-            if (tabuleiro[i][j].state == PART)
-            {
-                int Iinicio = i;
-                int Jinicio = j;
-
-                // tenta encontrar um destino válido
-                for (int tentativa = 0; tentativa < 20; tentativa++)
-                {
-                    int Ifim = dist(gen);
-                    int Jfim = dist(gen);
-
-                    int movimento = calculeMovimento(Iinicio, Jinicio, Ifim, Jfim);
-                    if (movimento != MOVIMENTO_VALIDO) continue;
-
-                    int i_alvo = (Iinicio + Ifim) / 2;
-                    int j_alvo = (Jinicio + Jfim) / 2;
-
-                    // checagem pra validação
-                    if (tabuleiro[i_alvo][j_alvo].state == PART &&
-                        tabuleiro[Ifim][Jfim].state == VAZIO)
-                    {
-                        tabuleiro[i_alvo][j_alvo].state = VAZIO;
-                        tabuleiro[Ifim][Jfim].state = PART;
-                        tabuleiro[Iinicio][Jinicio].state = VAZIO;
-                        return; // faz apenas um movimento
-                    }
-                }
-            }
-        }
-    }
 }
 
 //----------------------------------------------------------------------------
@@ -463,29 +400,10 @@ void Emblema(void)
         borda = expandRectangle(startButton, 4);
         DrawRectangleRec(borda, GREEN);
     }
-
-    //---{Para Criar uma Borda no Botão a ser selecionado
-    if (locateButton(modoButton))
-    {
-        borda = expandRectangle(modoButton, 4);// botão e o tamnho da borda
-        DrawRectangleRec(borda, GREEN);
-    }
-
-
     //----------------------------------------------------
     // Botão desenhado
     DrawRectangleRec(startButton, corBotao); // Botao Start
     DrawText("START", screenWidth / 2 - 43, screenHeight / 2 + 70, 25, BLACK);
-
-    if(modoAtual){
-        DrawRectangleRec(modoButton, corBotao); // Botao Start
-        DrawText("Jogador", screenWidth / 2 - 43, 430 + 20, 25, BLACK);
-    }
-    else{
-        DrawRectangleRec(modoButton, corBotao); // Botao Start
-        DrawText("iaJoga", screenWidth / 2 - 43, 430 + 20, 25, BLACK);
-    }   
-
 }
 //----------------------------------------------------------------------------
 // PROCEDIMENTO Titulo --> Para Mostrar GAMEOVER/VITORIA, BOTOES, e TITULO
