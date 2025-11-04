@@ -1,83 +1,77 @@
-// iNCLUSÃO DE BIBLIOTECAS
-#include "raylib.h"
+// INCLUSÃO DE BIBLIOTECAS
 #include <locale.h>
 #include "projeto.h"
-#include <iostream>
-using namespace std;
 
 int main(void)
 {
     setlocale(LC_ALL, "Portuguese");
-    cout << "\033[32m"<<std::endl; // Muda a cor do terminal para verde
 
     // INICIALIZAÇÃO
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
-    SetTargetFPS(fps);
 
-    stateJogo jogo = main_Menu;
-    int i_inicial = 0, j_inicial = 0, aux;
+    StateJogo jogo = main_Menu;
+    int i_inicial = 0, j_inicial = 0; 
 
-    // Main game loop
     while (!WindowShouldClose())
     {
+        SetTargetFPS(fps);
         BeginDrawing();
         ClearBackground(corFundo);
+        
 
-        switch (jogo) {
-            case main_Menu:
-                    Emblema();
-                    if(locateButton(startButton)) {
-                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                            inicializa_tabuleiro(tabuleiro); // inicia o tabuleiro um vez somente!
-                            startTime = GetTime(); 
-                            jogo = STARTGAME;
-                        }
-                    }
-                break;
-
-            case STARTGAME:
-                    localize_Part(tabuleiro, &i_inicial, &j_inicial);
-                    desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
-                    Jogada();
-                    Titulo();
-                     
-                    if(locateButton(restartButton)) // Botão restart
-                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                        jogo = RESTARTGAME;
-                        }
-                    if(locateButton(themeButton)){ // Botão tema
-                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                            trocarTema();
-                        }
-                    if(!jogada_Valida(tabuleiro,aux)) jogo = ENDGAME;// se NÃO TIVER JOGADA VALIDA
-                    }
-            
-                break;
-
-                case RESTARTGAME:
-                    desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
-                    Titulo();
+        switch (jogo){
+        case main_Menu:
+            Emblema();
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                if(locateButton(startButton)){
+                    inicializaTabuleiro(tabuleiro); 
                     startTime = GetTime();
-                    inicializa_tabuleiro(tabuleiro);
-                        jogo = STARTGAME;
+                    jogo = STARTGAME;
+                }
+            }
+            break;
 
-                break;
+        case STARTGAME:
+            localizePart(tabuleiro, i_inicial, j_inicial);
+            desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+            Titulo();
+            Jogada();
 
-                case ENDGAME:
-                    desenha_tabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
-                    Titulo();
-                    if(locateButton(restartButton)) 
-                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                        jogo = RESTARTGAME;
-                        }
-                    
-                    if(locateButton(themeButton)){
-                        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                            trocarTema();
-                        }
+            if (!jogadaValida(tabuleiro))
+                jogo = ENDGAME;
+
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                 
-                    }
-                break;
+                if (locateButton(resetButton))
+                    jogo = RESETGAME;
+
+                if (locateButton(themeButton))
+                    trocarTema();
+            }
+                
+            break;
+
+        case RESETGAME:
+            desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+            Titulo();
+            startTime = GetTime();
+            inicializaTabuleiro(tabuleiro);
+            jogo = STARTGAME;
+
+            break;
+
+        case ENDGAME:
+            desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+            Titulo();
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                
+                if (locateButton(resetButton))
+                    jogo = RESETGAME;
+
+                if (locateButton(themeButton))
+                    trocarTema();
+            }
+            break;
         }
 
         EndDrawing();

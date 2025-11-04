@@ -1,14 +1,10 @@
 #ifndef PROJETO_H_INCLUDED
 #define PROJETO_H_INCLUDED
-
 #include "raylib.h"
-#include <stdio.h>
 #include <iostream>
-#include <stdbool.h>
 #include <math.h>
-#include <stdlib.h>
+
 const int fps = 144;
-// Constantes
 const int screenWidth = 850;
 const int screenHeight = 600;
 const int TAM = 7;
@@ -16,52 +12,84 @@ const int raio = 25;
 const int diametro = raio * 2;
 const int espaco = 10;
 const int Movimentos[4][2] = {
-    {-2, 0}, // Cima
-    {+2, 0}, // Baixo
-    {0, -2}, // Esquerda
-    {0, +2}  // Direita
+    {-2, 0},
+    {+2, 0},
+    {0, -2},
+    {0, +2}
 };
-extern Color corFundo;      // Fundo (Preto/Branco)
-extern Color corPeca;       // Peças (Roxo/Marrom)
-extern bool temaAtual;      // TRUE = Tema 1, FALSE = Tema 2
+extern Color corFundo;
+extern Color corPeca;
+extern bool temaAtual;
 
-
-// Estruturas
-typedef struct {
-    int state;   // 0 = invalido, 1 = vazio, 2 = peça
-    Vector2 pos; // posição X e Y
-    bool valida;
+typedef struct
+{
+    int state;
+    Vector2 pos;
 } Part;
-extern Rectangle startButton; // Botao de Start 
-extern Rectangle themeButton; // Botao de Troca de Tema
-extern Rectangle restartButton; // Botao de restart
 
-// Enumeradores
-enum Clique { CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO };
-enum Movimento { MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM };
-enum Resta { NAO_RESTA_JOGADA, RESTA_JOGADA};
-enum PART_STATE {N_EXIST, VAZIO, EXIST};
-enum stateJogo {main_Menu, STARTGAME, RESTARTGAME, ENDGAME};
+extern Rectangle startButton;
+extern Rectangle themeButton;
+extern Rectangle resetButton;
+extern Rectangle borda;
 
-// Variáveis globais
+enum Clique
+{
+    CLIQUE_PRIMEIRO,
+    CLIQUE_SEGUNDO
+};
+enum Movimento
+{
+    MOVIMENTO_VALIDO,
+    MOVIMENTO_INVALIDO,
+    MOVIMENTO_NENHUM
+};
+enum Resta
+{
+    NAO_RESTA_JOGADA,
+    RESTA_JOGADA
+};
+enum PartState
+{
+    N_EXIST,
+    VAZIO,
+    PART
+};
+enum StateJogo
+{
+    main_Menu,
+    STARTGAME,
+    RESETGAME,
+    ENDGAME
+};
+
 extern Part tabuleiro[TAM][TAM];
-extern float startTime;  
+extern float startTime;
 extern int clique_atual;
 
-// Protótipos de funções;
 bool locateButton(Rectangle sri);
-Rectangle expandRectangle(Rectangle original, int border_size);
+
+Rectangle expandRectangle(Rectangle original, float border_size);
+
 bool trocarTema(void);
-bool jogada_Valida(Part (&tabuleiro)[TAM][TAM], int (&Resta));
-bool valida_Part(Part (&tabuleiro)[TAM][TAM], int It, int Jt, int (&S));
-bool localize_Part(Part (&tabuleiro)[TAM][TAM], int* ii, int* jj, int state = -1);
-int  calcule_movimento(int i_inicial, int j_inicial, int i_final, int j_final);
+
+bool jogadaValida(Part tabuleiro[TAM][TAM] );
+
+bool validaPart(Part tabuleiro[TAM][TAM], int iTest, int jTest);
+
+bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state = -1);
+
+int calculeMovimento(int i_inicial, int j_inicial, int i_fim, int j_fim);
+
 void Titulo(void);
+
 void Emblema(void);
+
 void Jogada(void);
-void inicializa_tabuleiro(Part (&tabuleiro)[TAM][TAM]);
-void desenha_tabuleiro(Part (&tabuleiro)[TAM][TAM], int i_atual, int j_atual, int clique_atual);
-void renderiza_Jogo(void);
-void DisplayTimer(void);  
+
+void inicializaTabuleiro(Part tabuleiro[TAM][TAM]);
+
+void desenhaTabuleiro(Part tabuleiro[TAM][TAM], int i_atual, int j_atual, int clique_atual);
+
+void DisplayTimer(void);
 
 #endif // PROJETO_H_INCLUDED
