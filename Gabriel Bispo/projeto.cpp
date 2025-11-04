@@ -145,13 +145,13 @@ bool locateButton(Rectangle button)
     return false;
 }
 
-Rectangle expandRectangle(Rectangle original, int border_size)
+Rectangle expandRectangle(Rectangle button, int border_size)
 {
     Rectangle expanded;
-    expanded.x = original.x - border_size;
-    expanded.y = original.y - border_size;
-    expanded.width = original.width + border_size * 2;
-    expanded.height = original.height + border_size * 2;
+    expanded.x = button.x - border_size;
+    expanded.y = button.y - border_size;
+    expanded.width = button.width + border_size * 2;
+    expanded.height = button.height + border_size * 2;
     return expanded;
 }
 
