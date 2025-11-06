@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include <iostream>
 #include <math.h>
-#include "logica.h"
+#include "declaracoes.h"
 #include "const.h"
 
 
@@ -34,8 +34,6 @@ void Titulo(void);
 
 void Emblema(void);
 
-void desenhaTabuleiro(Part tabuleiro[TAM][TAM], int i_atual, int j_atual, int clique_atual);
-
 void DisplayTimer(void);
 
-#endif 
+#endif

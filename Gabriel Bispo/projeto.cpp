@@ -33,7 +33,7 @@ Rectangle borda;
 Rectangle fundoMaior = {191, 100, 460, 460};
 Rectangle fundoMenor = {201, 110, 440,440};
 
-void inicializaTabuleiro(Part tabuleiro[TAM][TAM])
+void imprimeTabuleiro(Part tabuleiro[TAM][TAM])
 {
     for (int i = 0; i < TAM; i++)
     {
@@ -78,7 +78,7 @@ bool trocarTema(void)
     return temaAtual;
 }
 
-void desenhaTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique_atual)
+void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique_atual)
 {
     DrawRectangleRec(fundoMaior, corTabuF);
     DrawRectangleRec(fundoMenor, corTabu);

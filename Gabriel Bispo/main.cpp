@@ -24,7 +24,7 @@ int main(void)
             Emblema();
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                 if(locateButton(startButton)){
-                    inicializaTabuleiro(tabuleiro); 
+                    imprimeTabuleiro(tabuleiro); 
                     startTime = GetTime();
                     jogo = STARTGAME;
                 }
@@ -33,7 +33,7 @@ int main(void)
 
         case STARTGAME:
             localizePart(tabuleiro, i_inicial, j_inicial);
-            desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+            imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
             Titulo();
             Jogada();
 
@@ -52,16 +52,16 @@ int main(void)
             break;
 
         case RESETGAME:
-            desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+            imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
             Titulo();
             startTime = GetTime();
-            inicializaTabuleiro(tabuleiro);
+            imprimeTabuleiro(tabuleiro);
             jogo = STARTGAME;
 
             break;
 
         case ENDGAME:
-            desenhaTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
+            imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
             Titulo();
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                 

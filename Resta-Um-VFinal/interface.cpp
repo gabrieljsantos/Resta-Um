@@ -1,5 +1,5 @@
 #include "interface.h"
-#include "logica.h"
+#include "declaracoes.h"
 
 float startTime = 0.0f;
 float timeElapsed;
@@ -61,7 +61,7 @@ bool trocarTema(void)
     return temaAtual;
 }
 
-void desenhaTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique_atual)
+void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique_atual)
 {
     DrawRectangleRec(fundoMaior, corTabuF);
     DrawRectangleRec(fundoMenor, corTabu);

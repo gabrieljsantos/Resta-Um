@@ -47,7 +47,7 @@ Rectangle borda; // Vareavel Borda, do TIPO Retangle para mostrar identificar bo
 //----------------------------------------------------------------------------
 // PROCEDIMENTO inicializar_tabuleiro
 //----------------------------------------------------------------------------
-void inicializaTabuleiro(Part (&tabuleiro)[TAM][TAM])
+void imprimeTabuleiro(Part (&tabuleiro)[TAM][TAM])
 {
     for (int i = 0; i < TAM; i++)
     {
@@ -99,7 +99,7 @@ bool trocarTema(void)
 //----------------------------------------------------------------------------
 // PROCEDIMENTO desenha_tabuleiro --->  PARA DESENHAR O TABULEIRO
 //----------------------------------------------------------------------------
-void desenhaTabuleiro(Part (&tabuleiro)[TAM][TAM], int i_aux, int j_aux, int clique_atual)
+void imprimeTabuleiro(Part (&tabuleiro)[TAM][TAM], int i_aux, int j_aux, int clique_atual)
 {
 
     DrawRectangle(inicioX - 50, inicioY - 50, 460, 460, corTabuF); //| QUADRADO FUNDO

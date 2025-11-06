@@ -38,7 +38,10 @@ bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state = -1);
 
 int calculeMovimento(int i_inicial, int j_inicial, int i_fim, int j_fim);
 
-void inicializaTabuleiro(Part tabuleiro[TAM][TAM]);
+void imprimeTabuleiro(Part tabuleiro[TAM][TAM]);
+
+void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_atual, int j_atual, int clique_atual);
+
 
 void jogada();
 

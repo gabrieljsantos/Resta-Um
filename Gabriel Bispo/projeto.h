@@ -86,9 +86,9 @@ void Emblema(void);
 
 void Jogada(void);
 
-void inicializaTabuleiro(Part tabuleiro[TAM][TAM]);
+void imprimeTabuleiro(Part tabuleiro[TAM][TAM]);
 
-void desenhaTabuleiro(Part tabuleiro[TAM][TAM], int i_atual, int j_atual, int clique_atual);
+void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_atual, int j_atual, int clique_atual);
 
 void DisplayTimer(void);
 
