@@ -40,7 +40,7 @@ enum StateJogo{
 //------ Declaração das funçõe ------
 bool jogadaValida(Part tabuleiro[TAM][TAM] );
 
-bool validaPart(Part tabuleiro[TAM][TAM], int iTest, int jTest);
+bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest);
 
 bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state = -1);
 

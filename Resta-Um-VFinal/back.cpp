@@ -68,25 +68,25 @@ void jogada(void)
     }
 }
 
-bool validaPart(Part tabuleiro[TAM][TAM], int iTest, int jTest)
+bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
 {
     int i_destino, j_destino, i_meio, j_meio;
-
-    if (tabuleiro[iTest][jTest].state == N_EXIST)
-        return false;
 
     if (tabuleiro[iTest][jTest].state == VAZIO)
         return false;
 
+        int mov_i[4] = {-2,+2,0,0};
+        int mov_j[4] = {0,0,-2,+2};
+
     for (int i = 0; i < 4; i++)
     {
-        int delta_i = Movimentos[i][0];
-        int delta_j = Movimentos[i][1];
-        i_destino = iTest + delta_i;
-        j_destino = jTest + delta_j;
+        int delta_i = mov_i[i];
+        int delta_j = mov_j[i];
+        i_destino = abs(iTest + delta_i);
+        j_destino = abs(jTest + delta_j);
 
-        i_meio = iTest + delta_i / 2;
-        j_meio = jTest + delta_j / 2;
+        i_meio =abs( iTest + delta_i / 2);
+        j_meio = abs(jTest + delta_j / 2);
 
         if (i_destino < 0 || i_destino >= TAM || j_destino < 0 || j_destino >= TAM)
             continue;
@@ -112,7 +112,7 @@ bool jogadaValida(Part tabuleiro[TAM][TAM])
             if ((tabuleiro)[i][j].state == N_EXIST)
                 continue;
 
-            if (validaPart(tabuleiro, i, j))
+            if (jogadaValida(tabuleiro, i, j))
             {
                 Valido++;
             }

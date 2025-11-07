@@ -24,8 +24,8 @@ Color corTime = BLACK;
 Color corERRO = WHITE;
 
 
-Rectangle resetButton = {700.0f, 500.0f, 100.0f, 45.0f};
-Rectangle startButton = {350, 350, 150.0f, 70.0f};
+Rectangle resetButton = {820.0f, 500.0f, 100.0f, 45.0f};
+Rectangle startButton = {screenWidth/2 - 75, screenHeight /2 +45, 150.0f, 70.0f};
 Rectangle themeButton = {30.0f, 500.0f, 100.0f, 45.0f};
 
 Rectangle borda;
@@ -96,7 +96,7 @@ void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique
 
                 if (i == i_aux && j == j_aux)
                 {
-                    bool Mov = validaPart(tabuleiro, i, j);
+                    bool Mov = jogadaValida(tabuleiro, i, j);
                     Color Cor = Mov ? GREEN : RED;
                     if (clique_atual == CLIQUE_SEGUNDO)
                         Cor = RED;
@@ -176,7 +176,7 @@ void Titulo(void)
 
     DrawRectangleRec(resetButton, corBotao);
     DrawRectangleRec(themeButton, corBotao);
-    DrawText("RESET", 715, 515, 20, BLACK);
+    DrawText("RESET", 835, 515, 20, BLACK);
     DrawText("TEMA", 45, 515, 20, BLACK);
 }
 
@@ -189,11 +189,11 @@ void DisplayTimer(void)
         segundos = (int)timeElapsed % 60;
 
         sprintf(textoTimer, "Tempo: %02d:%02d", minutos, segundos);
-        DrawText(textoTimer, 640, 20, 25, corTime);
+        DrawText(textoTimer, 675, 20, 25, corTime);
     }
     if (!jogadaValida(tabuleiro))
     {
         sprintf(textoTimer, "Tempo: %02d:%02d", minutos, segundos);
-        DrawText(textoTimer, 640, 20, 25, corTime);
+        DrawText(textoTimer, 675, 20, 25, corTime);
     }
 }
