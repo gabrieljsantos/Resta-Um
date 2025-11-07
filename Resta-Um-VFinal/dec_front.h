@@ -1,11 +1,30 @@
-#ifndef PROJETO_H_INCLUDED
-#define PROJETO_H_INCLUDED
+//------ Garante que os arquivos serão usados apenas uma vez ------
+#ifndef DEC_FRONT_H_INCLUDED
+#define DEC_FRONT_H_INCLUDED
+
+//------ Inclusões ------
 #include "raylib.h"
 #include <iostream>
 #include <math.h>
 #include "dec_back.h"
-#include "const.h"
 
+//------ Constantes ------
+const int screenWidth = 850;
+const int screenHeight = 600;
+const float inicioX = screenWidth / 3.2;
+const float inicioY = screenHeight / 4;
+const int TAM = 7;
+const int raio = 25;
+const int diametro = raio * 2;
+const int espaco = 10;
+const int Movimentos[4][2] = {
+    {-2, 0},
+    {+2, 0},
+    {0, -2},
+    {0, +2}
+};
+
+//------ Externs ------
 extern Rectangle startButton;
 extern Rectangle themeButton;
 extern Rectangle resetButton;
@@ -22,6 +41,7 @@ extern Color corERRO;
 
 extern float startTime;
 
+//------ Declaração das funções ------
 bool locateButton(Rectangle button);
 
 Rectangle expandRectangle(Rectangle button, float border_size);

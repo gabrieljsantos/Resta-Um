@@ -1,17 +1,17 @@
-// INCLUSAO DE BIBLIOTECAS
 #include "dec_back.h"
 #include "dec_front.h"
 
 int main(void)
 {
 
-    // INICIALIZACAO
+    // Inicialiação da interface
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
 
     StateJogo jogo = main_Menu;
     int j_inicial;
     int i_inicial;
 
+    // Loop principal do jogo
     while (!WindowShouldClose())
     {
         SetTargetFPS(60);

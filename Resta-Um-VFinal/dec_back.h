@@ -1,12 +1,19 @@
-#ifndef LOGICA_H_INCLUDED
-#define LOGICA_H_INCLUDED
+//------ Garante que os arquivos serão usados apenas uma vez ------
+#ifndef DEC_BACK_H_INCLUDED
+#define DEC_BACK_H_INCLUDED
 
 #include "dec_front.h"
 #include "raylib.h"
 #include <iostream>
 #include <math.h>
-#include "const.h"
 
+//------ Structs ------
+typedef struct{
+    int state;
+    Vector2 pos;
+} Part;
+
+//------ Externs ------
 extern Part tabuleiro[TAM][TAM];
 extern int restaPart;
 extern int i_atual, j_atual;
@@ -14,6 +21,7 @@ extern int aux_ci, aux_cj;
 
 extern int clique_atual;
 
+//------ Enums ------
 enum Clique{
     CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO};
 
@@ -29,6 +37,7 @@ enum PartState{
 enum StateJogo{
      main_Menu, STARTGAME, RESETGAME, ENDGAME};
 
+//------ Declaração das funçõe ------
 bool jogadaValida(Part tabuleiro[TAM][TAM] );
 
 bool validaPart(Part tabuleiro[TAM][TAM], int iTest, int jTest);
@@ -41,9 +50,6 @@ void imprimeTabuleiro(Part tabuleiro[TAM][TAM]);
 
 void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_atual, int j_atual, int clique_atual);
 
-
 void jogada();
-
-
 
 #endif 
