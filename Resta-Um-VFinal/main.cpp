@@ -1,11 +1,11 @@
-// INCLUSÃO DE BIBLIOTECAS
-#include "declaracoes.h"
-#include "interface.h"
+// INCLUSAO DE BIBLIOTECAS
+#include "dec_back.h"
+#include "dec_front.h"
 
 int main(void)
 {
 
-    // INICIALIZAÇÃO
+    // INICIALIZACAO
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
 
     StateJogo jogo = main_Menu;
@@ -29,7 +29,7 @@ int main(void)
                 }
             }
             break;
-
+            
         case STARTGAME:
             localizePart(tabuleiro, i_inicial, j_inicial);
             imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);

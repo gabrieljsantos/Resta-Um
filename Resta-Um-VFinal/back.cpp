@@ -1,5 +1,5 @@
 
-# include "declaracoes.h"
+# include "dec_back.h"
 
 void imprimeTabuleiro(Part tabuleiro[TAM][TAM])
 {

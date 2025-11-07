@@ -1,5 +1,5 @@
-#include "interface.h"
-#include "declaracoes.h"
+#include "dec_back.h"
+#include "dec_front.h"
 
 float startTime = 0.0f;
 float timeElapsed;

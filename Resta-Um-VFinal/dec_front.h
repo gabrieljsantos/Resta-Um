@@ -3,10 +3,8 @@
 #include "raylib.h"
 #include <iostream>
 #include <math.h>
-#include "declaracoes.h"
+#include "dec_back.h"
 #include "const.h"
-
-
 
 extern Rectangle startButton;
 extern Rectangle themeButton;

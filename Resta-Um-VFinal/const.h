@@ -1,6 +1,7 @@
 #ifndef CONST_H
 #define CONST_H
 #include "raylib.h"
+
 const int screenWidth = 850;
 const int screenHeight = 600;
 const float inicioX = screenWidth / 3.2;

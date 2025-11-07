@@ -1,12 +1,11 @@
 #ifndef LOGICA_H_INCLUDED
 #define LOGICA_H_INCLUDED
 
-#include "interface.h"
+#include "dec_front.h"
 #include "raylib.h"
 #include <iostream>
 #include <math.h>
 #include "const.h"
-
 
 extern Part tabuleiro[TAM][TAM];
 extern int restaPart;
