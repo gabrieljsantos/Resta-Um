@@ -42,7 +42,7 @@ void jogada(void)
                 if (movimento == MOVIMENTO_INVALIDO)
                 {
                     SetTargetFPS(2);
-                    DrawText("MOVIMENTO INVALIDO", 250, 90, 30, corERRO);
+                    DrawText("MOVIMENTO INVALIDO", screenWidth/3, 90, 30, corERRO);
                 }
                 else
                 {
@@ -80,13 +80,14 @@ bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
 
     for (int i = 0; i < 4; i++)
     {
-        int delta_i = mov_i[i];
-        int delta_j = mov_j[i];
-        i_destino = abs(iTest + delta_i);
-        j_destino = abs(jTest + delta_j);
+        // int delta_i = mov_i[i];
+        // int delta_j = mov_j[i];
 
-        i_meio = abs(iTest + delta_i / 2);
-        j_meio = abs(jTest + delta_j / 2);
+        i_destino = abs(iTest + mov_i[i]);
+        j_destino = abs(jTest + mov_j[i]);
+
+        i_meio = abs(iTest + mov_i[i] / 2);
+        j_meio = abs(jTest + mov_j[i] / 2);
 
         if (i_destino < 0 || i_destino >= TAM || j_destino < 0 || j_destino >= TAM)
             continue;
@@ -136,7 +137,7 @@ bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state)
     for (int i = 0; i < TAM; i++)
     {
         for (int j = 0; j < TAM; j++)
-        {
+        { 
             if (tabuleiro[i][j].state == state || state == -1)
             {
                 double a = tabuleiro[i][j].pos.x - mouse.x;
@@ -151,7 +152,7 @@ bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state)
             }
         }
     }
-    // return menor <= (double)raio;
+
     return (menor <= (double)raio) ? true: false;
 }
 
