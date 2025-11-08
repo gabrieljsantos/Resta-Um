@@ -145,7 +145,7 @@ void Emblema(void)
 
 void Titulo(void)
 {
-    DrawText("----- RESTA UM -----", 252, 50, 30, corPeca);
+    DrawText("----- RESTA UM -----", screenWidth / 3, 50, 30, corPeca);
 
     if (locateButton(resetButton))
     {

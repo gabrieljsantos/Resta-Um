@@ -75,8 +75,8 @@ bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
     if (tabuleiro[iTest][jTest].state == VAZIO)
         return false;
 
-        int mov_i[4] = {-2,+2,0,0};
-        int mov_j[4] = {0,0,-2,+2};
+        int mov_i[4] = {cima, baixo, atual, atual};
+        int mov_j[4] = {atual, atual, esquerda, direita};
 
     for (int i = 0; i < 4; i++)
     {
@@ -85,7 +85,7 @@ bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
         i_destino = abs(iTest + delta_i);
         j_destino = abs(jTest + delta_j);
 
-        i_meio =abs( iTest + delta_i / 2);
+        i_meio = abs(iTest + delta_i / 2);
         j_meio = abs(jTest + delta_j / 2);
 
         if (i_destino < 0 || i_destino >= TAM || j_destino < 0 || j_destino >= TAM)
@@ -125,14 +125,8 @@ bool jogadaValida(Part tabuleiro[TAM][TAM])
     }
     restaPart = Nvalido;
 
-    if (Valido > 0)
-    {
-        return RESTA_JOGADA;
-    }
-    else
-    {
-        return NAO_RESTA_JOGADA;
-    }
+    return (Valido > 0) ? RESTA_JOGADA : NAO_RESTA_JOGADA;
+    
 }
 
 bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state)
@@ -157,7 +151,8 @@ bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state)
             }
         }
     }
-    return menor <= (double)raio;
+    // return menor <= (double)raio;
+    return (menor <= (double)raio) ? true: false;
 }
 
 int calculeMovimento(int Ic, int Jc, int i_fim, int j_fim)

@@ -13,6 +13,14 @@ typedef struct{
     Vector2 pos;
 } Part;
 
+//---- Constantes ----
+const int cima = -2;
+const int baixo = +2;
+const int esquerda = -2;
+const int direita = +2;
+const int atual = 0;
+
+
 //------ Externs ------
 extern Part tabuleiro[TAM][TAM];
 extern int restaPart;
@@ -38,7 +46,7 @@ enum StateJogo{
      main_Menu, STARTGAME, RESETGAME, ENDGAME};
 
 //------ Declaração das funçõe ------
-bool jogadaValida(Part tabuleiro[TAM][TAM] );
+bool jogadaValida(Part tabuleiro[TAM][TAM]);
 
 bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest);
 
