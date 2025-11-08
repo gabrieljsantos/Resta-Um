@@ -17,11 +17,14 @@ const int TAM = 7;
 const int raio = 25;
 const int diametro = raio * 2;
 const int espaco = 10;
+const Rectangle resetButton = {820.0f, 500.0f, 100.0f, 45.0f};
+const Rectangle startButton = {screenWidth/2 - 75, screenHeight /2 +45, 150.0f, 70.0f};
+const Rectangle themeButton = {30.0f, 500.0f, 100.0f, 45.0f};
+const Rectangle fundoMaior = {inicioX-50, inicioY-50, 460, 460};
+const Rectangle fundoMenor = {inicioX-40, inicioY-40, 440,440};
 
 //------ Externs ------
-extern Rectangle startButton;
-extern Rectangle themeButton;
-extern Rectangle resetButton;
+
 extern Rectangle borda;
 
 extern bool temaAtual;

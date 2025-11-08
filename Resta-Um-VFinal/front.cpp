@@ -8,7 +8,8 @@ int segundos;
 char textoTimer[50];
 int restaPart;
 
-Part tabuleiro[TAM][TAM]; 
+Part tabuleiro[TAM][TAM];
+ 
 
 int i_atual = 0, j_atual = 0;
 int aux_ci, aux_cj;
@@ -17,21 +18,13 @@ int clique_atual = CLIQUE_PRIMEIRO;
 bool temaAtual = true;
 Color corBotao = BROWN;
 Color corFundo = BEIGE;
-Color corPeca = DARKBROWN;
-Color corTabu = BROWN;
+Color corPeca  = DARKBROWN;
+Color corTabu  = BROWN;
 Color corTabuF = DARKBROWN;
-Color corTime = BLACK;
-Color corERRO = WHITE;
-
-
-Rectangle resetButton = {820.0f, 500.0f, 100.0f, 45.0f};
-Rectangle startButton = {screenWidth/2 - 75, screenHeight /2 +45, 150.0f, 70.0f};
-Rectangle themeButton = {30.0f, 500.0f, 100.0f, 45.0f};
+Color corTime  = BLACK;
+Color corERRO  = WHITE;
 
 Rectangle borda;
-Rectangle fundoMaior = {inicioX-50, inicioY-50, 460, 460};
-Rectangle fundoMenor = {inicioX-40, inicioY-40, 440,440};
-
 
 bool trocarTema(void)
 {
@@ -40,22 +33,22 @@ bool trocarTema(void)
     if (temaAtual)
     {
         corFundo = BEIGE;
-        corPeca = DARKBROWN;
+        corPeca  = DARKBROWN;
         corBotao = BROWN;
-        corTabu = BROWN;
+        corTabu  = BROWN;
         corTabuF = DARKBROWN;
-        corTime = BLACK;
-        corERRO = WHITE;
+        corTime  = BLACK;
+        corERRO  = WHITE;
     }
     else
     {
         corFundo = BLACK;
-        corPeca = PURPLE;
+        corPeca  = PURPLE;
         corBotao = DARKPURPLE;
-        corTabu = DARKPURPLE;
+        corTabu  = DARKPURPLE;
         corTabuF = PURPLE;
-        corTime = GOLD;
-        corERRO = RED;
+        corTime  = GOLD;
+        corERRO  = RED;
     }
 
     return temaAtual;
@@ -169,7 +162,7 @@ void Titulo(void)
         }
         else
         {
-            DrawText("FIM DE JOGO", screenWidth / 2 - 120, 2, 40, RED);
+            DrawText("FIM DE JOGO", screenWidth / 3 + 30, 2, 40, RED);
             DrawText(TextFormat("Restaram: %d", restaPart), 25, 70, 30, corPeca);
         }
     }
