@@ -1,5 +1,9 @@
+#include "dec_back.h"     
+#include <algorithm>      // para std::sort
+#include <fstream>        // para manipular aquivos
+#include <iomanip>        // para controle de ponto flutuante
 
-# include "dec_back.h"
+Recorde recordes[MAX_RECORDES];   
 
 void imprimeTabuleiro(Part tabuleiro[TAM][TAM])
 {
@@ -70,36 +74,46 @@ void jogada(void)
 
 bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
 {
-    int i_destino, j_destino, i_meio, j_meio;
+    // se vão ser utilizações epecificas basta declara ja onde vão ser usadas
+    // int i_destino, j_destino, i_meio, j_meio;
 
-    if (tabuleiro[iTest][jTest].state == VAZIO)
+
+    // Se não for uma peça, não move
+    if (tabuleiro[iTest][jTest].state != PART) // Só peças PART podem se mover
         return false;
 
-        int mov_i[4] = {cima, baixo, atual, atual};
-        int mov_j[4] = {atual, atual, esquerda, direita};
+    // Deltas -2 e +2 nas 4 direções
+    int mov_i[4] = {cima, baixo, atual, atual};
+    int mov_j[4] = {atual, atual, esquerda, direita};
 
-    for (int i = 0; i < 4; i++)
+
+
+    for (int d = 0; d < 4; d++)
     {
-        // int delta_i = mov_i[i];
-        // int delta_j = mov_j[i];
 
-        i_destino = abs(iTest + mov_i[i]);
-        j_destino = abs(jTest + mov_j[i]);
+        //não precisava do abs (coordenadas de tabuleiro ja tão limitada)
+        int i_destino = iTest + mov_i[d];
+        int j_destino = jTest + mov_j[d];
 
-        i_meio = abs(iTest + mov_i[i] / 2);
-        j_meio = abs(jTest + mov_j[i] / 2);
+        // em c++ a divisão entre +  e  - funciona
+        int i_meio    = iTest + mov_i[d] / 2;   // -2/2 = -1  agora correto
+        int j_meio    = jTest + mov_j[d] / 2;
 
-        if (i_destino < 0 || i_destino >= TAM || j_destino < 0 || j_destino >= TAM)
+        // Verifica limits do tabulero
+        if (i_destino < 0 || i_destino >= TAM ||  j_destino < 0 || j_destino >= TAM)
             continue;
-        if (i_meio < 0 || i_meio >= TAM || j_meio < 0 || j_meio >= TAM)
+
+        if (i_meio < 0 || i_meio >= TAM ||  j_meio < 0 || j_meio >= TAM)
             continue;
 
-        if ((tabuleiro[i_destino][j_destino].state == VAZIO) && (tabuleiro[i_meio][j_meio].state != VAZIO))
+        
+        if (tabuleiro[i_destino][j_destino].state == VAZIO && tabuleiro[i_meio][j_meio].state == PART)
         {
-            return true;
+            return true;  
         }
     }
-    return false;
+
+    return false;  
 }
 
 bool jogadaValida(Part tabuleiro[TAM][TAM])
@@ -169,4 +183,86 @@ int calculeMovimento(int Ic, int Jc, int i_fim, int j_fim)
         return MOVIMENTO_VALIDO;
 
     return MOVIMENTO_INVALIDO;
+}
+
+
+void salvarRecorde(char inicial, float tempo)
+{
+    std::ofstream arq("recordes.txt", std::ios::app);  // abre em modo append
+    if (!arq.is_open()) return;
+
+    arq << inicial << " " << std::fixed << std::setprecision(2) << tempo << "\n"; //manipula para somente duas casas depois do ponto
+   
+    //fecha automaticamente ao sair do escopo
+}
+
+int carrega_recordes(Recorde recs[MAX_RECORDES])
+{
+    //abre e le percorrendo o arquivo
+    std::ifstream arq("recordes.txt");
+    if (!arq.is_open()) return 0;
+
+    int conta = 0; //quantidade de records
+    char nome; // vai receber a letra do player
+    float tempo;
+
+    while (conta < MAX_RECORDES && arq >> nome >> tempo)
+    {
+        recs[conta].nome = nome;
+        recs[conta].tempo = tempo;
+        conta++;
+    
+
+        //recs é um array onde de no max 10 onde e colocado os records
+    }
+
+    return conta;
+}
+
+void ordena_recordes(Recorde recs[], int count)
+{
+    std::sort(recs, recs + count,
+              [](const Recorde& a, const Recorde& b) {
+                  return a.tempo < b.tempo;
+              });
+}
+
+void mostrarRecordesOrdenados(void)
+{
+
+    //logica de front para exibir os records
+    
+    Recorde temp[MAX_RECORDES];
+    int qtd = carrega_recordes(temp);
+
+    if (qtd == 0)
+    {
+        DrawText("Sem recordes", 780, 150, 20, YELLOW);
+        return;
+    }
+
+    ordena_recordes(temp, qtd);
+
+    const int x = 770;
+    const int y = 120;
+    const int largura = 160;
+    const int total_altura = 30 + 10 * 22;
+
+    DrawRectangle(x, y, largura, total_altura, Fade(BLACK, 0.7f));
+    DrawText("RECORDES", x + 10, y + 10, 22, GOLD);
+
+    for (int i = 0; i < 10; i++)
+    {
+        int linha_y = y + 40 + i * 22; // calcul de exibiçao de cada record abaixo do outro
+        if (i < qtd)
+        {
+            // Converte segundos em minutos:segundos
+            int min = static_cast<int>(temp[i].tempo) / 60;  //o static força para int
+            int seg = static_cast<int>(temp[i].tempo) % 60;
+            char linha[16];
+            sprintf(linha, "%c %02d:%02d", temp[i].nome, min, seg);
+            DrawText(linha, x + 15, linha_y, 20, WHITE);
+           
+        }
+    }
 }
