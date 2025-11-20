@@ -1,4 +1,4 @@
-//------ Garante que os arquivos serão usados apenas uma vez ------
+
 #ifndef DEC_BACK_H_INCLUDED
 #define DEC_BACK_H_INCLUDED
 
@@ -7,13 +7,21 @@
 #include <iostream>
 #include <math.h>
 
-//------ Structs ------
+#define MAX_RECORDES 10
+
+typedef struct {
+    char nome;   // A-J
+    float tempo;
+} Recorde;
+
+
 typedef struct{
     int state;
     Vector2 pos;
 } Part;
 
-//---- Constantes ----
+
+
 const int cima = -2;
 const int baixo = +2;
 const int esquerda = -2;
@@ -21,7 +29,7 @@ const int direita = +2;
 const int atual = 0;
 
 
-//------ Externs ------
+
 extern Part tabuleiro[TAM][TAM];
 extern int restaPart;
 extern int i_atual, j_atual;
@@ -29,7 +37,8 @@ extern int aux_ci, aux_cj;
 
 extern int clique_atual;
 
-//------ Enums ------
+
+
 enum Clique{
     CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO};
 
@@ -45,7 +54,7 @@ enum PartState{
 enum StateJogo{
      main_Menu, STARTGAME, RESETGAME, ENDGAME};
 
-//------ Declaração das funçõe ------
+
 bool jogadaValida(Part tabuleiro[TAM][TAM]);
 
 bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest);
@@ -60,4 +69,13 @@ void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_atual, int j_atual, int cl
 
 void jogada();
 
-#endif 
+void salvarRecorde(char inicial, float tempo);
+
+int carrega_recordes(Recorde recs[MAX_RECORDES]);
+
+void ordena_recordes(Recorde recs[], int count);
+
+void mostrarRecordesOrdenados(void);
+
+
+#endif
