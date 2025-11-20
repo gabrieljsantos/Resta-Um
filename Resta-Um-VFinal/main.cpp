@@ -4,14 +4,13 @@
 int main(void)
 {
 
-    // Inicialiação da interface
+    // INICIALIZAÇÃO
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
 
     StateJogo jogo = main_Menu;
     int j_inicial;
     int i_inicial;
 
-    // Loop principal do jogo
     while (!WindowShouldClose())
     {
         SetTargetFPS(60);
@@ -29,7 +28,7 @@ int main(void)
                 }
             }
             break;
-            
+
         case STARTGAME:
             localizePart(tabuleiro, i_inicial, j_inicial);
             imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
@@ -61,17 +60,14 @@ int main(void)
 
         case ENDGAME:
             imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
-            Titulo();
+            Titulo();                    // já salva + mostra vitória
+            mostrarRecordesOrdenados();  // mostra recordes
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                
-                if (locateButton(resetButton))
-                    jogo = RESETGAME;
-
-                if (locateButton(themeButton))
-                    trocarTema();
+                if (locateButton(resetButton)) jogo = RESETGAME;
+                if (locateButton(themeButton)) trocarTema();
             }
             break;
-        }
+                }
 
         EndDrawing();
     }
