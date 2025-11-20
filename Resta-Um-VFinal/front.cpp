@@ -8,7 +8,7 @@ int segundos;
 char textoTimer[50];
 int restaPart;
 
-Part tabuleiro[TAM][TAM]; 
+Part tabuleiro[TAM][TAM];
 
 int i_atual = 0, j_atual = 0;
 int aux_ci, aux_cj;
@@ -77,19 +77,24 @@ void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique
                     for(float c = 0.2; c<4;c++){
                         DrawCircleLinesV(tabuleiro[aux_ci][aux_cj].pos, raio + c, GOLD);
                     }
-                
 
-                if (i_aux == i && j_aux == j && (tabuleiro[i][j].state == PART))
-                    for (float c = 0.2; c < 4; c++)
-                    {
-                        DrawCircleLinesV(tabuleiro[i][j].pos, raio + c, GREEN);
-                    }
-                
-                else if (i_aux == i && j_aux == j && (tabuleiro[i][j].state == VAZIO))
-                    for (float c = 0.2; c < 4; c++)
-                    {
-                        DrawCircleLinesV(tabuleiro[i][j].pos, raio + c, RED);
-                    }
+
+                int movimento = calculeMovimento(i_atual, j_atual, i_aux, j_aux);
+                if (movimento == MOVIMENTO_VALIDO && tabuleiro[i_aux][j_aux].state == VAZIO)
+                {
+                    for (float i = 0.2; i < 4; i++)
+                        DrawCircleLinesV(tabuleiro[i_aux][j_aux].pos, raio + i, GREEN);
+                }
+
+                if (i == i_aux && j == j_aux)
+                {
+                    bool Mov = jogadaValida(tabuleiro, i, j);
+                    Color Cor = Mov ? GREEN : RED;
+                    if (clique_atual == CLIQUE_SEGUNDO)
+                        Cor = RED;
+                    for (float k = 0.5; k < 4; k++)
+                        DrawCircleLinesV(tabuleiro[i][j].pos, raio + k, Cor);
+                }
             }
         }
     }
@@ -147,7 +152,7 @@ void Titulo(void)
     {
         if (restaPart == 1)
         {
-            salvarRecordeAutomatico();  
+            salvarRecordeAutomatico();
             DrawText("!!! VITORIA !!!", 100, 50, 30, RED);
         }
         else
@@ -185,7 +190,7 @@ void DisplayTimer(void)
 
 void salvarRecordeAutomatico(void)
 {
-    static bool jaSalvou = false;  // SALVA SÃ“ 1 VEZ POR PARTIDA
+    static bool jaSalvou = false;  // SALVA SÓ 1 VEZ POR PARTIDA
     if (jaSalvou || restaPart != 1 || jogadaValida(tabuleiro)) return;
 
     Recorde temp[MAX_RECORDES];

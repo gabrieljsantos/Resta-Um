@@ -1,0 +1,109 @@
+# depslib dependency file v1.0
+1737679007 source:c:\users\pedro\code\projeto\main.cpp
+	<raylib.h>
+	<cmath>
+	<cstring>
+	<cstdio>
+	<cstdlib>
+
+1737676964 c:\users\pedro\code\projeto\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1759933794 source:d:\downloads\projeto_arthur\projeto\main.cpp
+	"raylib.h"
+
+1759933515 d:\downloads\projeto_arthur\projeto\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1761089047 source:d:\projects\resta-um\eduardo j. s\main.cpp
+	"raylib.h"
+	<locale.h>
+	"projeto.h"
+
+1759933515 d:\projects\resta-um\eduardo j. s\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1761089046 d:\projects\resta-um\eduardo j. s\projeto.h
+	"raylib.h"
+	<stdio.h>
+	<iostream>
+	<stdbool.h>
+	<math.h>
+	<stdlib.h>
+
+1761089017 source:d:\projects\resta-um\eduardo j. s\projeto.cpp
+	"raylib.h"
+	"projeto.h"
+
+1763655395 source:c:\users\svgab\onedrive\documentos\programac\eduardo j. s\main.cpp
+	"dec_back.h"
+	"dec_front.h"
+
+1763654890 c:\users\svgab\onedrive\documentos\programac\eduardo j. s\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1763654890 c:\users\svgab\onedrive\documentos\programac\eduardo j. s\projeto.h
+	"raylib.h"
+	<stdio.h>
+	<iostream>
+	<stdbool.h>
+	<math.h>
+	<stdlib.h>
+
+1763654890 source:c:\users\svgab\onedrive\documentos\programac\eduardo j. s\projeto.cpp
+	"raylib.h"
+	"projeto.h"
+
+1763655395 c:\users\svgab\onedrive\documentos\programac\eduardo j. s\dec_back.h
+	"dec_front.h"
+	"raylib.h"
+	<iostream>
+	<math.h>
+
+1763655395 c:\users\svgab\onedrive\documentos\programac\eduardo j. s\dec_front.h
+	"raylib.h"
+	<iostream>
+	<math.h>
+	"dec_back.h"
+
+1763655395 source:c:\users\svgab\onedrive\documentos\programac\eduardo j. s\back.cpp
+	"dec_back.h"
+
+1763655395 source:c:\users\svgab\onedrive\documentos\programac\eduardo j. s\front.cpp
+	"dec_back.h"
+	"dec_front.h"
+
+1763669916 source:c:\users\svgab\onedrive\documentos\programac\restaum\back.cpp
+	"dec_back.h"
+	<algorithm>
+	<fstream>
+	<iomanip>
+
+1763667360 c:\users\svgab\onedrive\documentos\programac\restaum\dec_back.h
+	"dec_front.h"
+	"raylib.h"
+	<iostream>
+	<math.h>
+
+1763667360 c:\users\svgab\onedrive\documentos\programac\restaum\dec_front.h
+	"raylib.h"
+	<iostream>
+	<math.h>
+	"dec_back.h"
+
+1763654890 c:\users\svgab\onedrive\documentos\programac\restaum\raylib\src\raylib.h
+	<stdarg.h>
+	<stdbool.h>
+
+1763655395 source:c:\users\svgab\onedrive\documentos\programac\restaum\front.cpp
+	"dec_back.h"
+	"dec_front.h"
+
+1763667360 source:c:\users\svgab\onedrive\documentos\programac\restaum\main.cpp
+	"dec_back.h"
+	"dec_front.h"
+

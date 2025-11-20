@@ -1,9 +1,10 @@
-#include "dec_back.h"     
+
+#include "dec_back.h"
 #include <algorithm>      // para std::sort
 #include <fstream>        // para manipular aquivos
 #include <iomanip>        // para controle de ponto flutuante
 
-Recorde recordes[MAX_RECORDES];   
+Recorde recordes[MAX_RECORDES];
 
 void imprimeTabuleiro(Part tabuleiro[TAM][TAM])
 {
@@ -74,15 +75,11 @@ void jogada(void)
 
 bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
 {
-    // se vão ser utilizações epecificas basta declara ja onde vão ser usadas
-    // int i_destino, j_destino, i_meio, j_meio;
 
-
-    // Se não for uma peça, não move
-    if (tabuleiro[iTest][jTest].state != PART) // Só peças PART podem se mover
+    if (tabuleiro[iTest][jTest].state != PART)
         return false;
 
-    // Deltas -2 e +2 nas 4 direções
+
     int mov_i[4] = {cima, baixo, atual, atual};
     int mov_j[4] = {atual, atual, esquerda, direita};
 
@@ -91,29 +88,28 @@ bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
     for (int d = 0; d < 4; d++)
     {
 
-        //não precisava do abs (coordenadas de tabuleiro ja tão limitada)
         int i_destino = iTest + mov_i[d];
         int j_destino = jTest + mov_j[d];
 
-        // em c++ a divisão entre +  e  - funciona
-        int i_meio    = iTest + mov_i[d] / 2;   // -2/2 = -1  agora correto
+
+        int i_meio    = iTest + mov_i[d] / 2;
         int j_meio    = jTest + mov_j[d] / 2;
 
-        // Verifica limits do tabulero
+
         if (i_destino < 0 || i_destino >= TAM ||  j_destino < 0 || j_destino >= TAM)
             continue;
 
         if (i_meio < 0 || i_meio >= TAM ||  j_meio < 0 || j_meio >= TAM)
             continue;
 
-        
+
         if (tabuleiro[i_destino][j_destino].state == VAZIO && tabuleiro[i_meio][j_meio].state == PART)
         {
-            return true;  
+            return true;
         }
     }
 
-    return false;  
+    return false;
 }
 
 bool jogadaValida(Part tabuleiro[TAM][TAM])
@@ -141,7 +137,7 @@ bool jogadaValida(Part tabuleiro[TAM][TAM])
     restaPart = Nvalido;
 
     return (Valido > 0) ? RESTA_JOGADA : NAO_RESTA_JOGADA;
-    
+
 }
 
 bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state)
@@ -151,7 +147,7 @@ bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state)
     for (int i = 0; i < TAM; i++)
     {
         for (int j = 0; j < TAM; j++)
-        { 
+        {
             if (tabuleiro[i][j].state == state || state == -1)
             {
                 double a = tabuleiro[i][j].pos.x - mouse.x;
@@ -178,7 +174,7 @@ int calculeMovimento(int Ic, int Jc, int i_fim, int j_fim)
     if (Ic == i_fim && Jc == j_fim) return MOVIMENTO_NENHUM;
 
     else if (Ic != i_fim && Jc != j_fim) return MOVIMENTO_INVALIDO;
-    
+
     else if ((abs(i_fim - Ic) == 2 || abs(j_fim - Jc) == 2) && (tabuleiro[i_alvo][j_alvo].state == PART))
         return MOVIMENTO_VALIDO;
 
@@ -192,7 +188,7 @@ void salvarRecorde(char inicial, float tempo)
     if (!arq.is_open()) return;
 
     arq << inicial << " " << std::fixed << std::setprecision(2) << tempo << "\n"; //manipula para somente duas casas depois do ponto
-   
+
     //fecha automaticamente ao sair do escopo
 }
 
@@ -211,9 +207,9 @@ int carrega_recordes(Recorde recs[MAX_RECORDES])
         recs[conta].nome = nome;
         recs[conta].tempo = tempo;
         conta++;
-    
 
-        //recs é um array onde de no max 10 onde e colocado os records
+
+        //recs � um array onde de no max 10 onde e colocado os records
     }
 
     return conta;
@@ -231,7 +227,7 @@ void mostrarRecordesOrdenados(void)
 {
 
     //logica de front para exibir os records
-    
+
     Recorde temp[MAX_RECORDES];
     int qtd = carrega_recordes(temp);
 
@@ -253,16 +249,16 @@ void mostrarRecordesOrdenados(void)
 
     for (int i = 0; i < 10; i++)
     {
-        int linha_y = y + 40 + i * 22; // calcul de exibiçao de cada record abaixo do outro
+        int linha_y = y + 40 + i * 22; // calcul de exibi�ao de cada record abaixo do outro
         if (i < qtd)
         {
             // Converte segundos em minutos:segundos
-            int min = static_cast<int>(temp[i].tempo) / 60;  //o static força para int
+            int min = static_cast<int>(temp[i].tempo) / 60;  //o static for�a para int
             int seg = static_cast<int>(temp[i].tempo) % 60;
             char linha[16];
             sprintf(linha, "%c %02d:%02d", temp[i].nome, min, seg);
             DrawText(linha, x + 15, linha_y, 20, WHITE);
-           
+
         }
     }
 }

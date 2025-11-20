@@ -1,8 +1,8 @@
-// Garante que os arquivos ser√£o usados apenas uma vez 
+// Garante que os arquivos ser„o usados apenas uma vez
 #ifndef DEC_FRONT_H_INCLUDED
 #define DEC_FRONT_H_INCLUDED
 
-//------ Inclus√µes ------
+//------ Inclusıes ------
 #include "raylib.h"
 #include <iostream>
 #include <math.h>

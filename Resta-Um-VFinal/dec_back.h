@@ -45,7 +45,7 @@ enum Clique{
 enum Movimento{
     MOVIMENTO_VALIDO, MOVIMENTO_INVALIDO, MOVIMENTO_NENHUM};
 
-enum RestaJogo{ 
+enum RestaJogo{
     NAO_RESTA_JOGADA, RESTA_JOGADA};
 
 enum PartState{

@@ -4,7 +4,7 @@
 int main(void)
 {
 
-    // INICIALIZA√á√ÉO
+    // INICIALIZA«√O
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
 
     StateJogo jogo = main_Menu;
@@ -16,13 +16,13 @@ int main(void)
         SetTargetFPS(60);
         BeginDrawing();
         ClearBackground(corFundo);
-        
+
         switch (jogo){
         case main_Menu:
             Emblema();
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                 if(locateButton(startButton)){
-                    imprimeTabuleiro(tabuleiro); 
+                    imprimeTabuleiro(tabuleiro);
                     startTime = GetTime();
                     jogo = STARTGAME;
                 }
@@ -39,14 +39,14 @@ int main(void)
                 jogo = ENDGAME;
 
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                
+
                 if (locateButton(resetButton))
                     jogo = RESETGAME;
 
                 if (locateButton(themeButton))
                     trocarTema();
             }
-                
+
             break;
 
         case RESETGAME:
@@ -60,7 +60,7 @@ int main(void)
 
         case ENDGAME:
             imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
-            Titulo();                    // j√° salva + mostra vit√≥ria
+            Titulo();                    // j· salva + mostra vitÛria
             mostrarRecordesOrdenados();  // mostra recordes
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                 if (locateButton(resetButton)) jogo = RESETGAME;
