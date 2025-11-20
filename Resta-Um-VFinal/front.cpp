@@ -8,8 +8,7 @@ int segundos;
 char textoTimer[50];
 int restaPart;
 
-Part tabuleiro[TAM][TAM];
- 
+Part tabuleiro[TAM][TAM]; 
 
 int i_atual = 0, j_atual = 0;
 int aux_ci, aux_cj;
@@ -80,43 +79,32 @@ void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique
                     }
                 
 
-                int movimento = calculeMovimento(i_atual, j_atual, i_aux, j_aux);
-                if (movimento == MOVIMENTO_VALIDO && tabuleiro[i_aux][j_aux].state == VAZIO)
-                {
-                    for (float i = 0.2; i < 4; i++)
-                        DrawCircleLinesV(tabuleiro[i_aux][j_aux].pos, raio + i, GREEN);
-                }
-
-                if (i == i_aux && j == j_aux)
-                {
-                    bool Mov = jogadaValida(tabuleiro, i, j);
-                    Color Cor = Mov ? GREEN : RED;
-                    if (clique_atual == CLIQUE_SEGUNDO)
-                        Cor = RED;
-                    for (float k = 0.5; k < 4; k++)
-                        DrawCircleLinesV(tabuleiro[i][j].pos, raio + k, Cor);
-                }
+                if (i_aux == i && j_aux == j && (tabuleiro[i][j].state == PART))
+                    for (float c = 0.2; c < 4; c++)
+                    {
+                        DrawCircleLinesV(tabuleiro[i][j].pos, raio + c, GREEN);
+                    }
+                
+                else if (i_aux == i && j_aux == j && (tabuleiro[i][j].state == VAZIO))
+                    for (float c = 0.2; c < 4; c++)
+                    {
+                        DrawCircleLinesV(tabuleiro[i][j].pos, raio + c, RED);
+                    }
             }
         }
     }
 }
 
-
-
 bool locateButton(Rectangle button)
 {
     Vector2 mouse = GetMousePosition();
-    if ((mouse.x >= button.x && mouse.x <= button.x + button.width) &&
-        (mouse.y >= button.y && mouse.y <= button.y + button.height))
-    {
-        return true;
-    }
-    return false;
+    return (mouse.x > button.x && mouse.x < button.x + button.width &&
+            mouse.y > button.y && mouse.y < button.y + button.height);
 }
 
-Rectangle expandRectangle(Rectangle button, int border_size)
+Rectangle expandRectangle(Rectangle button, float border_size)
 {
-    Rectangle expanded;
+    Rectangle expanded = button;
     expanded.x = button.x - border_size;
     expanded.y = button.y - border_size;
     expanded.width = button.width + border_size * 2;
@@ -135,6 +123,7 @@ void Emblema(void)
     DrawRectangleRec(startButton, corBotao);
     DrawText("START", screenWidth / 2 - 43, screenHeight / 2 + 70, 25, BLACK);
 }
+
 
 void Titulo(void)
 {
@@ -158,7 +147,8 @@ void Titulo(void)
     {
         if (restaPart == 1)
         {
-            DrawText("Vitória", 100, 50, 30, BLUE);
+            salvarRecordeAutomatico();  
+            DrawText("!!! VITORIA !!!", 100, 50, 30, RED);
         }
         else
         {
@@ -169,9 +159,11 @@ void Titulo(void)
 
     DrawRectangleRec(resetButton, corBotao);
     DrawRectangleRec(themeButton, corBotao);
-    DrawText("RESET", 835, 515, 20, BLACK);
-    DrawText("TEMA", 45, 515, 20, BLACK);
+    DrawText("RESET", 835, 615, 20, BLACK);
+    DrawText("TEMA", 45, 615, 20, BLACK);
 }
+
+
 
 void DisplayTimer(void)
 {
@@ -189,4 +181,18 @@ void DisplayTimer(void)
         sprintf(textoTimer, "Tempo: %02d:%02d", minutos, segundos);
         DrawText(textoTimer, 675, 20, 25, corTime);
     }
+}
+
+void salvarRecordeAutomatico(void)
+{
+    static bool jaSalvou = false;  // SALVA SÓ 1 VEZ POR PARTIDA
+    if (jaSalvou || restaPart != 1 || jogadaValida(tabuleiro)) return;
+
+    Recorde temp[MAX_RECORDES];
+    int qtd = carrega_recordes(temp);
+    if (qtd >= MAX_RECORDES) return;
+
+    char prox = 'A' + qtd;
+    salvarRecorde(prox, timeElapsed);
+    jaSalvou = true;
 }
