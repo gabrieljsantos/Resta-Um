@@ -207,25 +207,26 @@ int carrega_recordes(Recorde recs[MAX_RECORDES])
     return conta;
 }
 
-void ordena_recordes(Recorde rcds[], int qtd){
-    int minIDEX;
-    Recorde aux;
-    for(int i =0;i< qtd-1 ;i++){
-        minIDEX = i;
 
-        for(int j = i; j < qtd; j++ ){
-            if(rcds[j].tempo < rcds[minIDEX].tempo ){
-                minIDEX = j;
+
+
+void ordena_recordes(Recorde rcds[], int qtd){
+    int minIdex;
+    Recorde aux;
+    for(int i = 0; i < qtd-1;i++){
+        minIdex = i;
+        for(int j = i; j<qtd;j++){
+            if(rcds[j].tempo < rcds[minIdex].tempo){
+                minIdex=j;
             }
         }
+        aux = rcds[i];
+        rcds[i] = rcds[minIdex];
+        rcds[minIdex]= aux;
 
-        aux = rcds[i]; // gurada o maior valor
-        rcds[i] = rcds[minIDEX]; //recebe o menor valor
-        rcds[minIDEX] = aux; //recebe o maior valor
     }
+    
 }
-
-
 void mostrarRecordesOrdenados(void)
 {
 
