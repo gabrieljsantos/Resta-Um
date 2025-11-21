@@ -1,6 +1,7 @@
 #include "dec_back.h"
 #include "dec_front.h"
 
+
 float startTime = 0.0f;
 float timeElapsed;
 int minutos;
@@ -13,6 +14,8 @@ Part tabuleiro[TAM][TAM];
 int i_atual = 0, j_atual = 0;
 int aux_ci, aux_cj;
 int clique_atual = CLIQUE_PRIMEIRO;
+
+bool jaSalvou = false; 
 
 bool temaAtual = true;
 Color corBotao = BROWN;
@@ -78,7 +81,6 @@ void imprimeTabuleiro(Part tabuleiro[TAM][TAM], int i_aux, int j_aux, int clique
                         DrawCircleLinesV(tabuleiro[aux_ci][aux_cj].pos, raio + c, GOLD);
                     }
 
-
                 int movimento = calculeMovimento(i_atual, j_atual, i_aux, j_aux);
                 if (movimento == MOVIMENTO_VALIDO && tabuleiro[i_aux][j_aux].state == VAZIO)
                 {
@@ -129,7 +131,6 @@ void Emblema(void)
     DrawText("START", screenWidth / 2 - 43, screenHeight / 2 + 70, 25, BLACK);
 }
 
-
 void Titulo(void)
 {
     DrawText("----- RESTA UM -----", screenWidth / 3, 50, 30, corPeca);
@@ -151,8 +152,8 @@ void Titulo(void)
     if (!jogadaValida(tabuleiro))
     {
         if (restaPart == 1)
-        {
-            salvarRecordeAutomatico();
+        {   SetTargetFPS(10);
+            salvarRecorde();
             DrawText("!!! VITORIA !!!", 100, 50, 30, RED);
         }
         else
@@ -161,14 +162,13 @@ void Titulo(void)
             DrawText(TextFormat("Restaram: %d", restaPart), 25, 70, 30, corPeca);
         }
     }
+    else jaSalvou= false;
 
     DrawRectangleRec(resetButton, corBotao);
     DrawRectangleRec(themeButton, corBotao);
     DrawText("RESET", 835, 615, 20, BLACK);
     DrawText("TEMA", 45, 615, 20, BLACK);
 }
-
-
 
 void DisplayTimer(void)
 {
@@ -188,16 +188,16 @@ void DisplayTimer(void)
     }
 }
 
-void salvarRecordeAutomatico(void)
+void salvarRecorde(void)
 {
-    static bool jaSalvou = false;  // SALVA SÓ 1 VEZ POR PARTIDA
-    if (jaSalvou || restaPart != 1 || jogadaValida(tabuleiro)) return;
+     
+    if (jaSalvou) return;
 
     Recorde temp[MAX_RECORDES];
     int qtd = carrega_recordes(temp);
     if (qtd >= MAX_RECORDES) return;
 
-    char prox = 'A' + qtd;
-    salvarRecorde(prox, timeElapsed);
+    char proxLetra = 'A' + qtd;
+    salvarRecorde(proxLetra, timeElapsed);
     jaSalvou = true;
 }

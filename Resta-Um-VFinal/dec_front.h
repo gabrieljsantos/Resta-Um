@@ -1,8 +1,8 @@
-// Garante que os arquivos serão usados apenas uma vez
+// Garante que os arquivos serï¿½o usados apenas uma vez
 #ifndef DEC_FRONT_H_INCLUDED
 #define DEC_FRONT_H_INCLUDED
 
-//------ Inclusões ------
+//------ Includes ------
 #include "raylib.h"
 #include <iostream>
 #include <math.h>
@@ -20,8 +20,8 @@ const int espaco = 10;
 const Rectangle resetButton = {820.0f, 600.0f, 100.0f, 45.0f};
 const Rectangle startButton = {screenWidth/2 - 75, screenHeight /2 +45, 150.0f, 70.0f};
 const Rectangle themeButton = {30.0f, 600.0f, 100.0f, 45.0f};
-const Rectangle fundoMaior = {inicioX-50, inicioY-50, 460, 460};
-const Rectangle fundoMenor = {inicioX-40, inicioY-40, 440,440};
+const Rectangle fundoMaior  = {inicioX-50, inicioY-50, 460, 460};
+const Rectangle fundoMenor  = {inicioX-40, inicioY-40, 440,440};
 
 //------ Externs ------
 
@@ -51,6 +51,6 @@ void Emblema(void);
 
 void DisplayTimer(void);
 
-void salvarRecordeAutomatico(void);
+void salvarRecorde(void);
 
 #endif

@@ -1,10 +1,11 @@
 
 #include "dec_back.h"
-#include <algorithm>      // para std::sort
-#include <fstream>        // para manipular aquivos
-#include <iomanip>        // para controle de ponto flutuante
+#include <algorithm>
+#include <fstream>       
+#include <iomanip>      
 
-Recorde recordes[MAX_RECORDES];
+
+
 
 void imprimeTabuleiro(Part tabuleiro[TAM][TAM])
 {
@@ -14,6 +15,7 @@ void imprimeTabuleiro(Part tabuleiro[TAM][TAM])
         {
             tabuleiro[i][j].pos = {(float)inicioX + i * (diametro + espaco),
                                    (float)inicioY + j * (diametro + espaco)};
+
             if ((i < 2 || i > 4) && (j < 2 || j > 4))
                 tabuleiro[i][j].state = N_EXIST;
             else
@@ -75,15 +77,11 @@ void jogada(void)
 
 bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
 {
-
     if (tabuleiro[iTest][jTest].state != PART)
         return false;
 
-
     int mov_i[4] = {cima, baixo, atual, atual};
     int mov_j[4] = {atual, atual, esquerda, direita};
-
-
 
     for (int d = 0; d < 4; d++)
     {
@@ -91,10 +89,8 @@ bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
         int i_destino = iTest + mov_i[d];
         int j_destino = jTest + mov_j[d];
 
-
         int i_meio    = iTest + mov_i[d] / 2;
         int j_meio    = jTest + mov_j[d] / 2;
-
 
         if (i_destino < 0 || i_destino >= TAM ||  j_destino < 0 || j_destino >= TAM)
             continue;
@@ -137,7 +133,6 @@ bool jogadaValida(Part tabuleiro[TAM][TAM])
     restaPart = Nvalido;
 
     return (Valido > 0) ? RESTA_JOGADA : NAO_RESTA_JOGADA;
-
 }
 
 bool localizePart(Part tabuleiro[TAM][TAM], int &ii, int &jj, int state)
@@ -182,54 +177,61 @@ int calculeMovimento(int Ic, int Jc, int i_fim, int j_fim)
 }
 
 
-void salvarRecorde(char inicial, float tempo)
+void salvarRecorde(char letra, float tempo)
 {
-    std::ofstream arq("recordes.txt", std::ios::app);  // abre em modo append
-    if (!arq.is_open()) return;
+    std::ofstream arquivo("recordes.txt", std::ios::app); 
+    if (!arquivo.is_open()) return;
 
-    arq << inicial << " " << std::fixed << std::setprecision(2) << tempo << "\n"; //manipula para somente duas casas depois do ponto
-
-    //fecha automaticamente ao sair do escopo
+    //manipula para somente duas casas depois do ponto â†“
+    arquivo << letra << " " << std::fixed << std::setprecision(2) << tempo << "\n"; 
+    
 }
 
 int carrega_recordes(Recorde recs[MAX_RECORDES])
 {
     //abre e le percorrendo o arquivo
-    std::ifstream arq("recordes.txt");
-    if (!arq.is_open()) return 0;
+    std::ifstream arquivo("recordes.txt");
+    if (!arquivo.is_open()) return 0;
 
     int conta = 0; //quantidade de records
     char nome; // vai receber a letra do player
     float tempo;
 
-    while (conta < MAX_RECORDES && arq >> nome >> tempo)
+    while (conta < MAX_RECORDES && arquivo >> nome >> tempo)
     {
         recs[conta].nome = nome;
         recs[conta].tempo = tempo;
         conta++;
-
-
-        //recs é um array onde de no max 10 onde e colocado os records
     }
 
     return conta;
 }
 
-void ordena_recordes(Recorde recs[], int count)
-{
-    std::sort(recs, recs + count,
-              [](const Recorde& a, const Recorde& b) {
-                  return a.tempo < b.tempo;
-              });
+void ordena_recordes(Recorde rcds[], int qtd){
+    int minIDEX;
+    Recorde aux;
+    for(int i =0;i< qtd-1 ;i++){
+        minIDEX = i;
+
+        for(int j = i; j < qtd; j++ ){
+            if(rcds[j].tempo < rcds[minIDEX].tempo ){
+                minIDEX = j;
+            }
+        }
+
+        aux = rcds[i]; // gurada o maior valor
+        rcds[i] = rcds[minIDEX]; //recebe o menor valor
+        rcds[minIDEX] = aux; //recebe o maior valor
+    }
 }
+
 
 void mostrarRecordesOrdenados(void)
 {
 
     //logica de front para exibir os records
-
-    Recorde temp[MAX_RECORDES];
-    int qtd = carrega_recordes(temp);
+    Recorde recordTemp[MAX_RECORDES];
+    int qtd = carrega_recordes(recordTemp);
 
     if (qtd == 0)
     {
@@ -237,27 +239,27 @@ void mostrarRecordesOrdenados(void)
         return;
     }
 
-    ordena_recordes(temp, qtd);
+    ordena_recordes(recordTemp, qtd);
 
     const int x = 770;
     const int y = 120;
     const int largura = 160;
-    const int total_altura = 30 + 10 * 22;
+    const int total_altura = 260;
 
     DrawRectangle(x, y, largura, total_altura, Fade(BLACK, 0.7f));
     DrawText("RECORDES", x + 10, y + 10, 22, GOLD);
 
     for (int i = 0; i < 10; i++)
     {
-        int linha_y = y + 40 + i * 22; // calcul de exibiçao de cada record abaixo do outro
+        int linha_y = y + 40 + i * 22;
         if (i < qtd)
         {
             // Converte segundos em minutos:segundos
-            int min = static_cast<int>(temp[i].tempo) / 60;  //o static força para int
-            int seg = static_cast<int>(temp[i].tempo) % 60;
+            int min = static_cast<int>(recordTemp[i].tempo) / 60;  //o static forï¿½a para int
+            int seg = static_cast<int>(recordTemp[i].tempo) % 60;
             char linha[16];
-            sprintf(linha, "%c %02d:%02d", temp[i].nome, min, seg);
-            DrawText(linha, x + 15, linha_y, 20, WHITE);
+            sprintf(linha, "%c %02d:%02d", recordTemp[i].nome, min, seg);
+            DrawText(linha, 785, linha_y, 20, WHITE);
 
         }
     }

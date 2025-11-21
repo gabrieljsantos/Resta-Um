@@ -4,7 +4,7 @@
 int main(void)
 {
 
-    // INICIALIZAÇÃO
+    // INICIALIZAï¿½ï¿½O
     InitWindow(screenWidth, screenHeight, "RESTA UM - 60FPS");
 
     StateJogo jogo = main_Menu;
@@ -20,6 +20,7 @@ int main(void)
         switch (jogo){
         case main_Menu:
             Emblema();
+            mostrarRecordesOrdenados();
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                 if(locateButton(startButton)){
                     imprimeTabuleiro(tabuleiro);
@@ -60,7 +61,7 @@ int main(void)
 
         case ENDGAME:
             imprimeTabuleiro(tabuleiro, i_inicial, j_inicial, clique_atual);
-            Titulo();                    // já salva + mostra vitória
+            Titulo();                    // jï¿½ salva + mostra vitï¿½ria
             mostrarRecordesOrdenados();  // mostra recordes
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
                 if (locateButton(resetButton)) jogo = RESETGAME;

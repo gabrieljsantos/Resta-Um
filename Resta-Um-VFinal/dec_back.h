@@ -20,15 +20,11 @@ typedef struct{
     Vector2 pos;
 } Part;
 
-
-
 const int cima = -2;
 const int baixo = +2;
 const int esquerda = -2;
 const int direita = +2;
 const int atual = 0;
-
-
 
 extern Part tabuleiro[TAM][TAM];
 extern int restaPart;
@@ -36,8 +32,6 @@ extern int i_atual, j_atual;
 extern int aux_ci, aux_cj;
 
 extern int clique_atual;
-
-
 
 enum Clique{
     CLIQUE_PRIMEIRO, CLIQUE_SEGUNDO};
