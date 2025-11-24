@@ -256,8 +256,9 @@ void mostrarRecordesOrdenados(void)
         if (i < qtd)
         {
             // Converte segundos em minutos:segundos
-            int min = static_cast<int>(recordTemp[i].tempo) / 60;  //o static for�a para int
-            int seg = static_cast<int>(recordTemp[i].tempo) % 60;
+            int total = (int)temp[i].tempo;   
+            int min = total / 60; 
+            int seg = total % 60;
             char linha[16];
             sprintf(linha, "%c %02d:%02d", recordTemp[i].nome, min, seg);
             DrawText(linha, 785, linha_y, 20, WHITE);
@@ -265,3 +266,4 @@ void mostrarRecordesOrdenados(void)
         }
     }
 }
+
