@@ -85,7 +85,6 @@ bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
 
     for (int d = 0; d < 4; d++)
     {
-
         int i_destino = iTest + mov_i[d];
         int j_destino = jTest + mov_j[d];
 
@@ -97,7 +96,6 @@ bool jogadaValida(Part tabuleiro[TAM][TAM], int iTest, int jTest)
 
         if (i_meio < 0 || i_meio >= TAM ||  j_meio < 0 || j_meio >= TAM)
             continue;
-
 
         if (tabuleiro[i_destino][j_destino].state == VAZIO && tabuleiro[i_meio][j_meio].state == PART)
         {
@@ -125,7 +123,7 @@ bool jogadaValida(Part tabuleiro[TAM][TAM])
             }
             else
             {
-                if (tabuleiro[i][j].state == 2)
+                if (tabuleiro[i][j].state == PART)
                     Nvalido++;
             }
         }
@@ -256,7 +254,7 @@ void mostrarRecordesOrdenados(void)
         if (i < qtd)
         {
             // Converte segundos em minutos:segundos
-            int total = (int)temp[i].tempo;   
+            int total = (int)(recordTemp[i].tempo);   
             int min = total / 60; 
             int seg = total % 60;
             char linha[16];
