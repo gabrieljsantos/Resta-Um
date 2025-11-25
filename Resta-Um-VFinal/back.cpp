@@ -4,9 +4,6 @@
 #include <fstream>       
 #include <iomanip>      
 
-
-
-
 void imprimeTabuleiro(Part tabuleiro[TAM][TAM])
 {
     for (int i = 0; i < TAM; i++)
@@ -174,7 +171,6 @@ int calculeMovimento(int Ic, int Jc, int i_fim, int j_fim)
     return MOVIMENTO_INVALIDO;
 }
 
-
 void salvarRecorde(char letra, float tempo)
 {
     std::ofstream arquivo("recordes.txt", std::ios::app); 
@@ -182,7 +178,6 @@ void salvarRecorde(char letra, float tempo)
 
     //manipula para somente duas casas depois do ponto ↓
     arquivo << letra << " " << std::fixed << std::setprecision(2) << tempo << "\n"; 
-    
 }
 
 int carrega_recordes(Recorde recs[MAX_RECORDES])
@@ -205,9 +200,6 @@ int carrega_recordes(Recorde recs[MAX_RECORDES])
     return conta;
 }
 
-
-
-
 void ordena_recordes(Recorde rcds[], int qtd){
     int minIdex;
     Recorde aux;
@@ -221,13 +213,10 @@ void ordena_recordes(Recorde rcds[], int qtd){
         aux = rcds[i];
         rcds[i] = rcds[minIdex];
         rcds[minIdex]= aux;
-
     }
-    
 }
 void mostrarRecordesOrdenados(void)
 {
-
     //logica de front para exibir os records
     Recorde recordTemp[MAX_RECORDES];
     int qtd = carrega_recordes(recordTemp);
@@ -243,12 +232,14 @@ void mostrarRecordesOrdenados(void)
     const int x = 770;
     const int y = 120;
     const int largura = 160;
-    const int total_altura = 260;
+    const int total_altura = 40;
 
-    DrawRectangle(x, y, largura, total_altura, Fade(BLACK, 0.7f));
+    for(int i = 1; i <= qtd;i++)
+        DrawRectangle(x, y, largura, total_altura + 23*i, corTabuF);
+
     DrawText("RECORDES", x + 10, y + 10, 22, GOLD);
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < qtd; i++)
     {
         int linha_y = y + 40 + i * 22;
         if (i < qtd)
@@ -264,4 +255,3 @@ void mostrarRecordesOrdenados(void)
         }
     }
 }
-
