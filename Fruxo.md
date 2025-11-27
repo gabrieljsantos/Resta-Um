@@ -9,9 +9,9 @@ flowchart TD
         
         
 
-
+    
     subgraph mainwhile_code[Loop do Game]
-
+    
         main_switch{switch do jogo}
         main_switch -->|main_Menu| menu_principa[Menu Principal]
         main_switch -->|STARTGAME| STARTGAME[Partida Iniciada]
@@ -28,15 +28,15 @@ flowchart TD
 
     STARTGAME --> STARTGAME_code
     subgraph STARTGAME_code[Lógica do jogo]
-    Desenha_STARTGAME[Desenha Tabuleiro]
-    --> Jogada_STARTGAME[Jogada]
-    --> if_ENDGAME{Se fim de partida} -->fim[jogo = ENDGAME]
-    Desenha_STARTGAME[Desenha Tabuleiro]
-    -->if_RESETBUTTON{Se clique: RESET}
-    --> reset[jogo = RESETGAME]
+    localizePart[identificar peça sob interação e possibilidades] 
+    imprimeTabuleiro[Renderizar peças]
+    Titulo[Rederizar HUD]
+    jogada[Jogada]:::N5 
+    rotinas_perifericas[Rotinas secundárias]
     end    
     
     RESETGAME --> RESTARTGAME_code
+    direction TB
     subgraph RESTARTGAME_code[Procedimento de Reset]
     reset_tabuleiro_RESTARTGAME[inicializa Tabuleiro] --> STARTGAME_RESTARTGAME[jogo = STARTGAME]
     end
@@ -49,23 +49,26 @@ flowchart TD
     end
 
 
-    
 
+    jogada --> jogada_code
+subgraph jogada_code[Lógica da Jogada]
+    direction TB
+    localizarPart[Identificar peça sob interação]
+    validarMovs[Calcular e validar possíveis movimentos]
+    moverPeca[Executar movimentação]
+    capturar[Verificar e aplicar capturas, se houver]
+    pontuar[Atualizar pontuação / estado da partida]
+    checarEstado[Checar condições de vitória/derrota]
+end
   %% Separação Por Niveis:
   
 
   RESETGAME:::N5
   STARTGAME_ENDGAME:::N5
-  reset:::N5
   main_switch:::N6
   mainwhile:::N8
   if_startButton:::N2
-  if_resetButton:::N2
-  if_RESETBUTTON:::N2
-  if_ENDGAME:::N2                  
-  Jogada_STARTGAME:::N7                  
-  Desenha_STARTGAME:::N9                  
-  fim:::N1                  
+  if_resetButton:::N2        
   ENDGAME:::N1                  
   play_Game:::N8 
   STARTGAME_RESTARTGAME:::N8                 
